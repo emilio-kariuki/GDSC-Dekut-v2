@@ -19,4 +19,5 @@ class AppImages {
   static const search = "Assets/search.svg";
   static const eventImage =
       "https://firebasestorage.googleapis.com/v0/b/apt-rite-346310.appspot.com/o/about04.png?alt=media&token=f80825e5-3be5-4e17-817b-cda37d213d29";
+  static const oops = "Assets/oops.json";
 }
