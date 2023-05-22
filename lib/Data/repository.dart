@@ -1,5 +1,7 @@
 // ignore_for_file: unnecessary_null_comparison
 
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -7,8 +9,10 @@ import 'package:gdsc_bloc/Data/Models/event_model.dart';
 import 'package:gdsc_bloc/Data/Models/groups_model.dart';
 import 'package:gdsc_bloc/Data/Models/message_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
+import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart' as http;
 
 class Repository {
   Future<bool> registerUser(
@@ -143,7 +147,12 @@ class Repository {
   }
 
   Future<bool> signInWithGoogle() async {
-    final GoogleSignIn googleSignIn = GoogleSignIn();
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        // 'https://www.googleapis.com/auth/calendar',
+      ],
+    );
     try {
       FirebaseAuth auth = FirebaseAuth.instance;
 
@@ -158,10 +167,17 @@ class Repository {
             accessToken: googleSignInAuthentication.accessToken,
             idToken: googleSignInAuthentication.idToken);
 
+        print("The accessTOken is ${googleSignInAuthentication.accessToken}");
+        print("The refreshToken is ${googleSignInAuthentication.idToken}");
+
         final UserCredential userCredential =
             await auth.signInWithCredential(credential);
 
         if (userCredential.user != null) {
+          await SharedPreferencesManager().setAuthAccessToken(
+              value: googleSignInAuthentication.accessToken!);
+          await SharedPreferencesManager()
+              .setAuthRefreshToken(value: googleSignInAuthentication.idToken!);
           await SharedPreferencesManager().setLoggedIn(value: true);
           await SharedPreferencesManager()
               .setName(value: userCredential.user!.displayName!);
@@ -282,17 +298,101 @@ class Repository {
     }
   }
 
-  Future<List<GroupsModel>> getGroups() async{
+  
+  Future<List<Event>> searchEvent({required String query}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
-      final groups = await firebaseFirestore
-          .collection("announcements")
-          .get()
-          .then((value) =>
-          value.docs.map((e) => GroupsModel.fromJson(e.data())).toList());
+      final events = await firebaseFirestore.collection("event").get().then(
+          (value) => value.docs.map((e) => Event.fromJson(e.data())).toList());
 
-      return groups;
+      return events
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> addEventToCalendar(
+      {required String summary,
+      required Timestamp start,
+      required Timestamp end}) async {
+    try {
+      print("Calendar called");
+      const String url =
+          'https://www.googleapis.com/calendar/v3/calendars/emilio/events';
+
+      final String accessToken =
+          await SharedPreferencesManager().getAuthAccessToken();
+
+      final Map<String, dynamic> event = {
+        "summary": summary,
+        "start": {
+          "dateTime": start.toDate().toIso8601String(),
+          "timeZone": "Nairobi"
+        },
+        "end": {
+          "dateTime": end.toDate().toIso8601String(),
+          "timeZone": "Nairobi"
+        }
+      };
+
+      final String body = json.encode(event);
+
+      var response = await http.post(
+        Uri.parse(url),
+        headers: {
+          'Authorization': 'Bearer $accessToken',
+          'Content-Type': 'application/json',
+        },
+        body: body,
+      );
+
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        debugPrint("event added to calendar");
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+
+      return false;
+    }
+  }
+
+  Future<List<TwitterModel>> getSpaces() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final spaces = await firebaseFirestore.collection("twitter").get().then(
+          (value) =>
+              value.docs.map((e) => TwitterModel.fromJson(e.data())).toList());
+              print(spaces);
+      return spaces;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<TwitterModel>> searchSpace({required String query}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final spaces = await firebaseFirestore.collection("twitter").get().then(
+          (value) =>
+              value.docs.map((e) => TwitterModel.fromJson(e.data())).toList());
+
+      return spaces
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
@@ -300,4 +400,35 @@ class Repository {
   }
 
 
+  Future<List<GroupsModel>> getGroups() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final groups = await firebaseFirestore.collection("announcements").get().then(
+          (value) =>
+              value.docs.map((e) => GroupsModel.fromJson(e.data())).toList());
+      return groups;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<GroupsModel>> searchGroup({required String query}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final group = await firebaseFirestore.collection("announcements").get().then(
+          (value) =>
+              value.docs.map((e) => GroupsModel.fromJson(e.data())).toList());
+
+      return group
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
 }
