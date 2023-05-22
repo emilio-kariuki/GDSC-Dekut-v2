@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
+import 'package:gdsc_bloc/Data/Models/groups_model.dart';
 import 'package:gdsc_bloc/Data/Models/message_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
@@ -248,6 +249,19 @@ class Repository {
     }
   }
 
+  Future<List<Event>> getEvent() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final event = await firebaseFirestore.collection("event").get().then(
+          (value) => value.docs.map((e) => Event.fromJson(e.data())).toList());
+      return event;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
   Future<List<Resource>> searchResources({required String query}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
@@ -267,4 +281,23 @@ class Repository {
       throw Exception(e);
     }
   }
+
+  Future<List<GroupsModel>> getGroups() async{
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final groups = await firebaseFirestore
+          .collection("announcements")
+          .get()
+          .then((value) =>
+          value.docs.map((e) => GroupsModel.fromJson(e.data())).toList());
+
+      return groups;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+
 }
