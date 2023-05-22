@@ -8,13 +8,18 @@ class TwitterCard extends StatelessWidget {
     required this.height,
     required this.image,
     required this.title,
+    required this.startTime,
+    required this.endTime,
+    required this.date,
   });
 
   final double width;
   final double height;
-
   final String image;
   final String title;
+  final String startTime;
+  final String endTime;
+  final String date;
 
   @override
   Widget build(BuildContext context) {
@@ -45,12 +50,12 @@ class TwitterCard extends StatelessWidget {
           Expanded(
             child: Scaffold(
               bottomNavigationBar: Text(
-                "8:00PM - 9:00PM",
+                "$startTime - $endTime",
                 overflow: TextOverflow.clip,
                 maxLines: 1,
                 style: GoogleFonts.inter(
                   fontWeight: FontWeight.w700,
-                  fontSize: 12,
+                  fontSize: 11,
                   color: Colors.black,
                 ),
               ),
@@ -59,21 +64,32 @@ class TwitterCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: width * 0.31,
+                    width: width * 0.28,
+                    height: height * 0.04,
                     child: Text(
                       title,
                       overflow: TextOverflow.clip,
                       maxLines: 2,
                       style: GoogleFonts.inter(
                         fontWeight: FontWeight.w500,
-                        fontSize: 14,
+                        fontSize: 13.5,
                         color: Colors.black,
                       ),
                     ),
                   ),
-                  SizedBox(
-                    height: height * 0.02,
-                  )
+                  const SizedBox(
+                    height: 2,
+                  ),
+                  Text(
+                    date,
+                    overflow: TextOverflow.clip,
+                    maxLines: 1,
+                    style: GoogleFonts.inter(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10,
+                      color: const Color(0xff666666),
+                    ),
+                  ),
                 ],
               ),
             ),
