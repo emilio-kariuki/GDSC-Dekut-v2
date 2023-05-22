@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gdsc_bloc/Util/image_urls.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AnnouncementCard extends StatelessWidget {
@@ -36,33 +35,34 @@ class AnnouncementCard extends StatelessWidget {
             shape: RoundedRectangleBorder(
               side: const BorderSide(
                 color: Color.fromARGB(255, 106, 81, 81),
-                width: 0.25,
+                width: 0.15,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
           ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(100),
-                child: Container(
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      color: const Color(0xFF686868),
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Image.network(
-                    AppImages.eventImage,
-                    height: 50,
-                    width: 50,
-                    fit: BoxFit.cover,
-                  ),
-                )),
-              SizedBox(
-                width: width * 0.04,
-              ),
+              // ClipRRect(
+              //   borderRadius: BorderRadius.circular(100),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       border: Border.all(
+              //         color: const Color(0xFF686868),
+              //         width: 0.5,
+              //       ),
+              //     ),
+              //     child: Image.network(
+              //       AppImages.eventImage,
+              //       height: 50,
+              //       width: 50,
+              //       fit: BoxFit.cover,
+              //     ),
+              //   )),
+              // SizedBox(
+              //   width: width * 0.04,
+              // ),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -80,7 +80,7 @@ class AnnouncementCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 2,
+                      height: 5,
                     ),
                     Text(
                       "$name - $position",
@@ -91,8 +91,27 @@ class AnnouncementCard extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 8,
                     ),
+
+                    // ClipRRect(
+                    // borderRadius: BorderRadius.circular(10),
+                    // child: Container(
+                    //   height: height * 0.15,
+                    //   width: width * 0.6,
+                    //   decoration: BoxDecoration(
+                    //     border: Border.all(
+                    //       color: const Color(0xFF686868),
+                    //       width: 0.5,
+                    //     ),
+                    //   ),
+                    //   child: Image.network(
+                    //     AppImages.eventImage,
+                    //     height: 50,
+                    //     width: 50,
+                    //     fit: BoxFit.cover,
+                    //   ),
+                    // )),
                     // SizedBox(
                     //   height: 30,
                     //   child: Row(
