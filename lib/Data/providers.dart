@@ -1,6 +1,7 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
+import 'package:gdsc_bloc/Data/Models/groups_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/repository.dart';
 
@@ -73,11 +74,19 @@ class Providers {
     return Repository().getEvents();
   }
 
+  Future<List<Event>> getEvent() {
+    return Repository().getEvent();
+  }
+
   Future<List<Resource>> getResources() {
     return Repository().getResources();
   }
 
   Future<List<Resource>> searchResources({required String query}) async {
     return Repository().searchResources(query: query);
+  }
+
+  Future<List<GroupsModel>> getGroups() {
+    return Repository().getGroups();
   }
 }
