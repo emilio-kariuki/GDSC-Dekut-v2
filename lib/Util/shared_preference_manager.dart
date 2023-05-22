@@ -31,4 +31,24 @@ class SharedPreferencesManager {
     final prefs = await SharedPreferences.getInstance();
     return prefs.setString(NAME, value);
   }
+
+  Future<String> getAuthRefreshToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(AUTH_REFRESH_TOKEN) ?? '';
+  }
+
+  Future<bool> setAuthRefreshToken({required String value}) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.setString(AUTH_REFRESH_TOKEN, value);
+  }
+
+  Future<String> getAuthAccessToken() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getString(AUTH_ACCESS_TOKEN) ?? '';
+  }
+
+  Future<bool> setAuthAccessToken({required String value}) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.setString(AUTH_ACCESS_TOKEN, value);
+  }
 }
