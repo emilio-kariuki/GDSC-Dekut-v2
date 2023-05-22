@@ -7,7 +7,6 @@ abstract class AppFunctionsState extends Equatable {
   List<Object> get props => [];
 }
 
-
 class PasswordVisibile extends AppFunctionsState {
   final bool isVisible;
 
@@ -42,26 +41,6 @@ class CarouselChanged extends AppFunctionsState {
 
   @override
   List<Object> get props => [index];
-}
-
-class SearchResourceLoading extends AppFunctionsState {}
-
-class SearchResourceSuccess extends AppFunctionsState {
-  final List<Resource> resources;
-
-  const SearchResourceSuccess({required this.resources});
-
-  @override
-  List<Object> get props => [resources];
-}
-
-class SearchResourceFailure extends AppFunctionsState {
-  final String message;
-
-  const SearchResourceFailure({required this.message});
-
-  @override
-  List<Object> get props => [message];
 }
 
 class AlignmentChanged extends AppFunctionsState {
