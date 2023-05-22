@@ -12,7 +12,7 @@ class EventCard extends StatelessWidget {
     required this.about,
     required this.date,
     required this.time,
-    required this.image,
+    required this.image, required this.function,
   });
 
   final String about;
@@ -22,13 +22,14 @@ class EventCard extends StatelessWidget {
   final String time;
   final String title;
   final double width;
+  final Function() function;
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8.0),
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: function,
         style: ElevatedButton.styleFrom(
           padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
           backgroundColor: Colors.white,
@@ -46,32 +47,32 @@ class EventCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Column(
-            //   children: [
-            //     const SizedBox(
-            //       height: 10,
-            //     ),
-            //     ClipRRect(
-            //         borderRadius: BorderRadius.circular(100),
-            //         child: Container(
-            //           decoration: BoxDecoration(
-            //             border: Border.all(
-            //               color: const Color(0xFF686868),
-            //               width: 0.5,
-            //             ),
-            //           ),
-            //           child: Image.network(
-            //             AppImages.eventImage,
-            //             height: 50,
-            //             width: 50,
-            //             fit: BoxFit.cover,
-            //           ),
-            //         )),
-            //   ],
-            // ),
-            // SizedBox(
-            //   width: width * 0.03,
-            // ),
+            Column(
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: const Color(0xFF686868),
+                          width: 0.5,
+                        ),
+                      ),
+                      child: Image.network(
+                        AppImages.eventImage,
+                        height: 50,
+                        width: 50,
+                        fit: BoxFit.cover,
+                      ),
+                    )),
+              ],
+            ),
+            SizedBox(
+              width: width * 0.03,
+            ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -101,11 +102,13 @@ class EventCard extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
+                   
                   const SizedBox(
                     height: 10,
                   ),
                   SizedBox(
                     height: 30,
+                    width: width * 0.7,
                     child: Row(
                       
                       children: [
