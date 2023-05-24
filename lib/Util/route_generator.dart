@@ -8,6 +8,13 @@ import 'package:gdsc_bloc/View/Home/profile_page.dart';
 import 'package:gdsc_bloc/View/Pages/events_page.dart';
 import 'package:gdsc_bloc/View/Pages/tech_groups_page.dart';
 import 'package:gdsc_bloc/View/Pages/twitter_page.dart';
+import 'package:gdsc_bloc/View/Profile/About/about_page.dart';
+import 'package:gdsc_bloc/View/Profile/Account/personal_information_page.dart';
+import 'package:gdsc_bloc/View/Profile/Community/community_leads_page.dart';
+import 'package:gdsc_bloc/View/Profile/Community/user_resources.dart';
+import 'package:gdsc_bloc/View/Profile/Help/contact_developer_page.dart';
+import 'package:gdsc_bloc/View/Profile/Help/report_problem_page.dart';
+import 'package:gdsc_bloc/View/Profile/Help/send_feedback_page.dart';
 import 'package:gdsc_bloc/View/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
@@ -33,8 +40,22 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => EventsPage());
       case '/twitter_page':
         return MaterialPageRoute(builder: (_) => TwitterPage());
-        case '/tech_groups_page':
+      case '/tech_groups_page':
         return MaterialPageRoute(builder: (_) => TechGroupsPage());
+      case '/personal_information':
+        return MaterialPageRoute(builder: (_) => PersonalInformation());
+      case '/community_leads':
+        return MaterialPageRoute(builder: (_) => const CommunityLeads());
+      case '/user_resources':
+        return MaterialPageRoute(builder: (_) => UserResources());
+      case '/send_feedback':
+        return MaterialPageRoute(builder: (_) => SendFeedbackPage());
+      case '/report_problem':
+        return MaterialPageRoute(builder: (_) => ReportProblemPage());
+        case '/contact_developer':
+        return MaterialPageRoute(builder: (_) => const ContactDeveloperPage());
+         case '/about_app':
+        return MaterialPageRoute(builder: (_) => const AboutPage());
       default:
         return _errorRoute();
     }

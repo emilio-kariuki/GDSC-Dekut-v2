@@ -67,6 +67,7 @@ class RegisterPage extends StatelessWidget {
                     InputField(
                       title: "Name",
                       controller: nameController,
+                      hintText: "Enter your name",
                     ),
                     const SizedBox(
                       height: 10,
@@ -74,6 +75,7 @@ class RegisterPage extends StatelessWidget {
                     InputField(
                       title: "Email",
                       controller: emailController,
+                      hintText: "Enter your email",
                     ),
                     const SizedBox(
                       height: 10,
@@ -82,6 +84,7 @@ class RegisterPage extends StatelessWidget {
                       builder: (context, state) {
                         return InputField(
                             title: "Password",
+                            hintText: "Enter your password",
                             obScureText: state is PasswordInvisibile
                                 ? true
                                 : state is PasswordVisibile

@@ -15,7 +15,7 @@ class Home extends StatelessWidget {
   Widget getBody() {
     List<Widget> pages = [
       EventPage(),
-      ResourcesPage(),
+       ResourcesPage(),
       MessagesPage(),
       const ProfilePage(),
     ];
@@ -52,10 +52,9 @@ class Home extends StatelessWidget {
         "two": AppImages.resources_black,
       },
       {
-        "one": AppImages.news_white,
-        "two": AppImages.news_black,
+        "one": AppImages.messages_white,
+        "two": AppImages.messages,
       },
-      
       {
         "one": AppImages.person_white,
         "two": AppImages.person_black,
@@ -67,30 +66,25 @@ class Home extends StatelessWidget {
           return AnimatedBottomNavigationBar.builder(
             elevation: 0,
             backgroundColor: Colors.white,
-            // splashColor: Colors.deepOrange,
             notchSmoothness: NotchSmoothness.softEdge,
             itemCount: items.length,
             activeIndex: state is TabChanged ? state.index : 0,
             gapWidth: 10,
-            onTap: (index) { 
+            onTap: (index) {
               BlocProvider.of<AppFunctionsCubit>(context)
                   .changeTab(index: index);
             },
-            //other params
             tabBuilder: (int index, bool isActive) {
-              final itemz = items[index];
+              final icons = items[index];
               return Padding(
-                padding: index == 4
-                    ? const EdgeInsets.all(18.0)
-                    : index == 2
-                        ? const EdgeInsets.all(12.0)
-                        : index == 3
-                            ? const EdgeInsets.all(17.0)
-                            : const EdgeInsets.all(15.0),
+                padding: index == 2
+                    ? const EdgeInsets.all(20.0)
+                    : index == 3
+                        ? const EdgeInsets.all(20.0)
+                        : const EdgeInsets.all(18.0),
                 child: SvgPicture.asset(
-                  isActive ? itemz['two'] : itemz['one'],
+                  isActive ? icons['two'] : icons['one'],
                   height: MediaQuery.of(context).size.height * 0.03,
-                  width: 10,
                 ),
               );
             },

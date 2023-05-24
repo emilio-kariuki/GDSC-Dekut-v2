@@ -75,6 +75,7 @@ class ResetPassword extends StatelessWidget {
                     InputField(
                       title: "Email",
                       controller: emailController,
+                      hintText: "Enter your email",
                     ),
                     const SizedBox(
                       height: 10,

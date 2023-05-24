@@ -1,18 +1,25 @@
 // ignore_for_file: unnecessary_null_comparison
 
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:gdsc_bloc/Data/Models/developer_model.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
 import 'package:gdsc_bloc/Data/Models/groups_model.dart';
+import 'package:gdsc_bloc/Data/Models/leads_model.dart';
 import 'package:gdsc_bloc/Data/Models/message_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
+import 'package:gdsc_bloc/Data/Models/user_model.dart';
 import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
+import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Repository {
   Future<bool> registerUser(
@@ -249,7 +256,46 @@ class Repository {
     }
   }
 
-  Future<List<Resource>> getResources() async {
+  Future<List<Resource>> getResources({required String category}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final resources = await firebaseFirestore
+          .collection("resource")
+          .where(
+            "category",
+            isEqualTo: category,
+          )
+          .where("isApproved", isEqualTo: true)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Resource.fromJson(e.data())).toList());
+      return resources;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Resource>> getUserResources({required String userId}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final resources = await firebaseFirestore
+          .collection("resource")
+          .where("userId", isEqualTo: userId)
+          .where("isApproved", isEqualTo: true)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Resource.fromJson(e.data())).toList());
+      return resources;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Resource>> getResource() async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
@@ -283,7 +329,8 @@ class Repository {
       final firebaseFirestore = FirebaseFirestore.instance;
 
       final resources = await firebaseFirestore
-          .collection("resources")
+          .collection("resource")
+          .where("isApproved", isEqualTo: true)
           .get()
           .then((value) =>
               value.docs.map((e) => Resource.fromJson(e.data())).toList());
@@ -298,7 +345,46 @@ class Repository {
     }
   }
 
-  
+  Future<List<Resource>> searchUserResources(
+      {required String query, required String userId}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final resources = await firebaseFirestore
+          .collection("resource")
+          .where("userId", isEqualTo: userId)
+          .where("isApproved", isEqualTo: true)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Resource.fromJson(e.data())).toList());
+
+      return resources
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteResource({required String title}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("resource")
+          .where("title", isEqualTo: title)
+          .get()
+          .then((value) => value.docs.first.reference.delete());
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
   Future<List<Event>> searchEvent({required String query}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
@@ -373,7 +459,7 @@ class Repository {
       final spaces = await firebaseFirestore.collection("twitter").get().then(
           (value) =>
               value.docs.map((e) => TwitterModel.fromJson(e.data())).toList());
-              print(spaces);
+      print(spaces);
       return spaces;
     } catch (e) {
       debugPrint(e.toString());
@@ -399,13 +485,14 @@ class Repository {
     }
   }
 
-
   Future<List<GroupsModel>> getGroups() async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
-      final groups = await firebaseFirestore.collection("announcements").get().then(
-          (value) =>
+      final groups = await firebaseFirestore
+          .collection("announcements")
+          .get()
+          .then((value) =>
               value.docs.map((e) => GroupsModel.fromJson(e.data())).toList());
       return groups;
     } catch (e) {
@@ -418,14 +505,199 @@ class Repository {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
-      final group = await firebaseFirestore.collection("announcements").get().then(
-          (value) =>
+      final group = await firebaseFirestore
+          .collection("announcements")
+          .get()
+          .then((value) =>
               value.docs.map((e) => GroupsModel.fromJson(e.data())).toList());
 
       return group
           .where((element) =>
               element.title!.toLowerCase().contains(query.toLowerCase()))
           .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<File> getImage() async {
+    final imagePicker = ImagePicker();
+    try {
+      var pickedImage =
+          await imagePicker.pickImage(source: ImageSource.gallery);
+
+      if (pickedImage != null) {
+        return File(pickedImage.path);
+      } else {
+        throw Exception("No image selected");
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<UserModel> getUser({required String userId}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final user = await firebaseFirestore
+          .collection("users")
+          .doc(userId)
+          .get()
+          .then((value) => UserModel.fromJson(value.data()!));
+
+      return user;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> updateUser({
+    required String name,
+    required String email,
+    required String phone,
+    required String github,
+    required String linkedin,
+    required String twitter,
+    required String userId,
+    required String technology,
+    required String image,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      await firebaseFirestore.collection("users").doc(userId).update({
+        "username": name,
+        "email": email,
+        "phone": phone,
+        "github": github,
+        "linkedin": linkedin,
+        "twitter": twitter,
+        "userID": userId,
+        "technology": technology,
+        "imageUrl": image,
+      });
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<String> uploadImage({required File image}) async {
+    try {
+      final imageUrl = await FirebaseStorage.instance
+          .ref()
+          .child("images/${DateTime.now().toString()}.png")
+          .putFile(image);
+
+      return await imageUrl.ref.getDownloadURL();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<LeadsModel>> getLeads() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final leads = await firebaseFirestore.collection("lead").get().then(
+          (value) =>
+              value.docs.map((e) => LeadsModel.fromJson(e.data())).toList());
+
+      return leads;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createFeedback({
+    required String feedback,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final email = await FirebaseAuth.instance.currentUser!.email;
+
+      await firebaseFirestore.collection("feedback").add({
+        "email": email,
+        "feedback": feedback,
+      });
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> reportProblem({
+    required String title,
+    required String description,
+    required String appVersion,
+    required String contact,
+    required String image,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final email = await FirebaseAuth.instance.currentUser!.email;
+      await firebaseFirestore.collection("problem").add({
+        "email": email,
+        "title": title,
+        "description": description,
+        "appVersion": appVersion,
+        "contact": contact,
+        "image": image,
+      });
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
+  }
+
+  Future<bool> contactDeveloper({required String email}) async {
+    try {
+      final Uri emailLaunchUri = Uri(
+        scheme: 'mailto',
+        path: email,
+        query: encodeQueryParameters(<String, String>{
+          'subject':
+              'Hello there i have some information i want to get from you!',
+        }),
+      );
+
+      launchUrl(emailLaunchUri);
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<DeveloperModel>> getDevelopers() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final developers = await firebaseFirestore
+          .collection("developers")
+          .get()
+          .then((value) => value.docs
+              .map((e) => DeveloperModel.fromJson(e.data()))
+              .toList());
+
+      return developers;
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);

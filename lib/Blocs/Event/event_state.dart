@@ -138,3 +138,93 @@ class SearchGroupsFailure extends EventState {
   @override
   List<Object> get props => [message];
 }
+
+
+//resources
+
+class ResourceLoading extends EventState {}
+
+class ResourceSuccess extends EventState {
+  final List<Resource> resources;
+
+  const ResourceSuccess({required this.resources});
+
+  @override
+  List<Object> get props => [resources];
+}
+
+class ResourceFailure extends EventState {
+  final String message;
+
+  const ResourceFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+// user resources
+
+class UserResourceLoading extends EventState {}
+
+class UserResourceSuccess extends EventState {
+  final List<Resource> resources;
+
+  const UserResourceSuccess({required this.resources});
+
+  @override
+  List<Object> get props => [resources];
+}
+
+class UserResourceFailure extends EventState {
+  final String message;
+
+  const UserResourceFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+//search user resource
+
+class SearchUserResourceLoading extends EventState {}
+
+class SearchUserResourceSuccess extends EventState {
+  final List<Resource> resources;
+
+  const SearchUserResourceSuccess({required this.resources});
+
+  @override
+  List<Object> get props => [resources];
+}
+
+class SearchUserResourceFailure extends EventState {
+  final String message;
+
+  const SearchUserResourceFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+
+// Developers contacts
+
+class DeveloperLoading extends EventState {}
+
+class DeveloperSuccess extends EventState {
+  final List<DeveloperModel> developers;
+
+  const DeveloperSuccess({required this.developers});
+
+  @override
+  List<Object> get props => [developers];
+}
+
+class DeveloperFailure extends EventState {
+  final String message;
+
+  const DeveloperFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}

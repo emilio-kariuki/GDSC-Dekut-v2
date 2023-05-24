@@ -39,3 +39,26 @@ class SearchGroup extends EventEvent {
   @override
   List<Object> get props => [query];
 }
+
+class GetResource extends EventEvent {
+  final String category;
+
+  const GetResource({required this.category});
+
+  @override
+  List<Object> get props => [category];
+}
+
+class GetUserResources extends EventEvent {}
+
+
+class SearchUserResource extends EventEvent {
+  final String query;
+
+  const SearchUserResource ({required this.query});
+
+  @override
+  List<Object> get props => [query];
+}
+
+class GetDevelopers extends EventEvent {}

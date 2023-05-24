@@ -98,7 +98,6 @@ class EventPage extends StatelessWidget {
                             ),
                           ],
                         ),
-                        
                       ],
                     ),
                     const SizedBox(
@@ -149,67 +148,10 @@ class EventPage extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-                    // Text(
-                    //   "Featured Events",
-                    //   style: GoogleFonts.inter(
-                    //     fontWeight: FontWeight.w500,
-                    //     fontSize: 17,
-                    //     color: const Color(0xff000000),
-                    //   ),
-                    // ),
-                    // const SizedBox(
-                    //   height: 8,
-                    // ),
-                    // SizedBox(
-                    //     height: height * 0.16,
-                    //     child: CarouselSlider(
-                    //         items: [
-                    //           SampleExample(height: height, width: width),
-                    //           SampleExample(height: height, width: width),
-                    //           SampleExample(height: height, width: width),
-                    //         ],
-                    //         options: CarouselOptions(
-                    //           height: height * 0.2,
-                    //           aspectRatio: 16 / 10,
-                    //           viewportFraction: 1,
-                    //           initialPage: 0,
-                    //           enableInfiniteScroll: true,
-                    //           reverse: false,
-                    //           autoPlay: true,
-                    //           autoPlayInterval: const Duration(seconds: 3),
-                    //           autoPlayAnimationDuration:
-                    //               const Duration(milliseconds: 800),
-                    //           autoPlayCurve: Curves.fastOutSlowIn,
-                    //           enlargeCenterPage: false,
-                    //           scrollDirection: Axis.horizontal,
-                    //           onPageChanged: (index, reason) {
-                    //             context
-                    //                 .read<AppFunctionsCubit>()
-                    //                 .changeCarousel(index: index);
-                    //           },
-                    //         ))),
-                    // const SizedBox(
-                    //   height: 8,
-                    // ),
-                    // Center(
-                    //   child: BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
-                    //     builder: (context, state) {
-                    //       return DotsIndicator(
-                    //         dotsCount: 3,
-                    //         position:
-                    //             state is CarouselChanged ? state.index : 0,
-                    //       );
-                    //     },
-                    //   ),
-                    // ),
-                    // const SizedBox(
-                    //   height: 4,
-                    // ),
                     const CategoryWidget(
                       title: "Upcoming Events",
                       location: '/events_page',
                     ),
-
                     FutureBuilder<List<Event>>(
                         future: Repository().getEvent(),
                         builder: (context, snapshot) {
@@ -281,16 +223,14 @@ class EventPage extends StatelessWidget {
                     const SizedBox(
                       height: 10,
                     ),
-
                     const CategoryWidget(
                       title: "Twitter Spaces",
                       location: '/twitter_page',
                     ),
-
                     SizedBox(
                       height: height * 0.21,
                       child: FutureBuilder<List<Resource>>(
-                          future: Repository().getResources(),
+                          future: Repository().getResource(),
                           builder: (context, snapshot) {
                             return ListView.builder(
                               scrollDirection: Axis.horizontal,
@@ -311,7 +251,6 @@ class EventPage extends StatelessWidget {
                             );
                           }),
                     ),
-
                     const SizedBox(height: 25),
                     Text(
                       "Announcements",
@@ -339,11 +278,9 @@ class EventPage extends StatelessWidget {
                       name: "Victor Ndaba",
                       position: "Flutter Lead",
                     ),
-
                     const SizedBox(
                       height: 10,
                     ),
-
                     const CategoryWidget(
                       title: "Tech Groups",
                       location: '/tech_groups_page',

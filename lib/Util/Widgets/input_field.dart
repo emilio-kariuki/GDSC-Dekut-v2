@@ -7,11 +7,12 @@ class InputField extends StatelessWidget {
       required this.title,
       required this.controller,
       this.obScureText = false,
-     this.suffixIcon});
+     this.suffixIcon, required this.hintText});
   final String title;
   final TextEditingController controller;
   final Widget ?suffixIcon;
   final bool obScureText;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -43,12 +44,14 @@ class InputField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             obscureText: obScureText,
+            
             style: GoogleFonts.inter(
               fontWeight: FontWeight.w500,
               fontSize: 14,
               color: const Color(0xff000000),
             ),
             decoration: InputDecoration(
+              hintText: hintText,
               suffixIcon: suffixIcon,
               border: InputBorder.none,
               hintStyle: GoogleFonts.inter(

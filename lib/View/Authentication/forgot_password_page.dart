@@ -78,6 +78,7 @@ class ForgotPassword extends StatelessWidget {
                     InputField(
                       title: "Email",
                       controller: emailController,
+                      hintText: "Enter your email",
                     ),
                     const SizedBox(
                       height: 10,
@@ -86,6 +87,7 @@ class ForgotPassword extends StatelessWidget {
                       builder: (context, state) {
                         return InputField(
                             title: "Old Password",
+                            hintText: "Enter your old password",
                             obScureText: state is PasswordInvisibile
                                 ? true
                                 : state is PasswordVisibile
@@ -134,6 +136,7 @@ class ForgotPassword extends StatelessWidget {
                             builder: (context, dstate) {
                               return InputField(
                                   title: "New Password",
+                                  hintText: "Enter your new password",
                                   obScureText: dstate is PasswordInvisibile
                                       ? true
                                       : dstate is PasswordVisibile
