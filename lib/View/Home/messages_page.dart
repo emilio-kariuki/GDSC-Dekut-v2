@@ -3,7 +3,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsc_bloc/Data/Models/message_model.dart';
-import 'package:gdsc_bloc/Data/repository.dart';
+import 'package:gdsc_bloc/Data/Repository/repository.dart';
 import 'package:gdsc_bloc/Util/Widgets/chat_bubble.dart';
 import 'package:google_fonts/google_fonts.dart';
 

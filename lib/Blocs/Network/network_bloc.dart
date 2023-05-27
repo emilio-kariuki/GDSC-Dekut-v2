@@ -1,6 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
-import 'package:gdsc_bloc/Data/providers.dart';
+import 'package:gdsc_bloc/Data/Repository/providers.dart';
 
 part 'network_event.dart';
 part 'network_state.dart';

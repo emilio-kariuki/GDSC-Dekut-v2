@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gdsc_bloc/Data/providers.dart';
+import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/Widgets/profile_card.dart';
 import 'package:gdsc_bloc/Util/Widgets/profile_padding.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';

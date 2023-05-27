@@ -5,7 +5,7 @@ import 'package:gdsc_bloc/Data/Models/event_model.dart';
 import 'package:gdsc_bloc/Data/Models/groups_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
-import 'package:gdsc_bloc/Data/providers.dart';
+import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 
 part 'event_event.dart';
