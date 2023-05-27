@@ -40,9 +40,8 @@ class UserResources extends StatelessWidget {
                       height: height * 0.06,
                       width: width,
                       child: ElevatedButton(
-                        
                         style: ElevatedButton.styleFrom(
-                          enableFeedback: false,
+                            enableFeedback: false,
                             backgroundColor: Colors.white,
                             foregroundColor: Colors.grey,
                             elevation: 0,
@@ -148,13 +147,14 @@ class UserResources extends StatelessWidget {
         return Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
+            iconTheme: const IconThemeData(color: Color(0xff666666), size: 20),
             backgroundColor: Colors.white,
             title: Text(
               "User Resources",
               style: GoogleFonts.inter(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: Colors.black,
+                color: const Color(0xff666666),
               ),
             ),
           ),
