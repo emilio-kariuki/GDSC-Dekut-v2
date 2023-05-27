@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
-import 'package:gdsc_bloc/Data/providers.dart';
+import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/Widgets/events_card.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
@@ -188,23 +188,19 @@ class EventsPage extends StatelessWidget {
                                         itemCount: state.events.length,
                                         itemBuilder: (context, index) {
                                           final Timestamp startTime =
-                                              state.events[index].startTime;
-                                          final Timestamp endTime =
-                                              state.events[index].endTime;
+                                              state.events[index].date!;
+                                          
                                           final DateTime startDateTime =
                                               startTime.toDate();
-                                          final DateTime endDateTime =
-                                              endTime.toDate();
+                                          
 
                                           final String startTimeString =
                                               DateFormat.jm()
                                                   .format(startDateTime);
-                                          final String endTimeString =
-                                              DateFormat.jm()
-                                                  .format(endDateTime);
+                                          
 
                                           final Timestamp timestamp =
-                                              state.events[index].startTime;
+                                              state.events[index].date!;
 
                                           final DateTime dateTime =
                                               timestamp.toDate();
@@ -225,20 +221,20 @@ class EventsPage extends StatelessWidget {
                                                 "",
                                             date: dateString,
                                             time:
-                                                "$startTimeString - $endTimeString",
+                                                "${state.events[index].startTime} - ${state.events[index].endTime}",
                                             image:
                                                 state.events[index].imageUrl ??
                                                     AppImages.eventImage,
                                             function: () async {
-                                              await Providers()
-                                                  .addEventToCalendar(
-                                                summary:
-                                                    state.events[index].title!,
-                                                start: state
-                                                    .events[index].startTime,
-                                                end:
-                                                    state.events[index].endTime,
-                                              );
+                                              // await Providers()
+                                              //     .addEventToCalendar(
+                                              //   summary:
+                                              //       state.events[index].title!,
+                                              //   start: state
+                                              //       .events[index].startTime,
+                                              //   end:
+                                              //       state.events[index].endTime,
+                                              // );
                                             },
                                           );
                                         },
@@ -279,25 +275,21 @@ class EventsPage extends StatelessWidget {
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: state.events.length,
-                                        itemBuilder: (context, index) {
+                                         itemBuilder: (context, index) {
                                           final Timestamp startTime =
-                                              state.events[index].startTime;
-                                          final Timestamp endTime =
-                                              state.events[index].endTime;
+                                              state.events[index].date!;
+                                          
                                           final DateTime startDateTime =
                                               startTime.toDate();
-                                          final DateTime endDateTime =
-                                              endTime.toDate();
+                                          
 
                                           final String startTimeString =
                                               DateFormat.jm()
                                                   .format(startDateTime);
-                                          final String endTimeString =
-                                              DateFormat.jm()
-                                                  .format(endDateTime);
+                                          
 
                                           final Timestamp timestamp =
-                                              state.events[index].startTime;
+                                              state.events[index].date!;
 
                                           final DateTime dateTime =
                                               timestamp.toDate();
@@ -318,20 +310,20 @@ class EventsPage extends StatelessWidget {
                                                 "",
                                             date: dateString,
                                             time:
-                                                "$startTimeString - $endTimeString",
+                                                "${state.events[index].startTime} - ${state.events[index].endTime}",
                                             image:
                                                 state.events[index].imageUrl ??
                                                     AppImages.eventImage,
                                             function: () async {
-                                              await Providers()
-                                                  .addEventToCalendar(
-                                                summary:
-                                                    state.events[index].title!,
-                                                start: state
-                                                    .events[index].startTime,
-                                                end:
-                                                    state.events[index].endTime,
-                                              );
+                                              // await Providers()
+                                              //     .addEventToCalendar(
+                                              //   summary:
+                                              //       state.events[index].title!,
+                                              //   start: state
+                                              //       .events[index].startTime,
+                                              //   end:
+                                              //       state.events[index].endTime,
+                                              // );
                                             },
                                           );
                                         },
