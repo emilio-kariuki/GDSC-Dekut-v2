@@ -40,132 +40,105 @@ class AnnouncementCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
             ),
           ),
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // ClipRRect(
-              //   borderRadius: BorderRadius.circular(100),
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       border: Border.all(
-              //         color: const Color(0xFF686868),
-              //         width: 0.5,
-              //       ),
-              //     ),
-              //     child: Image.network(
-              //       AppImages.eventImage,
-              //       height: 50,
-              //       width: 50,
-              //       fit: BoxFit.cover,
-              //     ),
-              //   )),
-              // SizedBox(
-              //   width: width * 0.04,
-              // ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      title,
-                      style: GoogleFonts.inter(
-                        fontSize: 15,
-                        color: const Color(0xff000000),
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    Text(
-                      "$name - $position",
-                      style: GoogleFonts.inter(
-                        fontSize: 14,
-                        color: const Color(0xff5B5561),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-
-                    // ClipRRect(
-                    // borderRadius: BorderRadius.circular(10),
-                    // child: Container(
-                    //   height: height * 0.15,
-                    //   width: width * 0.6,
-                    //   decoration: BoxDecoration(
-                    //     border: Border.all(
-                    //       color: const Color(0xFF686868),
-                    //       width: 0.5,
-                    //     ),
-                    //   ),
-                    //   child: Image.network(
-                    //     AppImages.eventImage,
-                    //     height: 50,
-                    //     width: 50,
-                    //     fit: BoxFit.cover,
-                    //   ),
-                    // )),
-                    // SizedBox(
-                    //   height: 30,
-                    //   child: Row(
-                    //     mainAxisAlignment: MainAxisAlignment.start,
-                    //     children: [
-                    //       Row(
-                    //         children: [
-                    //           SvgPicture.asset(
-                    //             AppImages.calendar,
-                    //             height: height * 0.02,
-                    //             width: width * 0.02,
-                    //           ),
-                    //           const SizedBox(
-                    //             width: 5,
-                    //           ),
-                    //           Text(
-                    //             "Today",
-                    //             style: GoogleFonts.inter(
-                    //               fontSize: 14,
-                    //               color: const Color(0xff5B5561),
-                    //               fontWeight: FontWeight.w500,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //       SizedBox(
-                    //         width: width * 0.2,
-                    //       ),
-                    //       Row(
-                    //         children: [
-                    //           SvgPicture.asset(
-                    //             AppImages.clock,
-                    //             height: height * 0.02,
-                    //             width: width * 0.02,
-                    //           ),
-                    //           const SizedBox(
-                    //             width: 5,
-                    //           ),
-                    //           Text(
-                    //             "10:00 AM",
-                    //             style: GoogleFonts.inter(
-                    //               fontSize: 14,
-                    //               color: const Color(0xff5B5561),
-                    //               fontWeight: FontWeight.w500,
-                    //             ),
-                    //           ),
-                    //         ],
-                    //       ),
-                    //     ],
-                    //   ),
-                    // )
-                  ],
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                title,
+                style: GoogleFonts.inter(
+                  fontSize: 15,
+                  color: const Color(0xff000000),
+                  fontWeight: FontWeight.w600,
                 ),
               ),
+              const SizedBox(
+                height: 5,
+              ),
+              Text(
+                "$name - $position",
+                style: GoogleFonts.inter(
+                  fontSize: 14,
+                  color: const Color(0xff5B5561),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+
+              // ClipRRect(
+              // borderRadius: BorderRadius.circular(10),
+              // child: Container(
+              //   height: height * 0.15,
+              //   width: width * 0.6,
+              //   decoration: BoxDecoration(
+              //     border: Border.all(
+              //       color: const Color(0xFF686868),
+              //       width: 0.5,
+              //     ),
+              //   ),
+              //   child: Image.network(
+              //     AppImages.eventImage,
+              //     height: 50,
+              //     width: 50,
+              //     fit: BoxFit.cover,
+              //   ),
+              // )),
+              // SizedBox(
+              //   height: 30,
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.start,
+              //     children: [
+              //       Row(
+              //         children: [
+              //           SvgPicture.asset(
+              //             AppImages.calendar,
+              //             height: height * 0.02,
+              //             width: width * 0.02,
+              //           ),
+              //           const SizedBox(
+              //             width: 5,
+              //           ),
+              //           Text(
+              //             "Today",
+              //             style: GoogleFonts.inter(
+              //               fontSize: 14,
+              //               color: const Color(0xff5B5561),
+              //               fontWeight: FontWeight.w500,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //       SizedBox(
+              //         width: width * 0.2,
+              //       ),
+              //       Row(
+              //         children: [
+              //           SvgPicture.asset(
+              //             AppImages.clock,
+              //             height: height * 0.02,
+              //             width: width * 0.02,
+              //           ),
+              //           const SizedBox(
+              //             width: 5,
+              //           ),
+              //           Text(
+              //             "10:00 AM",
+              //             style: GoogleFonts.inter(
+              //               fontSize: 14,
+              //               color: const Color(0xff5B5561),
+              //               fontWeight: FontWeight.w500,
+              //             ),
+              //           ),
+              //         ],
+              //       ),
+              //     ],
+              //   ),
+              // )
             ],
           ),
         ),
