@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
-import 'package:gdsc_bloc/Data/providers.dart';
+import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:gdsc_bloc/Util/Widgets/profile_padding.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
@@ -18,13 +18,13 @@ class ContactDeveloperPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Color(0xff666666)),
+        iconTheme: const IconThemeData(color: Color(0xff666666), size: 20),
         title: Text(
           "Developer Contact",
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+                color: const Color(0xff666666),
           ),
         ),
       ),
@@ -141,7 +141,10 @@ class ContactDeveloperPage extends StatelessWidget {
                                   ),
                                 ),
                                 trailing: IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Providers().contactDeveloper(
+                                      email: developer.email!);
+                                  },
                                   icon: const Icon(
                                     Icons.arrow_forward,
                                     color: Color(0xff666666),

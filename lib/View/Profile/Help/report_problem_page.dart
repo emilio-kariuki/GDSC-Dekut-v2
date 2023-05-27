@@ -94,13 +94,13 @@ class ReportProblemPage extends StatelessWidget {
       ),
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Color(0xff666666)),
+        iconTheme: const IconThemeData(color: Color(0xff666666), size: 20),
         title: Text(
           "Report a Problem",
           style: GoogleFonts.inter(
-            fontSize: 16,
+            fontSize: 17,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+                color: const Color(0xff666666),
           ),
         ),
       ),
@@ -114,17 +114,19 @@ class ReportProblemPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    "Please describe the problem you are facing in detail. This will help us to solve the problem faster.",
-                    textAlign: TextAlign.center,
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
+                  Center(
+                    child: Text(
+                      "Please describe the problem you are facing in detail. \nThis will help us to solve the problem faster.",
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
                   const SizedBox(
-                    height: 30,
+                    height: 20,
                   ),
                   InputField(
                     title: "Problem",

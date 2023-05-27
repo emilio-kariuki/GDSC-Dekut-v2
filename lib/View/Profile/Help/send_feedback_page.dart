@@ -17,13 +17,13 @@ class SendFeedbackPage extends StatelessWidget {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Color(0xff666666)),
+        iconTheme: const IconThemeData(color: Color(0xff666666), size: 20),
         title: Text(
           "Feedback",
           style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w500,
-            color: Colors.black,
+            color: const Color(0xff666666),
           ),
         ),
       ),
