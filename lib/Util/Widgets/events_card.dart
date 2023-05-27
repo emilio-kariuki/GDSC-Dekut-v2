@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
@@ -12,7 +13,8 @@ class EventCard extends StatelessWidget {
     required this.about,
     required this.date,
     required this.time,
-    required this.image, required this.function,
+    required this.image,
+    required this.function,
   });
 
   final String about;
@@ -38,7 +40,7 @@ class EventCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             side: const BorderSide(
               color: Color.fromARGB(255, 106, 81, 81),
-              width: 0.25,
+              width: 0.2,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
@@ -52,22 +54,43 @@ class EventCard extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Container(
+                CachedNetworkImage(
+                  height: 50,
+                  width: 50,
+                  placeholder: (context, url) {
+                    return Container(
+                      height: 50,
+                      width: 50,
                       decoration: BoxDecoration(
+                          color: const Color.fromARGB(255, 243, 243, 243),
+                          // border: Border.all(width: 0.4, color: Color(0xff666666)),
+                          borderRadius: BorderRadius.circular(10)),
+                    );
+                  },
+                  errorWidget: ((context, url, error) {
+                    return const Icon(
+                      Icons.error,
+                      size: 20,
+                      color: Colors.red,
+                    );
+                  }),
+                  imageUrl: image,
+                  fit: BoxFit.fitHeight,
+                  imageBuilder: (context, imageProvider) {
+                    return AnimatedContainer(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
                         border: Border.all(
-                          color: const Color(0xFF686868),
-                          width: 0.5,
+                            width: 0.4, color: const Color(0xff666666)),
+                        image: DecorationImage(
+                          image: imageProvider,
+                          fit: BoxFit.cover,
                         ),
                       ),
-                      child: Image.network(
-                        AppImages.eventImage,
-                        height: 50,
-                        width: 50,
-                        fit: BoxFit.cover,
-                      ),
-                    )),
+                      duration: const Duration(milliseconds: 500),
+                    );
+                  },
+                ),
               ],
             ),
             SizedBox(
@@ -102,7 +125,6 @@ class EventCard extends StatelessWidget {
                       fontWeight: FontWeight.w500,
                     ),
                   ),
-                   
                   const SizedBox(
                     height: 10,
                   ),
@@ -110,7 +132,6 @@ class EventCard extends StatelessWidget {
                     height: 30,
                     width: width * 0.7,
                     child: Row(
-                      
                       children: [
                         Row(
                           children: [
