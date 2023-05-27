@@ -5,6 +5,7 @@ import 'package:gdsc_bloc/View/Authentication/login_page.dart';
 import 'package:gdsc_bloc/View/Authentication/register_page.dart';
 import 'package:gdsc_bloc/View/Authentication/reset_password_page.dart';
 import 'package:gdsc_bloc/View/Home/profile_page.dart';
+import 'package:gdsc_bloc/View/Pages/annoucement_page.dart';
 import 'package:gdsc_bloc/View/Pages/events_page.dart';
 import 'package:gdsc_bloc/View/Pages/tech_groups_page.dart';
 import 'package:gdsc_bloc/View/Pages/twitter_page.dart';
@@ -52,10 +53,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => SendFeedbackPage());
       case '/report_problem':
         return MaterialPageRoute(builder: (_) => ReportProblemPage());
-        case '/contact_developer':
+      case '/contact_developer':
         return MaterialPageRoute(builder: (_) => const ContactDeveloperPage());
-         case '/about_app':
+      case '/about_app':
         return MaterialPageRoute(builder: (_) => const AboutPage());
+      case '/announcement_page':
+        return MaterialPageRoute(builder: (_) => AnnouncementPage());
       default:
         return _errorRoute();
     }
