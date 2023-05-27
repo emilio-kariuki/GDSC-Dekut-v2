@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,20 +30,42 @@ class TwitterCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: const EdgeInsets.only(right: 10),
+          CachedNetworkImage(
             height: height * 0.12,
             width: width * 0.33,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 0.3, color: Colors.black54),
-              image: DecorationImage(
-                image: NetworkImage(
-                  image,
+            placeholder: (context, url) {
+              return Container(
+                height: height * 0.12,
+                width: width * 0.33,
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 243, 243, 243),
+                    borderRadius: BorderRadius.circular(10)),
+              );
+            },
+            errorWidget: ((context, url, error) {
+              return const Icon(
+                Icons.error,
+                size: 20,
+                color: Colors.red,
+              );
+            }),
+            imageUrl: image,
+            fit: BoxFit.fitHeight,
+            imageBuilder: (context, imageProvider) {
+              return AnimatedContainer(
+                margin: const EdgeInsets.only(right: 4),
+                decoration: BoxDecoration(
+                 borderRadius: BorderRadius.circular(10),
+                  border:
+                      Border.all(width: 0.4, color: const Color(0xff666666)),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-                fit: BoxFit.cover,
-              ),
-            ),
+                duration: const Duration(milliseconds: 500),
+              );
+            },
           ),
           const SizedBox(
             height: 8,
