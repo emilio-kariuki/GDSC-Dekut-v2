@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
+import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/Widgets/group_container.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
@@ -177,31 +178,44 @@ class TechGroupsPage extends StatelessWidget {
                                         )),
                                       )
                                     : Padding(
-                                      padding: const EdgeInsets.only(top: 10),
-                                      child: GridView.builder(
+                                        padding: const EdgeInsets.only(top: 10),
+                                        child: GridView.builder(
                                           scrollDirection: Axis.vertical,
                                           gridDelegate:
                                               const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 3,
-                                             childAspectRatio: 0.78
+                                            childAspectRatio: 0.78,
+                                            crossAxisSpacing: 8,
+                                            mainAxisSpacing: 8,
                                           ),
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: state.groups.length,
                                           itemBuilder: (context, index) {
-                                            return GroupContainer(
-                                              height: height,
-                                              width: width,
-                                              image:
-                                                  state.groups[index].imageUrl ??
-                                                      "",
-                                              title:
-                                                  state.groups[index].title ?? "",
+                                            return Semantics(
+                                              button: true,
+                                              child: InkWell(
+                                                onTap: () async {
+                                                  await Providers().openLink(
+                                                      link: state
+                                                          .groups[index].link!);
+                                                },
+                                                child: GroupContainer(
+                                                  height: height,
+                                                  width: width,
+                                                  image: state.groups[index]
+                                                          .imageUrl ??
+                                                      AppImages.eventImage,
+                                                  title: state.groups[index]
+                                                          .title ??
+                                                      "Group Name",
+                                                ),
+                                              ),
                                             );
                                           },
                                         ),
-                                    ),
+                                      ),
                               ],
                             );
                           } else {
@@ -233,26 +247,35 @@ class TechGroupsPage extends StatelessWidget {
                                     return Padding(
                                       padding: const EdgeInsets.only(top: 10),
                                       child: GridView.builder(
-                                        
                                         scrollDirection: Axis.vertical,
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 3,
-                                          childAspectRatio: 0.78
-                                        ),
+                                                crossAxisCount: 3,
+                                                childAspectRatio: 0.78),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
                                         itemCount: state.groups.length,
                                         itemBuilder: (context, index) {
-                                          return GroupContainer(
-                                            height: height,
-                                            width: width,
-                                            image:
-                                                state.groups[index].imageUrl ??
-                                                    "",
-                                            title:
-                                                state.groups[index].title ?? "",
+                                          return Semantics(
+                                            button: true,
+                                            child: InkWell(
+                                              onTap: () async {
+                                                await Providers().openLink(
+                                                    link: state
+                                                        .groups[index].link!);
+                                              },
+                                              child: GroupContainer(
+                                                height: height,
+                                                width: width,
+                                                image: state.groups[index]
+                                                        .imageUrl ??
+                                                    AppImages.eventImage,
+                                                title:
+                                                    state.groups[index].title ??
+                                                        "Group Name",
+                                              ),
+                                            ),
                                           );
                                         },
                                       ),
