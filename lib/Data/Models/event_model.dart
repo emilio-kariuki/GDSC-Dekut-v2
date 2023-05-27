@@ -11,18 +11,20 @@ Event eventFromJson(String str) => Event.fromJson(json.decode(str));
 String eventToJson(Event data) => json.encode(data.toJson());
 
 class Event {
-  String? title;
-  String? venue;
+  final String?id;
+  String? title;//
+  String? venue;//
   String? time;
-  String? organizers;
-  String? link;
+  String? organizers;//
+  String? link;//
   String? imageUrl;
-  String? description;
-  Timestamp startTime;
-  Timestamp endTime;
-  String? date;
+  String? description;//
+  String startTime;
+  String endTime;
+  Timestamp? date;
 
   Event({
+    this.id,
     this.title,
     this.venue,
     this.time,
@@ -36,6 +38,7 @@ class Event {
   });
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
+        id: json["id"],
         title: json["title"],
         venue: json["venue"],
         time: json["time"],
@@ -49,6 +52,7 @@ class Event {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "title": title,
         "venue": venue,
         "time": time,
