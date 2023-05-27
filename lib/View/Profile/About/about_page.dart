@@ -7,8 +7,18 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('About App'),
+        iconTheme: const IconThemeData(color: Color(0xff666666), size: 20),
+        backgroundColor: Colors.white,
+        title: Text(
+          "About",
+          style: GoogleFonts.inter(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: const Color(0xff666666),
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
