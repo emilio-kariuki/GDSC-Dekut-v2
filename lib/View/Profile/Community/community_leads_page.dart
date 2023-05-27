@@ -19,7 +19,7 @@ class CommunityLeads extends StatelessWidget {
       child: Builder(builder: (context) {
         return Scaffold(
           appBar: AppBar(
-            iconTheme: const IconThemeData(color: Color(0xff666666)),
+            iconTheme: const IconThemeData(color: Color(0xff666666), size: 20),
             title: Text(
               "Community leads",
               style: GoogleFonts.inter(
@@ -49,7 +49,8 @@ class CommunityLeads extends StatelessWidget {
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Lottie.asset(AppImages.oops, height: height * 0.2),
+                              Lottie.asset(AppImages.oops,
+                                  height: height * 0.2),
                               Text(
                                 "Leads not found",
                                 style: GoogleFonts.inter(
