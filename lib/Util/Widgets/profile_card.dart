@@ -5,7 +5,8 @@ class ProfileCard extends StatelessWidget {
   const ProfileCard({
     super.key,
     required this.title,
-    required this.function, required this.showTrailing,
+    required this.function,
+    required this.showTrailing,
   });
   final String title;
   final Function() function;
@@ -17,7 +18,7 @@ class ProfileCard extends StatelessWidget {
       onPressed: function,
       style: ElevatedButton.styleFrom(
         shadowColor: Colors.white,
-        foregroundColor: Colors.grey,
+        foregroundColor: Colors.grey[200],
         padding: const EdgeInsets.symmetric(horizontal: 8),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
