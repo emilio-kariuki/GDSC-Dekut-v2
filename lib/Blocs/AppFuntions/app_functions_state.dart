@@ -138,3 +138,24 @@ class ReportProblemSendingFailed extends AppFunctionsState {
   @override
   List<Object> get props => [message];
 }
+
+class TwitterSpaceLoading extends AppFunctionsState {}
+
+class TwitterSpaceSuccess extends AppFunctionsState {
+  final List<TwitterModel> spaces;
+
+  const TwitterSpaceSuccess({required this.spaces});
+
+  @override
+  List<Object> get props => [spaces];
+}
+
+class TwitterSpaceFailure extends AppFunctionsState {
+  final String message;
+
+  const TwitterSpaceFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+

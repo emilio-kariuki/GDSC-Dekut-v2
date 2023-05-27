@@ -3,7 +3,8 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gdsc_bloc/Data/Models/leads_model.dart';
-import 'package:gdsc_bloc/Data/providers.dart';
+import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
+import 'package:gdsc_bloc/Data/Repository/providers.dart';
 part 'app_functions_state.dart';
 
 class AppFunctionsCubit extends Cubit<AppFunctionsState> {
@@ -139,4 +140,16 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
       emit(ReportProblemSendingFailed(message: e.toString()));
     }
   }
+
+  void getTwitterSpaces() async {
+    try {
+      emit(TwitterSpaceLoading());
+      final twitterSpaces = await Providers().getSpaces();
+      emit(TwitterSpaceSuccess(spaces: twitterSpaces));
+    } catch (e) {
+      emit(TwitterSpaceFailure(message: e.toString()));
+    }
+  }
+
+ 
 }
