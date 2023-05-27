@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/AuthenticationBloc/authentication_bloc.dart';
+import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
 import 'package:gdsc_bloc/Util/Widgets/no_internet_page.dart';
 import 'package:gdsc_bloc/Util/route_generator.dart';
@@ -20,7 +21,6 @@ void main() async {
     DeviceOrientation.portraitDown,
   ]);
 
-
   runApp(const MyApp());
 }
 
@@ -36,14 +36,15 @@ class MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-         BlocProvider(
+        BlocProvider(
           create: (context) => NetworkBloc()..add(NetworkObserve()),
-        
         ),
         BlocProvider(
           create: (context) => AuthenticationBloc()..add(AppStarted()),
         ),
-       
+        BlocProvider(
+          create: (context) => EventBloc(),
+        ),
       ],
       child: MaterialApp(
         onGenerateRoute: RouteGenerator.generateRoute,
@@ -58,7 +59,7 @@ class MyAppState extends State<MyApp> {
             } else if (state is NetworkSuccess) {
               return BlocBuilder<AuthenticationBloc, AuthenticationState>(
                 builder: (context, state) {
-                   if (state is AuthenticationAuthenticated) {
+                  if (state is AuthenticationAuthenticated) {
                     return const Home();
                   } else if (state is AuthenticationUnauthenticated) {
                     return LoginPage();
