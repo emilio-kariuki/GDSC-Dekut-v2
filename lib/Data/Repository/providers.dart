@@ -107,6 +107,14 @@ class Providers {
     return Repository().deleteResource(title: title);
   }
 
+  Future<List<Resource>> searchCategoryResources(
+      {required String query, required String category}) async {
+    final response = await Repository()
+        .searchCategoryResources(query: query, category: category);
+
+    return response;
+  }
+
   Future<List<Event>> searchEvent({required String query}) async {
     final response = await Repository().searchEvent(query: query);
     return response;
@@ -238,6 +246,22 @@ class Providers {
 
   Future<bool> openLink({required String link}) async {
     final response = await Repository().openLink(link: link);
+    return response;
+  }
+
+  Future<bool> createResource({
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    final response = Repository().createResource(
+        title: title,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+        category: category);
     return response;
   }
 }

@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, avoid_print
 
 import 'dart:convert';
 import 'dart:io';
@@ -21,6 +21,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
+import "package:uuid/uuid.dart" as uuid;
 
 class Repository {
   Future<bool> registerUser(
@@ -91,7 +92,7 @@ class Repository {
     final auth = FirebaseAuth.instance;
     try {
       await auth.sendPasswordResetEmail(email: email);
-      debugPrint("Reset Password email sent Succesfullly");
+      debugPrint("Reset Password email sent Successfully");
       return true;
     } on FirebaseException catch (e) {
       debugPrint(e.toString());
@@ -332,6 +333,29 @@ class Repository {
       final resources = await firebaseFirestore
           .collection("resource")
           .where("isApproved", isEqualTo: true)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Resource.fromJson(e.data())).toList());
+
+      return resources
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Resource>> searchCategoryResources(
+      {required String query, required String category}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final resources = await firebaseFirestore
+          .collection("resource")
+          .where("isApproved", isEqualTo: true)
+          .where("category", isEqualTo: category)
           .get()
           .then((value) =>
               value.docs.map((e) => Resource.fromJson(e.data())).toList());
@@ -749,6 +773,42 @@ class Repository {
               .toList());
 
       yield* announcement;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createResource({
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final id = const uuid.Uuid().v1(options: {
+        'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+        'clockSeq': 0x1234,
+        'mSecs': DateTime.now().millisecondsSinceEpoch,
+        'nSecs': 5678
+      }); //
+
+      final userId = await FirebaseAuth.instance.currentUser!.uid;
+
+      await firebaseFirestore.collection("resource").doc(id).set({
+        "id": id,
+        "title": title,
+        "link": link,
+        "imageUrl": imageUrl,
+        "description": description,
+        "category": category,
+        "isApproved": false,
+        "userId": userId,
+      }, SetOptions(merge: true));
+
+      return true;
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
