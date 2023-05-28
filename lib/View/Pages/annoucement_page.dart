@@ -32,64 +32,66 @@ class AnnouncementPage extends StatelessWidget {
               ),
             ),
           ),
-          body: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: RefreshIndicator(
-                onRefresh: () {
-                  return Future.delayed(
-                    const Duration(seconds: 1),
-                    () {
-                      BlocProvider.of<AnnouncementCubit>(context)
-                          .getAnnoucements();
-                    },
-                  );
-                },
-                child: BlocListener<AnnouncementCubit, AnnouncementState>(
-                  listener: (context, state) {
-                    if (state is AnnouncementFailure) {
-                      Timer(
-                        const Duration(milliseconds: 300),
-                        () => ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            behavior: SnackBarBehavior.floating,
-                            backgroundColor: const Color(0xffEB5757),
-                            content: Text(state.message),
-                          ),
-                        ),
-                      );
-                    }
+                 onRefresh: () {
+                    return Future.delayed(
+                      const Duration(seconds: 1),
+                      () {
+                        BlocProvider.of<AnnouncementCubit>(context)
+                            .getAnnoucements();
+                      },
+                    );
                   },
-                  child: BlocBuilder<AnnouncementCubit, AnnouncementState>(
-                    builder: (context, state) {
-                      if (state is AnnouncementLoading) {
-                        return SizedBox(
-                            height: height * 0.65,
-                            child: const Center(child: LoadingCircle()));
-                      } else if (state is AnnouncementSuccess) {
-                        return Padding(
-                          padding: const EdgeInsets.only(top: 10),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            scrollDirection: Axis.vertical,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: state.announcements.length,
-                            itemBuilder: (context, index) {
-                              return AnnouncementCard(
-                                height: height,
-                                width: width,
-                                title: state.announcements[index].title ?? "",
-                                name: state.announcements[index].name ?? "",
-                                position:
-                                    state.announcements[index].position ?? "",
-                              );
-                            },
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: BlocListener<AnnouncementCubit, AnnouncementState>(
+                    listener: (context, state) {
+                      if (state is AnnouncementFailure) {
+                        Timer(
+                          const Duration(milliseconds: 300),
+                          () => ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              behavior: SnackBarBehavior.floating,
+                              backgroundColor: const Color(0xffEB5757),
+                              content: Text(state.message),
+                            ),
                           ),
                         );
-                      } else {
-                        return const SizedBox.shrink();
                       }
                     },
+                    child: BlocBuilder<AnnouncementCubit, AnnouncementState>(
+                      builder: (context, state) {
+                        if (state is AnnouncementLoading) {
+                          return SizedBox(
+                              height: height * 0.65,
+                              child: const Center(child: LoadingCircle()));
+                        } else if (state is AnnouncementSuccess) {
+                          return Padding(
+                            padding: const EdgeInsets.only(top: 10),
+                            child: ListView.builder(
+                              shrinkWrap: true,
+                              scrollDirection: Axis.vertical,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: state.announcements.length,
+                              itemBuilder: (context, index) {
+                                return AnnouncementCard(
+                                  height: height,
+                                  width: width,
+                                  title: state.announcements[index].title ?? "",
+                                  name: state.announcements[index].name ?? "",
+                                  position:
+                                      state.announcements[index].position ?? "",
+                                );
+                              },
+                            ),
+                          );
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    ),
                   ),
                 ),
               ),
