@@ -157,11 +157,15 @@ class _ProfilePageState extends State<ProfilePage> {
                               showTrailing: true,
                             ),
                             const ProfilePadding(),
+
                             ProfileCard(
-                              title: "Notifications",
-                              function: () {},
+                              title: "Resources",
+                              function: () {
+                                Navigator.pushNamed(context, '/user_resources');
+                              },
                               showTrailing: true,
                             ),
+                            
                           ],
                         ),
                       ),
@@ -187,11 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               showTrailing: true,
                             ),
                             const ProfilePadding(),
-                            ProfileCard(
-                              title: "Resources",
-                              function: () {
-                                Navigator.pushNamed(context, '/user_resources');
-                              },
+                           ProfileCard(
+                              title: "Admin",
+                              function: () {},
                               showTrailing: true,
                             ),
                           ],
