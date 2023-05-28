@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,14 +9,12 @@ class ResourceCard extends StatelessWidget {
     required this.height,
     required this.image,
     required this.title,
-
   });
 
-  final double width;
   final double height;
   final String image;
   final String title;
-
+  final double width;
 
   @override
   Widget build(BuildContext context) {
@@ -25,26 +24,57 @@ class ResourceCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            margin: const EdgeInsets.only(right: 10),
-            height: height * 0.12,
+          CachedNetworkImage(
+            height: height * 0.13,
             width: width * 0.33,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(width: 0.3, color: Colors.black54),
-              image: DecorationImage(
-                image: NetworkImage(
-                  image,
+            placeholder: (context, url) {
+              return Container(
+                height: height * 0.1,
+                width: width * 0.33,
+                decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 243, 243, 243),
+                    borderRadius: BorderRadius.circular(10)),
+              );
+            },
+            errorWidget: ((context, url, error) {
+              return AnimatedContainer(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  border:
+                      Border.all(width: 0.4, color: const Color(0xff666666)),
                 ),
-                fit: BoxFit.cover,
-              ),
-            ),
+                duration: const Duration(milliseconds: 500),
+                child: const Icon(
+                  Icons.error,
+                  size: 20,
+                  color: Colors.red,
+                ),
+              );
+            }),
+            imageUrl: image,
+            fit: BoxFit.cover,
+            imageBuilder: (context, imageProvider) {
+              return AnimatedContainer(
+                decoration: BoxDecoration(
+                  // shape: BoxShape.circle,
+                  borderRadius: BorderRadius.circular(10),
+                  border:
+                      Border.all(width: 0.4, color: const Color(0xff666666)),
+                  image: DecorationImage(
+                    image: imageProvider,
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                duration: const Duration(milliseconds: 500),
+              );
+            },
           ),
           const SizedBox(
             height: 8,
           ),
           Expanded(
             child: Scaffold(
+              backgroundColor: Colors.white,
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
