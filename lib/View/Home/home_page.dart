@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -220,58 +220,47 @@ class EventPage extends StatelessWidget {
                                               const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
                                           itemCount: 2,
-                                           itemBuilder: (context, index) {
-                                          final Timestamp startTime =
-                                              state.events[index].date!;
-                                          
-                                          final DateTime startDateTime =
-                                              startTime.toDate();
-                                          
+                                          itemBuilder: (context, index) {
+                                            final Timestamp timestamp =
+                                                state.events[index].date!;
 
-                                          final String startTimeString =
-                                              DateFormat.jm()
-                                                  .format(startDateTime);
-                                          
+                                            final DateTime dateTime =
+                                                timestamp.toDate();
 
-                                          final Timestamp timestamp =
-                                              state.events[index].date!;
+                                            // final String dateString =
+                                            //     DateFormat.yMMMMd().format(dateTime);
 
-                                          final DateTime dateTime =
-                                              timestamp.toDate();
-
-                                          // final String dateString =
-                                          //     DateFormat.yMMMMd().format(dateTime);
-
-                                          final String dateString =
-                                              DateFormat.MMMEd()
-                                                  .format(dateTime);
-                                          return EventCard(
-                                            width: width,
-                                            height: height,
-                                            title:
-                                                state.events[index].title ?? "",
-                                            about: state.events[index]
-                                                    .description ??
-                                                "",
-                                            date: dateString,
-                                            time:
-                                                "${state.events[index].startTime} - ${state.events[index].endTime}",
-                                            image:
-                                                state.events[index].imageUrl ??
-                                                    AppImages.eventImage,
-                                            function: () async {
-                                              // await Providers()
-                                              //     .addEventToCalendar(
-                                              //   summary:
-                                              //       state.events[index].title!,
-                                              //   start: state
-                                              //       .events[index].startTime,
-                                              //   end:
-                                              //       state.events[index].endTime,
-                                              // );
-                                            },
-                                          );
-                                        },
+                                            final String dateString =
+                                                DateFormat.MMMEd()
+                                                    .format(dateTime);
+                                            return EventCard(
+                                              width: width,
+                                              height: height,
+                                              title:
+                                                  state.events[index].title ??
+                                                      "",
+                                              about: state.events[index]
+                                                      .description ??
+                                                  "",
+                                              date: dateString,
+                                              time:
+                                                  "${state.events[index].startTime} - ${state.events[index].endTime}",
+                                              image: state
+                                                      .events[index].imageUrl ??
+                                                  AppImages.eventImage,
+                                              function: () async {
+                                                // await Providers()
+                                                //     .addEventToCalendar(
+                                                //   summary:
+                                                //       state.events[index].title!,
+                                                //   start: state
+                                                //       .events[index].startTime,
+                                                //   end:
+                                                //       state.events[index].endTime,
+                                                // );
+                                              },
+                                            );
+                                          },
                                         ),
                                 ],
                               );
@@ -461,14 +450,17 @@ class EventPage extends StatelessWidget {
                                               link:
                                                   snapshot.data![index].link!);
                                         },
-                                        child: GroupContainer(
-                                          height: height,
-                                          width: width,
-                                          image:
-                                              snapshot.data![index].imageUrl ??
-                                                  AppImages.eventImage,
-                                          title: snapshot.data![index].title ??
-                                              "Group Name",
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(right: 6),
+                                          child: GroupContainer(
+                                            height: height,
+                                            width: width,
+                                            image:
+                                                snapshot.data![index].imageUrl ??
+                                                    AppImages.eventImage,
+                                            title: snapshot.data![index].title ??
+                                                "Group Name",
+                                          ),
                                         ),
                                       ),
                                     );
@@ -489,37 +481,7 @@ class EventPage extends StatelessWidget {
   }
 }
 
-class SampleExample extends StatelessWidget {
-  const SampleExample({
-    super.key,
-    required this.height,
-    required this.width,
-  });
 
-  final double height;
-  final double width;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: height * 0.17,
-      width: width,
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: const Color.fromARGB(255, 106, 81, 81),
-          width: 0.1,
-        ),
-        borderRadius: BorderRadius.circular(5),
-        image: const DecorationImage(
-          image: CachedNetworkImageProvider(
-            AppImages.eventImage,
-          ),
-          fit: BoxFit.cover,
-        ),
-      ),
-    );
-  }
-}
 
 // body: StreamBuilder<List<Event>>(
 //   stream: Repository().getEvents(),
