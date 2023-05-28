@@ -9,6 +9,7 @@ Resource resourceFromJson(String str) => Resource.fromJson(json.decode(str));
 String resourceToJson(Resource data) => json.encode(data.toJson());
 
 class Resource {
+  String? id;
   String? title;
   String? link;
   String? description;
@@ -18,7 +19,9 @@ class Resource {
   String? userId;
 
   Resource(
-      {this.title,
+      {
+      this.id,
+        this.title,
       this.link,
       this.description,
       this.imageUrl,
@@ -27,6 +30,7 @@ class Resource {
       this.userId});
 
   factory Resource.fromJson(Map<String, dynamic> json) => Resource(
+        id: json["id"],
         title: json["title"],
         link: json["link"],
         description: json["description"],
@@ -37,6 +41,7 @@ class Resource {
       );
 
   Map<String, dynamic> toJson() => {
+        "id": id,
         "title": title,
         "link": link,
         "description": description,
