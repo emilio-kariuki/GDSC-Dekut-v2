@@ -36,7 +36,7 @@ class TechGroupsPage extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.all(10.0),
+              padding: const EdgeInsets.all(8),
               child: RefreshIndicator(
                 onRefresh: () {
                   return Future.delayed(
@@ -100,6 +100,9 @@ class TechGroupsPage extends StatelessWidget {
                         ],
                       ),
                     ),
+                    const SizedBox(
+                              height: 10,
+                            ),
 
                     BlocListener<EventBloc, EventState>(
                       listener: (context, state) {
@@ -184,9 +187,9 @@ class TechGroupsPage extends StatelessWidget {
                                           gridDelegate:
                                               const SliverGridDelegateWithFixedCrossAxisCount(
                                             crossAxisCount: 3,
-                                            childAspectRatio: 0.78,
                                             crossAxisSpacing: 8,
-                                            mainAxisSpacing: 8,
+                                            childAspectRatio: 0.75,
+                                            mainAxisSpacing: 5
                                           ),
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -251,7 +254,10 @@ class TechGroupsPage extends StatelessWidget {
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 3,
-                                                childAspectRatio: 0.78),
+                                                childAspectRatio: 0.75,
+                                                crossAxisSpacing: 8,
+                                                 mainAxisSpacing: 5
+                                                ),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
