@@ -207,6 +207,49 @@ class SearchUserResourceFailure extends EventState {
 }
 
 
+
+class SearchResourceLoading extends EventState {}
+
+class SearchResourceSuccess extends EventState {
+  final List<Resource> resources;
+
+  const SearchResourceSuccess({required this.resources});
+
+  @override
+  List<Object> get props => [resources];
+}
+
+class SearchResourceFailure extends EventState {
+  final String message;
+
+  const SearchResourceFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class SearchCategoryResourceLoading extends EventState {}
+
+class SearchCategoryResourceSuccess extends EventState {
+  final List<Resource> resources;
+
+  const SearchCategoryResourceSuccess({required this.resources});
+
+  @override
+  List<Object> get props => [resources];
+}
+
+class SearchCategoryResourceFailure extends EventState {
+  final String message;
+
+  const SearchCategoryResourceFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+
+
 // Developers contacts
 
 class DeveloperLoading extends EventState {}

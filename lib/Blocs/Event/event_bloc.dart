@@ -13,6 +13,10 @@ part 'event_state.dart';
 
 class EventBloc extends Bloc<EventEvent, EventState> {
   EventBloc() : super(EventInitial()) {
+    on<Initial>((event, emit) async {
+      emit(EventInitial());
+    });
+
     on<GetEvents>((event, emit) async {
       emit(EventLoading());
       try {
@@ -103,7 +107,32 @@ class EventBloc extends Bloc<EventEvent, EventState> {
             .searchUserResources(query: event.query, userId: userId);
         emit(SearchUserResourceSuccess(resources: resource));
       } catch (e) {
-        emit(const SearchEventFailure(message: "Failed to load resources"));
+        emit(const SearchUserResourceFailure(
+            message: "Failed to load resources"));
+      }
+    });
+
+    on<SearchResource>((event, emit) async {
+      emit(SearchResourceLoading());
+      try {
+        final resource = await Providers().searchResources(
+          query: event.query,
+        );
+        emit(SearchResourceSuccess(resources: resource));
+      } catch (e) {
+        emit(const SearchResourceFailure(message: "Failed to load resources"));
+      }
+    });
+
+    on<SearchCategoryResource>((event, emit) async {
+      emit(SearchCategoryResourceLoading());
+      try {
+        final resource = await Providers().searchCategoryResources(
+            query: event.query, category: event.category);
+        emit(SearchCategoryResourceSuccess(resources: resource));
+      } catch (e) {
+        emit(const SearchCategoryResourceFailure(
+            message: "Failed to load category resources"));
       }
     });
 
