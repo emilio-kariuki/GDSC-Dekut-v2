@@ -35,6 +35,7 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
       final pickedFile = await Providers().getImage();
       final imageUrl = await Providers().uploadImage(image: pickedFile);
       emit(ImageUploading());
+      Future.delayed(const Duration(milliseconds: 1500));
       emit(ImagePicked(image: File(pickedFile.path), imageUrl: imageUrl));
     } catch (e) {
       emit(ImagePickingFailed(message: e.toString()));
@@ -151,5 +152,33 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
     }
   }
 
- 
+  void dropDownClicked({required String value}) {
+    emit(DropDownChanged(value: value));
+  }
+
+  void createResource({
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    try {
+      final isCreated = await Providers().createResource(
+        title: title,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+        category: category,
+      );
+
+      if (isCreated) {
+        emit(ResourceSent());
+      } else {
+        emit(const ResourceSendingFailed(message: 'Failed to send resource'));
+      }
+    } catch (e) {
+      emit(ResourceSendingFailed(message: e.toString()));
+    }
+  }
 }

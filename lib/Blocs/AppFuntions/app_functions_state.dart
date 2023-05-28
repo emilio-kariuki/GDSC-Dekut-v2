@@ -159,3 +159,24 @@ class TwitterSpaceFailure extends AppFunctionsState {
   List<Object> get props => [message];
 }
 
+class DropDownChanged extends AppFunctionsState {
+  final String value;
+
+  const DropDownChanged({required this.value});
+
+  @override 
+  List<Object> get props => [value];
+}
+
+class ResourceSending extends AppFunctionsState {}
+
+class ResourceSent extends AppFunctionsState {}
+
+class ResourceSendingFailed extends AppFunctionsState {
+  final String message;
+
+  const ResourceSendingFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
