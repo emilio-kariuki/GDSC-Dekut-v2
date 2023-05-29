@@ -18,6 +18,9 @@ class AppImages {
   static const resources_black = "Assets/resources_black.svg";
   static const resources_white = "Assets/resources_white.svg";
   static const search = "Assets/search.svg";
+    static const location = "Assets/location.svg";
+    static const attach = "Assets/attach.svg";
+    static const background = "Assets/whatsapp.png";
   static const eventImage =
       "https://firebasestorage.googleapis.com/v0/b/apt-rite-346310.appspot.com/o/about04.png?alt=media&token=f80825e5-3be5-4e17-817b-cda37d213d29";
   static const oops = "Assets/oops.json";
