@@ -91,10 +91,13 @@ class ResourceCategory extends StatelessWidget {
                                       ),
                                     )
                                   : ResourceCard(
+                                    link: data.link!,
+                                    description: data.description!,
                                       width: width,
                                       height: height,
                                       image: data.imageUrl!,
                                       title: data.title!,
+                                      category: data.category!,
                                     ));
                         }),
               );
