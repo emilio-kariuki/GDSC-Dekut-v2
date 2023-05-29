@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gdsc_bloc/Util/Widgets/image_view.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
 import 'package:gdsc_bloc/View/Authentication/forgot_password_page.dart';
 import 'package:gdsc_bloc/View/Authentication/login_page.dart';
@@ -66,10 +67,22 @@ class RouteGenerator {
       case '/more_resource':
         if (resourceArgs is ResourceArguments) {
           return MaterialPageRoute(
-              builder: (_) => MoreResourcesPage(
-                    title: resourceArgs.title,
-                    category: resourceArgs.category,
-                  ));
+            builder: (_) => MoreResourcesPage(
+              title: resourceArgs.title,
+              category: resourceArgs.category,
+            ),
+          );
+        } else {
+          return _errorRoute();
+        }
+      case '/image_view':
+        if (resourceArgs is ImageArguments) {
+          return MaterialPageRoute(
+            builder: (_) => ImageView(
+              title: resourceArgs.title,
+              image: resourceArgs.image,
+            ),
+          );
         } else {
           return _errorRoute();
         }
@@ -116,4 +129,11 @@ class ResourceArguments {
   final String category;
 
   ResourceArguments({required this.title, required this.category});
+}
+
+class ImageArguments {
+  final String title;
+  final String image;
+
+  ImageArguments({required this.title, required this.image});
 }
