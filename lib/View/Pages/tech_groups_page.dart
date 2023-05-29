@@ -23,14 +23,17 @@ class TechGroupsPage extends StatelessWidget {
       child: Builder(builder: (context) {
         return Scaffold(
           backgroundColor: Colors.white,
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            title: Text(
-              "Tech Groups",
-              style: GoogleFonts.inter(
-                fontSize: 16,
-                fontWeight: FontWeight.w500,
-                color: Colors.black,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(50),
+            child: AppBar(
+              backgroundColor: Colors.white,
+              title: Text(
+                "Tech Groups",
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                ),
               ),
             ),
           ),
@@ -101,8 +104,8 @@ class TechGroupsPage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                              height: 10,
-                            ),
+                      height: 10,
+                    ),
 
                     BlocListener<EventBloc, EventState>(
                       listener: (context, state) {
@@ -186,11 +189,10 @@ class TechGroupsPage extends StatelessWidget {
                                           scrollDirection: Axis.vertical,
                                           gridDelegate:
                                               const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 3,
-                                            crossAxisSpacing: 8,
-                                            childAspectRatio: 0.75,
-                                            mainAxisSpacing: 5
-                                          ),
+                                                  crossAxisCount: 3,
+                                                  crossAxisSpacing: 8,
+                                                  childAspectRatio: 0.75,
+                                                  mainAxisSpacing: 5),
                                           physics:
                                               const NeverScrollableScrollPhysics(),
                                           shrinkWrap: true,
@@ -213,6 +215,8 @@ class TechGroupsPage extends StatelessWidget {
                                                   title: state.groups[index]
                                                           .title ??
                                                       "Group Name",
+                                                  link:
+                                                      state.groups[index].link!,
                                                 ),
                                               ),
                                             );
@@ -256,8 +260,7 @@ class TechGroupsPage extends StatelessWidget {
                                                 crossAxisCount: 3,
                                                 childAspectRatio: 0.75,
                                                 crossAxisSpacing: 8,
-                                                 mainAxisSpacing: 5
-                                                ),
+                                                mainAxisSpacing: 5),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
                                         shrinkWrap: true,
@@ -280,6 +283,7 @@ class TechGroupsPage extends StatelessWidget {
                                                 title:
                                                     state.groups[index].title ??
                                                         "Group Name",
+                                                link: state.groups[index].link!,
                                               ),
                                             ),
                                           );
