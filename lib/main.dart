@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
+import 'package:gdsc_bloc/Blocs/bloc/theme_bloc.dart';
 import 'package:gdsc_bloc/Util/Widgets/no_internet_page.dart';
 import 'package:gdsc_bloc/Util/route_generator.dart';
 import 'package:gdsc_bloc/View/Authentication/login_page.dart';
@@ -45,10 +46,14 @@ class MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => EventBloc(),
         ),
+        
       ],
       child: MaterialApp(
         onGenerateRoute: RouteGenerator.generateRoute,
+        themeMode: ThemeMode.dark,
         theme: ThemeData(
+          primarySwatch: Colors.blue,
+          
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
