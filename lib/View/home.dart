@@ -65,7 +65,7 @@ class Home extends StatelessWidget {
         builder: (context, state) {
           return AnimatedBottomNavigationBar.builder(
             elevation: 0,
-            backgroundColor: Colors.white,
+            backgroundColor: state is TabChanged && state.index == 2 ? Colors.blueGrey[900] :  Colors.white,
             notchSmoothness: NotchSmoothness.softEdge,
             itemCount: items.length,
             activeIndex: state is TabChanged ? state.index : 0,
@@ -82,10 +82,15 @@ class Home extends StatelessWidget {
                     : index == 3
                         ? const EdgeInsets.all(20.0)
                         : const EdgeInsets.all(18.0),
-                child: SvgPicture.asset(
+                child: state is TabChanged && state.index == 2 ? SvgPicture.asset(
                   isActive ? icons['two'] : icons['one'],
                   height: MediaQuery.of(context).size.height * 0.03,
-                ),
+                  color:  Colors.white,
+                ): SvgPicture.asset(
+                  isActive ? icons['two'] : icons['one'],
+                  height: MediaQuery.of(context).size.height * 0.03,
+                  
+                )
               );
             },
           );
