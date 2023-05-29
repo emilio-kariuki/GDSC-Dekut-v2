@@ -164,7 +164,7 @@ class DropDownChanged extends AppFunctionsState {
 
   const DropDownChanged({required this.value});
 
-  @override 
+  @override
   List<Object> get props => [value];
 }
 
@@ -176,6 +176,30 @@ class ResourceSendingFailed extends AppFunctionsState {
   final String message;
 
   const ResourceSendingFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class Copied extends AppFunctionsState {}
+
+class CopyingFailed extends AppFunctionsState {
+  final String message;
+
+  const CopyingFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class Saved extends AppFunctionsState {}
+
+class Saving extends AppFunctionsState {}
+
+class SavingFailed extends AppFunctionsState {
+  final String message;
+
+  const SavingFailed({required this.message});
 
   @override
   List<Object> get props => [message];

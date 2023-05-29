@@ -181,4 +181,24 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
       emit(ResourceSendingFailed(message: e.toString()));
     }
   }
+
+  void copyToClipboard({required String text}) async {
+    try {
+      await Providers().copyToClipboard(text: text);
+      emit(Copied());
+    } catch (e) {
+      emit(CopyingFailed(message: e.toString()));
+    }
+  }
+
+  void downloadAndSaveImage(
+      {required String image, required String fileName}) async {
+    try {
+      emit(Saving());
+      await Providers().downloadAndSaveImage(url: image, fileName: fileName);
+      emit(Saved());
+    } catch (e) {
+      emit(SavingFailed(message: e.toString()));
+    }
+  }
 }
