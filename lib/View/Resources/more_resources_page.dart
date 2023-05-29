@@ -84,8 +84,9 @@ class MoreResourcesPage extends StatelessWidget {
                                 color: const Color(0xff000000),
                               ),
                               onFieldSubmitted: (value) {
-                                BlocProvider.of<EventBloc>(context)
-                                    .add(SearchCategoryResource(query: value, category: category));
+                                BlocProvider.of<EventBloc>(context).add(
+                                    SearchCategoryResource(
+                                        query: value, category: category));
                               },
                               decoration: InputDecoration(
                                 hintText: "Search for resource eg. Flutter",
@@ -149,7 +150,8 @@ class MoreResourcesPage extends StatelessWidget {
                                         ),
                                         onPressed: () {
                                           BlocProvider.of<EventBloc>(context)
-                                              .add(GetResource(category: category));
+                                              .add(GetResource(
+                                                  category: category));
                                           searchController.clear();
                                         },
                                         icon: const Icon(
@@ -193,6 +195,13 @@ class MoreResourcesPage extends StatelessWidget {
                                         itemCount: state.resources.length,
                                         itemBuilder: (context, index) {
                                           return ResourceCard(
+                                              link:
+                                                  state.resources[index].link!,
+                                              description: state
+                                                  .resources[index]
+                                                  .description!,
+                                              category: state
+                                                  .resources[index].category!,
                                               width: width,
                                               height: height,
                                               image: state
@@ -231,49 +240,60 @@ class MoreResourcesPage extends StatelessWidget {
                                   } else if (state is ResourceSuccess) {
                                     return Padding(
                                       padding: const EdgeInsets.only(top: 10),
-                                      child:
-                                      state.resources.isEmpty
-                                    ? SizedBox(
-                                        height: height * 0.7,
-                                        child: Center(
-                                            child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Lottie.asset(AppImages.oops,
-                                                height: height * 0.2),
-                                            Text(
-                                              "Resources not found",
-                                              style: GoogleFonts.inter(
-                                                fontWeight: FontWeight.w600,
-                                                fontSize: 15,
-                                                color: const Color(0xff666666),
-                                              ),
+                                      child: state.resources.isEmpty
+                                          ? SizedBox(
+                                              height: height * 0.7,
+                                              child: Center(
+                                                  child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
+                                                children: [
+                                                  Lottie.asset(AppImages.oops,
+                                                      height: height * 0.2),
+                                                  Text(
+                                                    "Resources not found",
+                                                    style: GoogleFonts.inter(
+                                                      fontWeight:
+                                                          FontWeight.w600,
+                                                      fontSize: 15,
+                                                      color: const Color(
+                                                          0xff666666),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )),
+                                            )
+                                          : GridView.builder(
+                                              scrollDirection: Axis.vertical,
+                                              gridDelegate:
+                                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                                      crossAxisCount: 3,
+                                                      childAspectRatio: 0.7,
+                                                      crossAxisSpacing: 8),
+                                              physics:
+                                                  const NeverScrollableScrollPhysics(),
+                                              shrinkWrap: true,
+                                              itemCount: state.resources.length,
+                                              itemBuilder: (context, index) {
+                                                return ResourceCard(
+                                                    link: state
+                                                        .resources[index].link!,
+                                                    description: state
+                                                        .resources[index]
+                                                        .description!,
+                                                    category: state
+                                                        .resources[index]
+                                                        .category!,
+                                                    width: width,
+                                                    height: height,
+                                                    image: state
+                                                        .resources[index]
+                                                        .imageUrl!,
+                                                    title: state
+                                                        .resources[index]
+                                                        .title!);
+                                              },
                                             ),
-                                          ],
-                                        )),
-                                      )
-                                    :  GridView.builder(
-                                        scrollDirection: Axis.vertical,
-                                        gridDelegate:
-                                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                                crossAxisCount: 3,
-                                                childAspectRatio: 0.7,
-                                                crossAxisSpacing: 8),
-                                        physics:
-                                            const NeverScrollableScrollPhysics(),
-                                        shrinkWrap: true,
-                                        itemCount: state.resources.length,
-                                        itemBuilder: (context, index) {
-                                          return ResourceCard(
-                                              width: width,
-                                              height: height,
-                                              image: state
-                                                  .resources[index].imageUrl!,
-                                              title: state
-                                                  .resources[index].title!);
-                                        },
-                                      ),
                                     );
                                   } else {
                                     return const SizedBox.shrink();
