@@ -824,14 +824,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.2.1"
-  remove:
-    dependency: "direct main"
-    description:
-      name: remove
-      sha256: b02576891df7ec6d526bc0117cb95119e24a2140ab557c1d499ef2af70d66528
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.10"
   rxdart:
     dependency: transitive
     description:
