@@ -335,6 +335,8 @@ class UserResources extends StatelessWidget {
                                                   title: state.resources[index]
                                                           .title ??
                                                       "",
+                                                  link: state
+                                                      .resources[index].link!,
                                                 ),
                                               ),
                                             );
@@ -376,6 +378,7 @@ class UserResources extends StatelessWidget {
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 3,
+                                                crossAxisSpacing: 8,
                                                 childAspectRatio: 0.78),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
@@ -401,6 +404,8 @@ class UserResources extends StatelessWidget {
                                                 title: state.resources[index]
                                                         .title ??
                                                     "",
+                                                link: state
+                                                    .resources[index].link!,
                                               ),
                                             ),
                                           );
