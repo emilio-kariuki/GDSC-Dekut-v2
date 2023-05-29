@@ -165,6 +165,13 @@ class ResourcesPage extends StatelessWidget {
                                           itemCount: state.resources.length,
                                           itemBuilder: (context, index) {
                                             return ResourceCard(
+                                                link: state
+                                                    .resources[index].link!,
+                                                category: state
+                                                    .resources[index].category!,
+                                                description: state
+                                                    .resources[index]
+                                                    .description!,
                                                 width: width,
                                                 height: height,
                                                 image: state
