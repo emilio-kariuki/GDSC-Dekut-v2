@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -228,6 +227,8 @@ class TwitterPage extends StatelessWidget {
                                             startTime: startTimeString,
                                             endTime: endTimeString,
                                             date: dateString,
+                                            link:
+                                                state.spaces[index].link ?? "",
                                           );
                                         },
                                       ),
@@ -311,6 +312,8 @@ class TwitterPage extends StatelessWidget {
                                             startTime: startTimeString,
                                             endTime: endTimeString,
                                             date: dateString,
+                                            link:
+                                                state.spaces[index].link ?? "",
                                           );
                                         },
                                       ),
