@@ -207,6 +207,13 @@ class EventsPage extends StatelessWidget {
                                                     .description ??
                                                 "",
                                             date: dateString,
+                                            organizers: state
+                                                    .events[index].organizers ??
+                                                "",
+                                            venue:
+                                                state.events[index].venue ?? "",
+                                            link:
+                                                state.events[index].link ?? "",
                                             time:
                                                 "${state.events[index].startTime} - ${state.events[index].endTime}",
                                             image:
@@ -284,11 +291,18 @@ class EventsPage extends StatelessWidget {
                                                     .description ??
                                                 "",
                                             date: dateString,
+                                            organizers: state
+                                                    .events[index].organizers ??
+                                                "",
+                                            venue:
+                                                state.events[index].venue ?? "",
                                             time:
                                                 "${state.events[index].startTime} - ${state.events[index].endTime}",
                                             image:
                                                 state.events[index].imageUrl ??
                                                     AppImages.eventImage,
+                                            link:
+                                                state.events[index].link ?? "",
                                             function: () async {
                                               // await Providers()
                                               //     .addEventToCalendar(
