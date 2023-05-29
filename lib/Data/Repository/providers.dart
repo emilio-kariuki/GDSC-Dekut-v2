@@ -264,4 +264,35 @@ class Providers {
         category: category);
     return response;
   }
+
+  Future<bool> copyToClipboard({required String text}) async {
+    final response = await Repository().copyToClipboard(text: text);
+    return response;
+  }
+
+  Future<bool> downloadAndSaveImage({required String url, required String fileName}) async {
+    final response = await Repository().downloadAndSaveImage(url: url, fileName: fileName);
+    return response;
+  }
+
+  Future share({required String message}) async {
+    final response = await Repository().share(message: message);
+    return response;
+  }
+
+  Future tweet({required String message}) async {
+    final response = await Repository().tweet(message: message);
+    return response;
+  }
+
+  Future sendMessage({
+    required String message,
+    required String image,
+  }) async {
+    final response = await Repository().sendMessage(
+      message: message,
+      image: image,
+    );
+    return response;
+  }
 }

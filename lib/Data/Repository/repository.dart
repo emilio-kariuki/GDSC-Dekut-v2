@@ -4,9 +4,12 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:gallery_saver/gallery_saver.dart';
 import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/developer_model.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
@@ -20,8 +23,10 @@ import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import "package:uuid/uuid.dart" as uuid;
+import 'package:share_plus/share_plus.dart';
 
 class Repository {
   Future<bool> registerUser(
@@ -223,6 +228,7 @@ class Repository {
 
   Future sendMessage({
     required String message,
+    required String image,
   }) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
@@ -232,6 +238,7 @@ class Repository {
         "name": await SharedPreferencesManager().getName(),
         "id": await SharedPreferencesManager().getId(),
         "time": DateTime.now().millisecondsSinceEpoch,
+        "image" : image,
         "timestamp": DateTime.now().toString(),
       });
     } catch (e) {
@@ -250,6 +257,7 @@ class Repository {
           .snapshots()
           .map((event) =>
               event.docs.map((e) => Message.fromJson(e.data())).toList());
+
 
       yield* messages;
     } catch (e) {
@@ -484,7 +492,6 @@ class Repository {
       final spaces = await firebaseFirestore.collection("twitter").get().then(
           (value) =>
               value.docs.map((e) => TwitterModel.fromJson(e.data())).toList());
-      print(spaces);
       return spaces;
     } catch (e) {
       debugPrint(e.toString());
@@ -809,6 +816,56 @@ class Repository {
       }, SetOptions(merge: true));
 
       return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> copyToClipboard({required String text}) async {
+    try {
+      await Clipboard.setData(ClipboardData(text: text));
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> downloadAndSaveImage(
+      {required String url, required String fileName}) async {
+    try {
+      final directory = await getTemporaryDirectory();
+      final path = directory.path;
+      await Dio().download(url, '$path/$url');
+      GallerySaver.saveImage('$path/$url', albumName: "GDSC");
+
+      return true;
+    } catch (e) {
+      print(e.toString());
+      return false;
+    }
+  }
+
+  Future share({required String message}) async {
+    try {
+      await Share.share(message);
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future tweet({required String message}) async {
+    try {
+      var tweetUrl =
+          'https://twitter.com/intent/tweet?text=${Uri.encodeComponent(message)}';
+      if (await canLaunch(tweetUrl)) {
+        await launch(tweetUrl);
+        return true;
+      }
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
