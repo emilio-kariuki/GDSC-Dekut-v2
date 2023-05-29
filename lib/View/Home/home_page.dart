@@ -239,6 +239,10 @@ class EventPage extends StatelessWidget {
                                               title:
                                                   state.events[index].title ??
                                                       "",
+                                                      organizers: state.events[index].organizers ?? "",
+                                                      venue:
+                                                  state.events[index].venue ??
+                                                      "",
                                               about: state.events[index]
                                                       .description ??
                                                   "",
@@ -248,6 +252,9 @@ class EventPage extends StatelessWidget {
                                               image: state
                                                       .events[index].imageUrl ??
                                                   AppImages.eventImage,
+                                                  link: state.events[index]
+                                                      .link ??
+                                                  "" ,
                                               function: () async {
                                                 // await Providers()
                                                 //     .addEventToCalendar(
@@ -340,6 +347,9 @@ class EventPage extends StatelessWidget {
                                                 height: height,
                                                 title:
                                                     state.spaces[index].title ??
+                                                        "",
+                                                        link:
+                                                    state.spaces[index].link ??
                                                         "",
                                                 image:
                                                     state.spaces[index].image ??
@@ -460,6 +470,8 @@ class EventPage extends StatelessWidget {
                                                     AppImages.eventImage,
                                             title: snapshot.data![index].title ??
                                                 "Group Name",
+                                            link: snapshot.data![index].link ??
+                                                "https://www.google.com",
                                           ),
                                         ),
                                       ),
