@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/material.dart';
 import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
 import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/developer_model.dart';
@@ -270,8 +271,10 @@ class Providers {
     return response;
   }
 
-  Future<bool> downloadAndSaveImage({required String url, required String fileName}) async {
-    final response = await Repository().downloadAndSaveImage(url: url, fileName: fileName);
+  Future<bool> downloadAndSaveImage(
+      {required String url, required String fileName}) async {
+    final response =
+        await Repository().downloadAndSaveImage(url: url, fileName: fileName);
     return response;
   }
 
@@ -293,6 +296,103 @@ class Providers {
       message: message,
       image: image,
     );
+    return response;
+  }
+
+  Future<bool> deleteMessage({required int time}) async {
+    final response = await Repository().deleteMessage(time: time);
+    return response;
+  }
+
+  Future<bool> isUserAdmin() async {
+    final response = await Repository().isUserAdmin();
+    return response;
+  }
+
+  Future<bool> createEvent({
+    required String title,
+    required String venue,
+    required String organizers,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String startTime,
+    required String endTime,
+    required Timestamp date,
+  }) async {
+    final response = await Repository().createEvent(
+      title: title,
+      venue: venue,
+      organizers: organizers,
+      link: link,
+      imageUrl: imageUrl,
+      description: description,
+      startTime: startTime,
+      endTime: endTime,
+      date: date,
+    );
+    return response;
+  }
+
+  Future<List<Event>> getPastEvent() async {
+    final response = await Repository().getPastEvent();
+    return response;
+  }
+
+  Future<List<Event>> searchPastEvent({required String query}) async {
+    final response = await Repository().searchPastEvent(query: query);
+    return response;
+  }
+
+  Future<Event> getParticularEvent({required String id}) async {
+    final response = await Repository().getParticularEvent(id: id);
+    return response;
+  }
+
+  Future<bool> completeEvent({required String id}) async {
+    final response = await Repository().finishParticularEvent(id: id);
+    return response;
+  }
+
+  Future<bool> updateEvent({
+    required String id,
+    required String title,
+    required String venue,
+    required String organizers,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String startTime,
+    required String endTime,
+    required Timestamp date,
+  }) async {
+    final response = await Repository().updateEvent(
+      id: id,
+      title: title,
+      venue: venue,
+      organizers: organizers,
+      link: link,
+      imageUrl: imageUrl,
+      description: description,
+      startTime: startTime,
+      endTime: endTime,
+      date: date,
+    );
+    return response;
+  }
+
+  Future<String> selectTime(BuildContext context) async {
+    final response = await Repository().selectTime(context);
+    return response;
+  }
+
+  Future<DateTime?> selectDate(BuildContext context) async {
+    final response = await Repository().selectDate(context);
+    return response;
+  }
+
+  Future<bool> startParticularEvent({required String id}) async {
+    final response = await Repository().startParticularEvent(id: id);
     return response;
   }
 }

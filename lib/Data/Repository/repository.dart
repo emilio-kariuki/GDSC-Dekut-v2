@@ -1,4 +1,4 @@
-// ignore_for_file: unnecessary_null_comparison, avoid_print
+// ignore_for_file: unnecessary_null_comparison, avoid_print, deprecated_member_use, use_build_context_synchronously
 
 import 'dart:convert';
 import 'dart:io';
@@ -238,9 +238,26 @@ class Repository {
         "name": await SharedPreferencesManager().getName(),
         "id": await SharedPreferencesManager().getId(),
         "time": DateTime.now().millisecondsSinceEpoch,
-        "image" : image,
+        "image": image,
         "timestamp": DateTime.now().toString(),
       });
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteMessage({required int time}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("messages")
+          .where("time", isEqualTo: time)
+          .get()
+          .then((value) => value.docs.first.reference.delete());
+
+      return true;
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
@@ -257,7 +274,6 @@ class Repository {
           .snapshots()
           .map((event) =>
               event.docs.map((e) => Message.fromJson(e.data())).toList());
-
 
       yield* messages;
     } catch (e) {
@@ -325,8 +341,29 @@ class Repository {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
-      final event = await firebaseFirestore.collection("event").get().then(
-          (value) => value.docs.map((e) => Event.fromJson(e.data())).toList());
+      final event = await firebaseFirestore
+          .collection("event")
+          .where("isCompleted", isEqualTo: false)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Event.fromJson(e.data())).toList());
+      return event;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Event>> getPastEvent() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final event = await firebaseFirestore
+          .collection("event")
+          .where("isCompleted", isEqualTo: true)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Event.fromJson(e.data())).toList());
       return event;
     } catch (e) {
       debugPrint(e.toString());
@@ -422,13 +459,158 @@ class Repository {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
-      final events = await firebaseFirestore.collection("event").get().then(
-          (value) => value.docs.map((e) => Event.fromJson(e.data())).toList());
+      final events = await firebaseFirestore
+          .collection("event")
+          .where("isCompleted", isEqualTo: false)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Event.fromJson(e.data())).toList());
 
       return events
           .where((element) =>
               element.title!.toLowerCase().contains(query.toLowerCase()))
           .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Event>> searchPastEvent({required String query}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final events = await firebaseFirestore
+          .collection("event")
+          .where("isCompleted", isEqualTo: true)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Event.fromJson(e.data())).toList());
+
+      return events
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<Event> getParticularEvent({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final event = await firebaseFirestore.collection("event").doc(id).get();
+
+      return Event.fromJson(event.data()!);
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> finishParticularEvent({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("event")
+          .doc(id)
+          .update({"isCompleted": true});
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> startParticularEvent({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("event")
+          .doc(id)
+          .update({"isCompleted": false});
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createEvent({
+    required String title,
+    required String venue,
+    required String organizers,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String startTime,
+    required String endTime,
+    required Timestamp date,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final id = const uuid.Uuid().v1(options: {
+        'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+        'clockSeq': 0x1234,
+        'mSecs': DateTime.now().millisecondsSinceEpoch,
+        'nSecs': 5678
+      }); //
+
+      await firebaseFirestore.collection("event").doc(id).set({
+        "id": id,
+        "title": title,
+        "venue": venue,
+        "organizers": organizers,
+        "link": link,
+        "imageUrl": imageUrl,
+        "isCompleted": false,
+        "description": description,
+        "startTime": startTime,
+        "endTime": endTime,
+        "date": date,
+      }, SetOptions(merge: true));
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> updateEvent({
+    required String id,
+    required String title,
+    required String venue,
+    required String organizers,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String startTime,
+    required String endTime,
+    required Timestamp date,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore.collection("event").doc(id).update({
+        "id": id,
+        "title": title,
+        "venue": venue,
+        "organizers": organizers,
+        "link": link,
+        "imageUrl": imageUrl,
+        "isCompleted": false,
+        "description": description,
+        "startTime": startTime,
+        "endTime": endTime,
+        "date": date,
+      });
+      return true;
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
@@ -870,5 +1052,48 @@ class Repository {
       debugPrint(e.toString());
       throw Exception(e);
     }
+  }
+
+  Future<bool> isUserAdmin() async {
+    try {
+      final userEmail = await FirebaseAuth.instance.currentUser!.email;
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      //check if user exists in the leads resources
+
+      final lead = await firebaseFirestore
+          .collection("leads")
+          .where("email", isEqualTo: userEmail)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => LeadsModel.fromJson(e.data())).toList());
+
+      if (lead.isNotEmpty) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<String> selectTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    return pickedTime!.format(context);
+  }
+
+  Future<DateTime?> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    return picked;
   }
 }
