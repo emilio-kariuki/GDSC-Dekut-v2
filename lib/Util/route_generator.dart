@@ -13,6 +13,8 @@ import 'package:gdsc_bloc/View/Pages/tech_groups_page.dart';
 import 'package:gdsc_bloc/View/Pages/twitter_page.dart';
 import 'package:gdsc_bloc/View/Profile/About/about_page.dart';
 import 'package:gdsc_bloc/View/Profile/Account/personal_information_page.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Event/admin_event.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/admin_page.dart';
 import 'package:gdsc_bloc/View/Profile/Community/community_leads_page.dart';
 import 'package:gdsc_bloc/View/Profile/Community/user_resources.dart';
 import 'package:gdsc_bloc/View/Profile/Help/contact_developer_page.dart';
@@ -20,6 +22,7 @@ import 'package:gdsc_bloc/View/Profile/Help/report_problem_page.dart';
 import 'package:gdsc_bloc/View/Profile/Help/send_feedback_page.dart';
 import 'package:gdsc_bloc/View/Resources/more_resources_page.dart';
 import 'package:gdsc_bloc/View/home.dart';
+import 'package:gdsc_bloc/View/messages/profile_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 
@@ -64,6 +67,12 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => AnnouncementPage());
       case '/post_resource':
         return MaterialPageRoute(builder: (_) => ResourcePostPage());
+      case '/message_profile':
+        return MaterialPageRoute(builder: (_) => const MessagesProfilePage());
+      case '/admin_page':
+        return MaterialPageRoute(builder: (_) => AdminPage());
+      case '/admin_event':
+        return MaterialPageRoute(builder: (_) => AdminEvent());
       case '/more_resource':
         if (resourceArgs is ResourceArguments) {
           return MaterialPageRoute(
