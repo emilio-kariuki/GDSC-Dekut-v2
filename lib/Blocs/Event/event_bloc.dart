@@ -37,6 +37,28 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       }
     });
 
+ 
+
+      on<GetPastEvents>((event, emit) async {
+      emit(EventLoading());
+      try {
+        final events = await Providers().getPastEvent();
+        emit(EventSuccess(events: events));
+      } catch (e) {
+        emit(const EventFailure(message: "Failed to load events"));
+      }
+    });
+
+    on<SearchPastEvent>((event, emit) async {
+      emit(SearchEventLoading());
+      try {
+        final events = await Providers().searchPastEvent(query: event.query);
+        emit(SearchEventSuccess(events: events));
+      } catch (e) {
+        emit(const SearchEventFailure(message: "Failed to load events"));
+      }
+    });
+
     on<GetSpaces>((event, emit) async {
       emit(TwitterLoading());
       try {

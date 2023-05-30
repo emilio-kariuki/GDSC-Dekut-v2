@@ -18,6 +18,19 @@ class SearchEvent extends EventEvent {
   List<Object> get props => [query];
 }
 
+class GetPastEvents extends EventEvent {}
+
+class SearchPastEvent extends EventEvent {
+  final String query;
+
+  const SearchPastEvent({required this.query});
+
+  @override
+  List<Object> get props => [query];
+}
+
+
+
 class GetSpaces extends EventEvent {}
 
 class SearchSpace extends EventEvent {
