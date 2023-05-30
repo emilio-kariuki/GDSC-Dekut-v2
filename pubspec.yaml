@@ -70,6 +70,8 @@ dependencies:
   share_plus: ^7.0.1
   permission_handler: ^10.2.0
   gallery_saver: ^2.3.2
+  grouped_list: ^5.1.2
+  flutter_linkify: ^6.0.0
 
   
 
