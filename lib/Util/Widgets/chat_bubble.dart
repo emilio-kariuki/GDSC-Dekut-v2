@@ -43,7 +43,7 @@ class BubbleSpecialOne extends StatelessWidget {
       stateTick = true;
       stateIcon = Icon(
         Icons.done,
-        size: 18,
+        size: 15,
         color: Color(0xFF97AD8E),
       );
     }
@@ -51,7 +51,7 @@ class BubbleSpecialOne extends StatelessWidget {
       stateTick = true;
       stateIcon = Icon(
         Icons.done_all,
-        size: 18,
+        size: 15,
         color: Color(0xFF97AD8E),
       );
     }
@@ -59,7 +59,7 @@ class BubbleSpecialOne extends StatelessWidget {
       stateTick = true;
       stateIcon = Icon(
         Icons.done_all,
-        size: 18,
+        size: 15,
         color: Color(0xFF92DEDA),
       );
     }
@@ -67,7 +67,7 @@ class BubbleSpecialOne extends StatelessWidget {
     return Align(
       alignment: isSender ? Alignment.topRight : Alignment.topLeft,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
         child: CustomPaint(
           painter: SpecialChatBubbleOne(
               color: color,
@@ -123,7 +123,7 @@ class SpecialChatBubbleOne extends CustomPainter {
     required this.tail,
   });
 
-  double _radius = 10.0;
+  double _radius = 13.0;
   double _x = 10.0;
 
   @override
