@@ -22,6 +22,7 @@ class Event {
   String startTime;
   String endTime;
   Timestamp? date;
+  bool? isCompleted;
 
   Event({
     this.id,
@@ -33,11 +34,13 @@ class Event {
     this.imageUrl,
     this.description,
     this.date,
+    this.isCompleted,
     required this.startTime,
     required this.endTime,
   });
 
   factory Event.fromJson(Map<String, dynamic> json) => Event(
+        isCompleted: json["isCompleted"],
         id: json["id"],
         title: json["title"],
         venue: json["venue"],
@@ -52,6 +55,7 @@ class Event {
       );
 
   Map<String, dynamic> toJson() => {
+        "isCompleted": isCompleted,
         "id": id,
         "title": title,
         "venue": venue,
