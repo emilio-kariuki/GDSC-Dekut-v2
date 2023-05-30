@@ -8,6 +8,8 @@ import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../Util/Widgets/loading_circle.dart';
+
 class ReportProblemPage extends StatelessWidget {
   ReportProblemPage({super.key});
 
@@ -100,7 +102,7 @@ class ReportProblemPage extends StatelessWidget {
           style: GoogleFonts.inter(
             fontSize: 17,
             fontWeight: FontWeight.w500,
-                color: const Color(0xff666666),
+            color: const Color(0xff666666),
           ),
         ),
       ),
@@ -215,7 +217,7 @@ class ReportProblemPage extends StatelessWidget {
                   BlocProvider(
                     create: (context) => AppFunctionsCubit(),
                     child: Builder(builder: (context) {
-                      return BlocListener<AppFunctionsCubit, AppFunctionsState>(
+                      return BlocConsumer<AppFunctionsCubit, AppFunctionsState>(
                         listener: (context, state) {
                           if (state is ImagePicked) {
                             image = state.imageUrl;
@@ -243,44 +245,36 @@ class ReportProblemPage extends StatelessWidget {
                               ),
                             );
                           }
-
-                          if (state is ImageUploading) {
-                            Timer(
-                              const Duration(milliseconds: 100),
-                              () => ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  behavior: SnackBarBehavior.floating,
-                                  backgroundColor: Color(0xFF0C7319),
-                                  content: Text("Uploading Image"),
-                                ),
-                              ),
-                            );
-                          }
                         },
-                        child: SizedBox(
-                          height: 50,
-                          width: 120,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              BlocProvider.of<AppFunctionsCubit>(context)
-                                  .getImage();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xff000000),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                            ),
-                            child: Text(
-                              "Attach File",
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w600,
-                                color: const Color(0xffffffff),
-                              ),
-                            ),
-                          ),
-                        ),
+                        builder: (context, state) {
+                          return SizedBox(
+                            height: 50,
+                            width: 120,
+                            child: state is ImageUploading
+                                ? const LoadingCircle()
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      BlocProvider.of<AppFunctionsCubit>(
+                                              context)
+                                          .getImage();
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: const Color(0xff000000),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                    ),
+                                    child: Text(
+                                      "Attach File",
+                                      style: GoogleFonts.inter(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xffffffff),
+                                      ),
+                                    ),
+                                  ),
+                          );
+                        },
                       );
                     }),
                   )
