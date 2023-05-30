@@ -1,7 +1,12 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:bloc/bloc.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/material.dart';
+import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
+import 'package:gdsc_bloc/Data/Models/event_model.dart';
 import 'package:gdsc_bloc/Data/Models/leads_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Data/Repository/providers.dart';
@@ -33,8 +38,9 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
   void getImage() async {
     try {
       final pickedFile = await Providers().getImage();
+      emit(ImageUploading(image: pickedFile));
       final imageUrl = await Providers().uploadImage(image: pickedFile);
-      emit(ImageUploading());
+
       Future.delayed(const Duration(milliseconds: 1500));
       emit(ImagePicked(image: File(pickedFile.path), imageUrl: imageUrl));
     } catch (e) {
@@ -199,6 +205,134 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
       emit(Saved());
     } catch (e) {
       emit(SavingFailed(message: e.toString()));
+    }
+  }
+
+  void fetchEvent({required String id}) async {
+    try {
+      final event = await Providers().getParticularEvent(id: id);
+
+      if (event != null) {
+        emit(EventFetched(event: event));
+      } else {
+        emit(const EventFetchingFailed(message: 'Failed to fetch event'));
+      }
+    } catch (e) {
+      emit(EventFetchingFailed(message: e.toString()));
+    }
+  }
+
+  void updateEvent({
+    required String id,
+    required String title,
+    required String venue,
+    required String organizers,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String startTime,
+    required String endTime,
+    required Timestamp date,
+  }) async {
+    try {
+      emit(EventUpdating());
+      final isUpdated = await Providers().updateEvent(
+        id: id,
+        title: title,
+        venue: venue,
+        organizers: organizers,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+        startTime: startTime,
+        endTime: endTime,
+        date: date,
+      );
+
+      if (isUpdated) {
+        emit(EventUpdated());
+        EventBloc().add(GetEvents());
+      } else {
+        emit(const EventUpdatingFailed(message: 'Failed to update event'));
+      }
+    } catch (e) {
+      emit(EventUpdatingFailed(message: e.toString()));
+    }
+  }
+
+  void pickTime({required BuildContext context}) async {
+    final time = await Providers().selectTime(context);
+    emit(PickTime(time: time));
+  }
+
+
+  void pickDate({required BuildContext context}) async {
+    final date = await Providers().selectDate(context);
+    emit(PickDate(date: date!));
+  }
+
+  void completeEvent({required String id}) async {
+    try {
+      final isCompleted = await Providers().completeEvent(id: id);
+
+      if (isCompleted) {
+        emit(EventCompleted());
+        EventBloc().add(GetEvents());
+      } else {
+        emit(CompleteEventFailed());
+      }
+    } catch (e) {
+      emit(CompleteEventFailed());
+    }
+  }
+
+  void startEvent({required String id}) async {
+    try {
+      final isCompleted = await Providers().startParticularEvent(id: id);
+
+      if (isCompleted) {
+        emit(EventStarted());
+      } else {
+        emit(StartEventFailed());
+      }
+    } catch (e) {
+      emit(StartEventFailed());
+    }
+  }
+
+  void createEvent({
+    required String title,
+    required String venue,
+    required String organizers,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String startTime,
+    required String endTime,
+    required Timestamp date,
+  }) async {
+    try {
+      emit(EventCreating());
+      final isCreated = await Providers().createEvent(
+        title: title,
+        venue: venue,
+        organizers: organizers,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+        startTime: startTime,
+        endTime: endTime,
+        date: date,
+      );
+
+      if (isCreated) {
+        emit(EventCreated());
+        EventBloc().add(GetEvents());
+      } else {
+        emit(CreateEventFailed());
+      }
+    } catch (e) {
+      emit(CreateEventFailed());
     }
   }
 }

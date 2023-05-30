@@ -71,7 +71,14 @@ class ImagePickingFailed extends AppFunctionsState {
   List<Object> get props => [message];
 }
 
-class ImageUploading extends AppFunctionsState {}
+class ImageUploading extends AppFunctionsState {
+  final File image;
+
+  const ImageUploading({required this.image});
+
+  @override
+  List<Object> get props => [image];
+}
 
 class UpdateUserLoading extends AppFunctionsState {}
 
@@ -204,3 +211,71 @@ class SavingFailed extends AppFunctionsState {
   @override
   List<Object> get props => [message];
 }
+
+class EventFetched extends AppFunctionsState {
+  final Event event;
+
+  const EventFetched({required this.event});
+
+  @override
+  List<Object> get props => [event];
+}
+
+class EventFetchingFailed extends AppFunctionsState {
+  final String message;
+
+  const EventFetchingFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class EventUpdating extends AppFunctionsState {}
+
+class EventUpdated extends AppFunctionsState {}
+
+class EventUpdatingFailed extends AppFunctionsState {
+  final String message;
+
+  const EventUpdatingFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class PickTime extends AppFunctionsState {
+  final String time;
+
+  const PickTime({required this.time});
+
+  @override
+  List<Object> get props => [time];
+}
+
+
+
+class PickDate extends AppFunctionsState {
+  final DateTime date;
+
+  const PickDate({required this.date});
+
+  @override
+  List<Object> get props => [date];
+}
+
+class EventCompleted extends AppFunctionsState {}
+
+class CompleteEventFailed extends AppFunctionsState {}
+
+class EventStarted extends AppFunctionsState {}
+
+class StartEventFailed extends AppFunctionsState {}
+
+
+class EventCreated extends AppFunctionsState {}
+
+class EventCreating extends AppFunctionsState {}
+
+class CreateEventFailed extends AppFunctionsState {}
+
+
