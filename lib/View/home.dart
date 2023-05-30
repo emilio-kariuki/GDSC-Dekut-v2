@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
@@ -15,7 +16,7 @@ class Home extends StatelessWidget {
   Widget getBody() {
     List<Widget> pages = [
       EventPage(),
-       ResourcesPage(),
+      ResourcesPage(),
       MessagesPage(),
       const ProfilePage(),
     ];
@@ -65,7 +66,7 @@ class Home extends StatelessWidget {
         builder: (context, state) {
           return AnimatedBottomNavigationBar.builder(
             elevation: 0,
-            backgroundColor: state is TabChanged && state.index == 2 ? Colors.blueGrey[900] :  Colors.white,
+            backgroundColor: Colors.white,
             notchSmoothness: NotchSmoothness.softEdge,
             itemCount: items.length,
             activeIndex: state is TabChanged ? state.index : 0,
@@ -73,25 +74,21 @@ class Home extends StatelessWidget {
             onTap: (index) {
               BlocProvider.of<AppFunctionsCubit>(context)
                   .changeTab(index: index);
+                  SystemChannels.textInput.invokeMethod('TextInput.hide');
+
             },
             tabBuilder: (int index, bool isActive) {
               final icons = items[index];
               return Padding(
-                padding: index == 2
-                    ? const EdgeInsets.all(20.0)
-                    : index == 3
-                        ? const EdgeInsets.all(20.0)
-                        : const EdgeInsets.all(18.0),
-                child: state is TabChanged && state.index == 2 ? SvgPicture.asset(
-                  isActive ? icons['two'] : icons['one'],
-                  height: MediaQuery.of(context).size.height * 0.03,
-                  color:  Colors.white,
-                ): SvgPicture.asset(
-                  isActive ? icons['two'] : icons['one'],
-                  height: MediaQuery.of(context).size.height * 0.03,
-                  
-                )
-              );
+                  padding: index == 2
+                      ? const EdgeInsets.all(20.0)
+                      : index == 3
+                          ? const EdgeInsets.all(20.0)
+                          : const EdgeInsets.all(18.0),
+                  child: SvgPicture.asset(
+                    isActive ? icons['two'] : icons['one'],
+                    height: MediaQuery.of(context).size.height * 0.03,
+                  ));
             },
           );
         },
