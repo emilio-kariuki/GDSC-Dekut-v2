@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/developer_model.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
 import 'package:gdsc_bloc/Data/Models/groups_model.dart';
@@ -37,9 +38,7 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       }
     });
 
- 
-
-      on<GetPastEvents>((event, emit) async {
+    on<GetPastEvents>((event, emit) async {
       emit(EventLoading());
       try {
         final events = await Providers().getPastEvent();
@@ -110,6 +109,36 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       }
     });
 
+    on<GetAllResource>((event, emit) async {
+      emit(ResourceLoading());
+      try {
+        final resource = await Providers().getAllResources();
+        emit(ResourceSuccess(resources: resource));
+      } catch (e) {
+        emit(const ResourceFailure(message: "Failed to load resources"));
+      }
+    });
+
+     on<GetAllAnnouncements>((event, emit) async {
+      emit(AnnouncementLoading());
+      try {
+        final Announcement = await Providers().getAnnouncements();
+        emit(AnnouncementSuccess(announcements: Announcement));
+      } catch (e) {
+        emit(const AnnouncementFailure(message: "Failed to load announcements"));
+      }
+    });
+
+    on<GetUnApprovedResource>((event, emit) async {
+      emit(ResourceLoading());
+      try {
+        final resource = await Providers().getUnApprovedResources();
+        emit(ResourceSuccess(resources: resource));
+      } catch (e) {
+        emit(const ResourceFailure(message: "Failed to load resources"));
+      }
+    });
+
     on<GetUserResources>((event, emit) async {
       emit(UserResourceLoading());
       try {
@@ -138,6 +167,30 @@ class EventBloc extends Bloc<EventEvent, EventState> {
       emit(SearchResourceLoading());
       try {
         final resource = await Providers().searchResources(
+          query: event.query,
+        );
+        emit(SearchResourceSuccess(resources: resource));
+      } catch (e) {
+        emit(const SearchResourceFailure(message: "Failed to load resources"));
+      }
+    });
+
+    on<SearchAnnouncement>((event, emit) async {
+      emit(SearchAnnouncementLoading());
+      try {
+        final announcement = await Providers().searchAnnouncement(
+          query: event.query,
+        );
+        emit(SearchAnnouncementSuccess(announcements: announcement));
+      } catch (e) {
+        emit(const SearchAnnouncementFailure(message: "Failed to load Announcements"));
+      }
+    });
+
+    on<SearchUnApprovedResource>((event, emit) async {
+      emit(SearchResourceLoading());
+      try {
+        final resource = await Providers().searchUnApprovedResources(
           query: event.query,
         );
         emit(SearchResourceSuccess(resources: resource));
