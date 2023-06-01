@@ -2,10 +2,10 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Blocs/AuthenticationBloc/authentication_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
-import 'package:gdsc_bloc/Blocs/bloc/theme_bloc.dart';
 import 'package:gdsc_bloc/Util/Widgets/no_internet_page.dart';
 import 'package:gdsc_bloc/Util/route_generator.dart';
 import 'package:gdsc_bloc/View/Authentication/login_page.dart';
@@ -45,6 +45,9 @@ class MyAppState extends State<MyApp> {
         ),
         BlocProvider(
           create: (context) => EventBloc(),
+        ),
+         BlocProvider(
+          create: (context) => AppFunctionsCubit(),
         ),
         
       ],
