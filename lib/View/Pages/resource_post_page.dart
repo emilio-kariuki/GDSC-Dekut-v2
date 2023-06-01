@@ -52,6 +52,7 @@ class ResourcePostPage extends StatelessWidget {
                       ),
                     ),
                   );
+
                 }
 
                 if (state is ResourceSendingFailed) {
@@ -84,6 +85,10 @@ class ResourcePostPage extends StatelessWidget {
                                 category: selectedType!,
                                 imageUrl: image,
                               );
+                              titleController.clear();
+                              descriptionController.clear();
+                              linkController.clear();
+
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: const Color(0xff000000),

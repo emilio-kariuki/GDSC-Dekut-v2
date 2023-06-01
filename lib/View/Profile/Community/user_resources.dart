@@ -14,7 +14,7 @@ class UserResources extends StatelessWidget {
 
   final searchController = TextEditingController();
 
-  void _showBottomSheet(BuildContext context, {required String title}) {
+  void _showBottomSheet(BuildContext context, {required String id}) {
     showModalBottomSheet(
       context: context,
       builder: (BuildContext context) {
@@ -107,7 +107,7 @@ class UserResources extends StatelessWidget {
                           onPressed: () {
                             Navigator.pop(context);
                             BlocProvider.of<AppFunctionsCubit>(context)
-                                .deleteResource(title: title);
+                                .deleteResource(id: id);
                           },
                           child: Text(
                             "Delete",
@@ -321,9 +321,8 @@ class UserResources extends StatelessWidget {
                                                 onTap: () {
                                                   _showBottomSheet(
                                                     context,
-                                                    title: state
-                                                        .resources[index]
-                                                        .title!,
+                                                    id: state
+                                                        .resources[index].id!,
                                                   );
                                                 },
                                                 child: GroupContainer(
@@ -391,8 +390,8 @@ class UserResources extends StatelessWidget {
                                               onTap: () {
                                                 _showBottomSheet(
                                                   context,
-                                                  title: state
-                                                      .resources[index].title!,
+                                                  id: state
+                                                      .resources[index].id!,
                                                 );
                                               },
                                               child: GroupContainer(

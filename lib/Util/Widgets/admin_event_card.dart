@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -573,6 +572,7 @@ class AdminOngoingEventCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                
               ],
             ),
             SizedBox(
@@ -629,7 +629,10 @@ class AdminOngoingEventCard extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(20),
                               ),
                             ),
-                            onPressed: function,
+                            onPressed: () {
+                              BlocProvider.of<AppFunctionsCubit>(context)
+                                  .completeEvent(id: id);
+                            },
                             child: Text(
                               "Edit",
                               style: GoogleFonts.inter(

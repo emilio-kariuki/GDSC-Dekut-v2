@@ -363,12 +363,12 @@ class ResourceCard extends StatelessWidget {
               _showImageDialog(context, image, title, link);
             },
             child: CachedNetworkImage(
-              height: height * 0.13,
-              width: width * 0.33,
+              height: height * 0.115,
+              width: width * 0.32,
               placeholder: (context, url) {
                 return Container(
-                  height: height * 0.1,
-                  width: width * 0.33,
+                  height: height * 0.115,
+                  width: width * 0.32,
                   decoration: BoxDecoration(
                       color: const Color.fromARGB(255, 243, 243, 243),
                       borderRadius: BorderRadius.circular(10)),

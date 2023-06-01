@@ -188,6 +188,8 @@ class MoreResourcesPage extends StatelessWidget {
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 3,
                                                 childAspectRatio: 0.7,
+
+                                                mainAxisSpacing: 5,
                                                 crossAxisSpacing: 8),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
@@ -269,6 +271,8 @@ class MoreResourcesPage extends StatelessWidget {
                                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                                       crossAxisCount: 3,
                                                       childAspectRatio: 0.7,
+                                                                                                      mainAxisSpacing: 5,
+
                                                       crossAxisSpacing: 8),
                                               physics:
                                                   const NeverScrollableScrollPhysics(),

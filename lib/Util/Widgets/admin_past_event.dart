@@ -1,6 +1,5 @@
 // ignore_for_file: deprecated_member_use
 
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,6 +26,7 @@ class AdminPastEventCard extends StatelessWidget {
     required this.organizers,
     required this.id,
     required this.completeFunction,
+    required this.deleteFunction,
   });
 
   final String about;
@@ -41,6 +41,7 @@ class AdminPastEventCard extends StatelessWidget {
   final String organizers;
   final String id;
   final Function() function;
+  final Function() deleteFunction;
   final Function() completeFunction;
 
   void _showImageDialog(BuildContext context, String imageUrl, String title) {
@@ -523,61 +524,6 @@ class AdminPastEventCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Column(
-              children: [
-                const SizedBox(
-                  height: 10,
-                ),
-                Semantics(
-                  button: true,
-                  child: InkWell(
-                    onTap: () {
-                      _showImageDialog(context, image, title);
-                    },
-                    child: CachedNetworkImage(
-                      height: 50,
-                      width: 50,
-                      placeholder: (context, url) {
-                        return Container(
-                          height: 50,
-                          width: 50,
-                          decoration: BoxDecoration(
-                              color: const Color.fromARGB(255, 243, 243, 243),
-                              // border: Border.all(width: 0.4, color: Color(0xff666666)),
-                              borderRadius: BorderRadius.circular(10)),
-                        );
-                      },
-                      errorWidget: ((context, url, error) {
-                        return const Icon(
-                          Icons.error,
-                          size: 20,
-                          color: Colors.red,
-                        );
-                      }),
-                      imageUrl: image,
-                      fit: BoxFit.fitHeight,
-                      imageBuilder: (context, imageProvider) {
-                        return AnimatedContainer(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            border: Border.all(
-                                width: 0.4, color: const Color(0xff666666)),
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          duration: const Duration(milliseconds: 500),
-                        );
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            SizedBox(
-              width: width * 0.03,
-            ),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -586,37 +532,127 @@ class AdminPastEventCard extends StatelessWidget {
                   const SizedBox(
                     height: 5,
                   ),
-                  Text(
-                    title,
-                    maxLines: 2,
-                    style: GoogleFonts.inter(
-                      fontSize: 16,
-                      color: const Color(0xff000000),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 7,
-                  ),
-                  Text(
-                    about,
-                    maxLines: 2,
-                    style: GoogleFonts.inter(
-                      fontSize: 13.5,
-                      color: const Color(0xff5B5561),
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 10,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Semantics(
+                        button: true,
+                        child: InkWell(
+                          onTap: () {
+                            _showImageDialog(context, image, title);
+                          },
+                          child: CachedNetworkImage(
+                            height: 50,
+                            width: 50,
+                            placeholder: (context, url) {
+                              return Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                    color: const Color.fromARGB(
+                                        255, 243, 243, 243),
+                                    // border: Border.all(width: 0.4, color: Color(0xff666666)),
+                                    borderRadius: BorderRadius.circular(10)),
+                              );
+                            },
+                            errorWidget: ((context, url, error) {
+                              return const Icon(
+                                Icons.error,
+                                size: 20,
+                                color: Colors.red,
+                              );
+                            }),
+                            imageUrl: image,
+                            fit: BoxFit.fitHeight,
+                            imageBuilder: (context, imageProvider) {
+                              return AnimatedContainer(
+                                padding: const EdgeInsets.only(top: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(5),
+                                  border: Border.all(
+                                      width: 0.4,
+                                      color: const Color(0xff666666)),
+                                  image: DecorationImage(
+                                    image: imageProvider,
+                                    fit: BoxFit.cover,
+                                  ),
+                                ),
+                                duration: const Duration(milliseconds: 500),
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: width * 0.03,
+                      ),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            Text(
+                              title,
+                              maxLines: 2,
+                              style: GoogleFonts.inter(
+                                fontSize: 16,
+                                color: const Color(0xff000000),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            Text(
+                              about,
+                              maxLines: 2,
+                              style: GoogleFonts.inter(
+                                fontSize: 13.5,
+                                color: const Color(0xff5B5561),
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
                   ),
                   SizedBox(
                     height: 36,
-                    width: width * 0.7,
+                    width: width,
                     child: Row(
                       children: [
                         SizedBox(
-                          width: 110,
+                          height: 36,
+                          width: 90,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: Colors.red,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: Colors.black,
+                                  width: 0.1,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            onPressed: deleteFunction,
+                            child: Text(
+                              "Delete",
+                              style: GoogleFonts.inter(
+                                fontSize: 14,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        SizedBox(
+                          width: 100,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               primary: Colors.white,
@@ -642,10 +678,10 @@ class AdminPastEventCard extends StatelessWidget {
                         ),
                         const Spacer(),
                         SizedBox(
-                          width: 110,
+                          width: 100,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
+                              primary: const Color(0xFF217604),
                               elevation: 0,
                               shape: RoundedRectangleBorder(
                                 side: const BorderSide(

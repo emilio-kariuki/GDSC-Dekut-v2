@@ -77,6 +77,7 @@ class AnnouncementPage extends StatelessWidget {
                               itemCount: state.announcements.length,
                               itemBuilder: (context, index) {
                                 return AnnouncementCard(
+                                  id: state.announcements[index].id ?? "",
                                   height: height,
                                   width: width,
                                   title: state.announcements[index].title ?? "",

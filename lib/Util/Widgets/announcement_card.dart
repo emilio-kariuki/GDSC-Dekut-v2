@@ -9,6 +9,7 @@ class AnnouncementCard extends StatelessWidget {
     required this.title,
     required this.name,
     required this.position,
+    required this.id,
   });
 
   final double height;
@@ -16,6 +17,7 @@ class AnnouncementCard extends StatelessWidget {
   final String title;
   final String name;
   final String position;
+  final String id;
 
   @override
   Widget build(BuildContext context) {

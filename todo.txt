@@ -1,0 +1,5 @@
+- add on image click to the twitter spaces to allow it to go to twitter
+- allow users to post a resource
+- Customize the message pages
+- on event click
+- uni links and deep links 

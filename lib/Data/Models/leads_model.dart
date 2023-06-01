@@ -17,6 +17,7 @@ class LeadsModel {
     String? image;
     String? role;
     String? bio;
+    String?id;
 
     LeadsModel({
         this.name,
@@ -27,9 +28,11 @@ class LeadsModel {
         this.image,
         this.role,
         this.bio,
+        this.id,
     });
 
     factory LeadsModel.fromJson(Map<String, dynamic> json) => LeadsModel(
+        id: json["id"],
         name: json["name"],
         email: json["email"],
         phone: json["phone"],
@@ -41,6 +44,7 @@ class LeadsModel {
     );
 
     Map<String, dynamic> toJson() => {
+        "id": id,
         "name": name,
         "email": email,
         "phone": phone,

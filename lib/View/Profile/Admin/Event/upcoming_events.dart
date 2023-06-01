@@ -7,7 +7,7 @@ import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Util/Widgets/admin_event_card.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
-import 'package:gdsc_bloc/View/Profile/Admin/Event/edit_dialog.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Event/edit_event_dialog.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
@@ -15,7 +15,7 @@ import 'package:lottie/lottie.dart';
 import '../../../../Blocs/Event/event_bloc.dart';
 
 class UpComingEvents extends StatelessWidget {
-  UpComingEvents({super.key});
+  UpComingEvents({super.key, required this.tabController});
 
   final searchController = TextEditingController();
   final idController = TextEditingController();
@@ -28,14 +28,16 @@ class UpComingEvents extends StatelessWidget {
   final linkController = TextEditingController();
   final organizersController = TextEditingController();
   final imageController = TextEditingController();
+  final TabController tabController;
 
-  void _editEventDialog(
+  _editEventDialog(
     BuildContext context,
   ) {
     showDialog(
       context: context,
-      builder: (BuildContext context) {
-        return EditDialog(
+      builder: (context) {
+        return EditEventDialog(
+            tabController: tabController,
             imageController: imageController,
             idController: idController,
             nameController: nameController,
@@ -44,6 +46,7 @@ class UpComingEvents extends StatelessWidget {
             organizersController: organizersController,
             linkController: linkController,
             dateController: dateController,
+            context: context,
             startTimeController: startTimeController,
             endTimeController: endTimeController);
       },
@@ -78,52 +81,85 @@ class UpComingEvents extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 49,
-                      padding: const EdgeInsets.only(left: 15, right: 1),
-                      decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(25),
-                          border: Border.all(
-                            color: Colors.grey[500]!,
-                            width: 0.8,
-                          )),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.search,
-                            color: Color(0xff666666),
-                            size: 18,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Expanded(
-                            child: TextFormField(
-                              controller: searchController,
-                              style: GoogleFonts.inter(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: const Color(0xff000000),
-                              ),
-                              onFieldSubmitted: (value) {
-                                BlocProvider.of<EventBloc>(context)
-                                    .add(SearchEvent(query: value));
-                              },
-                              decoration: InputDecoration(
-                                hintText: "Search for event eg. Flutter",
-                                border: InputBorder.none,
-                                hintStyle: GoogleFonts.inter(
-                                  fontSize: 12,
-                                  color: const Color(0xff666666),
-                                  fontWeight: FontWeight.w500,
+                    Row(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            height: 49,
+                            padding: const EdgeInsets.only(left: 15, right: 1),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(25),
+                                border: Border.all(
+                                  color: Colors.grey[500]!,
+                                  width: 0.8,
+                                )),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                  Icons.search,
+                                  color: Color(0xff666666),
+                                  size: 18,
                                 ),
-                              ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: TextFormField(
+                                    controller: searchController,
+                                    style: GoogleFonts.inter(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: 14,
+                                      color: const Color(0xff000000),
+                                    ),
+                                    onFieldSubmitted: (value) {
+                                      BlocProvider.of<EventBloc>(context)
+                                          .add(SearchEvent(query: value));
+                                    },
+                                    decoration: InputDecoration(
+                                      hintText: "Search for event eg. Flutter",
+                                      border: InputBorder.none,
+                                      hintStyle: GoogleFonts.inter(
+                                        fontSize: 12,
+                                        color: const Color(0xff666666),
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          height: 49,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              BlocProvider.of<EventBloc>(context)
+                                  .add( GetEvents());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              padding:EdgeInsets.zero,
+                              elevation: 0,
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(100),
+                                side: const BorderSide(
+                                  width: 0.4,
+                                  color: Colors.black
+                                )
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.refresh,
+                              color: Colors.black,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     BlocListener<EventBloc, EventState>(
                       listener: (context, state) {
@@ -206,6 +242,12 @@ class UpComingEvents extends StatelessWidget {
                                         child: BlocConsumer<AppFunctionsCubit,
                                             AppFunctionsState>(
                                           listener: (context, appState) {
+                                            if (appState is EventCompleted) {
+                                            tabController.animateTo(1);
+                                          }
+                                          if (appState is EventStarted) {
+                                            tabController.animateTo(0);
+                                          }
                                             if (appState is EventFetched) {
                                               idController.text =
                                                   appState.event.id!;
@@ -230,7 +272,12 @@ class UpComingEvents extends StatelessWidget {
                                                   appState.event.startTime;
                                               endTimeController.text =
                                                   appState.event.endTime;
-                                              return _editEventDialog(context);
+                                              BlocProvider.value(
+                                                value: BlocProvider.of<
+                                                    AppFunctionsCubit>(context),
+                                                child:
+                                                    _editEventDialog(context),
+                                              );
                                             }
                                             if (appState is EventCompleted) {
                                               BlocProvider.of<EventBloc>(
@@ -366,6 +413,12 @@ class UpComingEvents extends StatelessWidget {
                                       child: BlocConsumer<AppFunctionsCubit,
                                           AppFunctionsState>(
                                         listener: (context, appState) {
+                                          if (appState is EventCompleted) {
+                                            tabController.animateTo(1);
+                                          }
+                                          if (appState is EventStarted) {
+                                            tabController.animateTo(0);
+                                          }
                                           if (appState is EventFetched) {
                                             idController.text =
                                                 appState.event.id!;
@@ -391,7 +444,11 @@ class UpComingEvents extends StatelessWidget {
                                                 appState.event.startTime;
                                             endTimeController.text =
                                                 appState.event.endTime;
-                                            return _editEventDialog(context);
+                                            BlocProvider.value(
+                                              value: BlocProvider.of<
+                                                  AppFunctionsCubit>(context),
+                                              child: _editEventDialog(context),
+                                            );
                                           }
                                         },
                                         builder: (context, appState) {

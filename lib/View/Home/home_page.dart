@@ -410,6 +410,7 @@ class EventPage extends StatelessWidget {
                                               data.length > 2 ? 2 : data.length,
                                           itemBuilder: (context, index) {
                                             return AnnouncementCard(
+                                              id: data[index].id?? "",
                                               height: height,
                                               width: width,
                                               title: data[index].title ?? "",

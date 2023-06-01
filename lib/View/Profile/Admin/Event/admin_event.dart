@@ -31,62 +31,64 @@ class _AdminEventState extends State<AdminEvent>
       length: tabController!.length,
       child: BlocProvider(
         create: (context) => AppFunctionsCubit(),
-        child: Builder(
-          builder: (context) {
-            return Scaffold(
-              backgroundColor: Colors.white,
-              appBar: AppBar(
-                  backgroundColor: Colors.white,
-                  iconTheme:
-                      const IconThemeData(color: Color(0xff666666), size: 20),
-                  title: Text(
-                    "Admin Event",
-                    style: GoogleFonts.inter(
-                      fontSize: 17,
-                      fontWeight: FontWeight.w500,
-                      color: const Color(0xff666666),
+        child: Builder(builder: (context) {
+          return Scaffold(
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+                backgroundColor: Colors.white,
+                iconTheme:
+                    const IconThemeData(color: Color(0xff666666), size: 20),
+                title: Text(
+                  "Admin Event",
+                  style: GoogleFonts.inter(
+                    fontSize: 17,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xff666666),
+                  ),
+                ),
+                bottom: TabBar(controller: tabController, tabs: [
+                  Tab(
+                    child: Text(
+                      "Upcoming",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff666666),
+                      ),
                     ),
                   ),
-                  bottom: TabBar(controller: tabController, tabs: [
-                    Tab(
-                      child: Text(
-                        "Upcoming",
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff666666),
-                        ),
+                  Tab(
+                    child: Text(
+                      "Past",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff666666),
                       ),
                     ),
-                    Tab(
-                      child: Text(
-                        "Past",
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff666666),
-                        ),
+                  ),
+                  Tab(
+                    child: Text(
+                      "Post",
+                      style: GoogleFonts.inter(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xff666666),
                       ),
                     ),
-                    Tab(
-                      child: Text(
-                        "Post",
-                        style: GoogleFonts.inter(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xff666666),
-                        ),
-                      ),
-                    ),
-                  ])),
-              body: TabBarView(controller: tabController, children: [
-                UpComingEvents(),
-                PastEvents(),
-                PostEvent(),
-              ]),
-            );
-          }
-        ),
+                  ),
+                ])),
+            body: TabBarView(controller: tabController, children: [
+              UpComingEvents(
+                tabController: tabController!,
+              ),
+              PastEvents(
+                tabController: tabController!,
+              ),
+              PostEvent( tabController: tabController!,),
+            ]),
+          );
+        }),
       ),
     );
   }

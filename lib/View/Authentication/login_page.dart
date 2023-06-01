@@ -141,7 +141,7 @@ class LoginPage extends StatelessWidget {
                       builder: (context, state) {
                         if (state is LoginSuccess) {
                           Timer(
-                            const Duration(seconds: 1),
+                            const Duration(milliseconds: 200),
                             () => Navigator.pushReplacementNamed(
                               context,
                               "/home",
@@ -151,7 +151,7 @@ class LoginPage extends StatelessWidget {
 
                         if (state is GoogleLoginSuccess) {
                           Timer(
-                            const Duration(seconds: 1),
+                            const Duration(milliseconds: 200),
                             () => Navigator.pushReplacementNamed(
                               context,
                               "/home",
@@ -173,7 +173,7 @@ class LoginPage extends StatelessWidget {
 
                         if (state is GoogleLoginFailure) {
                           Timer(
-                              const Duration(seconds: 1),
+                              const Duration(milliseconds: 200),
                               () => ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       behavior: SnackBarBehavior.floating,

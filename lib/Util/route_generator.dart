@@ -13,7 +13,13 @@ import 'package:gdsc_bloc/View/Pages/tech_groups_page.dart';
 import 'package:gdsc_bloc/View/Pages/twitter_page.dart';
 import 'package:gdsc_bloc/View/Profile/About/about_page.dart';
 import 'package:gdsc_bloc/View/Profile/Account/personal_information_page.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Announcements/admin_announcements.dart';
 import 'package:gdsc_bloc/View/Profile/Admin/Event/admin_event.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Feedback/admin_feedback.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Groups/admin_groups.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Lead/admin_lead.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Reports/admin_reports.dart';
+import 'package:gdsc_bloc/View/Profile/Admin/Resources/admin_resources.dart';
 import 'package:gdsc_bloc/View/Profile/Admin/admin_page.dart';
 import 'package:gdsc_bloc/View/Profile/Community/community_leads_page.dart';
 import 'package:gdsc_bloc/View/Profile/Community/user_resources.dart';
@@ -25,6 +31,8 @@ import 'package:gdsc_bloc/View/home.dart';
 import 'package:gdsc_bloc/View/messages/profile_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
+
+import '../View/Profile/Admin/Twitter/admin_twitter.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -72,7 +80,22 @@ class RouteGenerator {
       case '/admin_page':
         return MaterialPageRoute(builder: (_) => AdminPage());
       case '/admin_event':
-        return MaterialPageRoute(builder: (_) => AdminEvent());
+        return MaterialPageRoute(builder: (_) => const AdminEvent());
+      case '/admin_resources':
+        return MaterialPageRoute(builder: (_) => const AdminResources());
+      case '/admin_announcements':
+        return MaterialPageRoute(builder: (_) => const AdminAnnouncements());
+      case '/admin_twitter':
+        return MaterialPageRoute(builder: (_) => const AdminTwitter());
+      case '/admin_groups':
+        return MaterialPageRoute(builder: (_) => const AdminGroups());
+      case '/admin_lead':
+        return MaterialPageRoute(builder: (_) => const AdminLead());
+
+      case '/admin_feedback':
+        return MaterialPageRoute(builder: (_) =>  const AppFeedback());
+        case '/admin_reports':
+        return MaterialPageRoute(builder: (_) =>  const AppReports());
       case '/more_resource':
         if (resourceArgs is ResourceArguments) {
           return MaterialPageRoute(

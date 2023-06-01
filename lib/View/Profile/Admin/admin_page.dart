@@ -19,7 +19,7 @@ class AdminPage extends StatelessWidget {
     },
     {
       "title": "Announcements",
-      "location": "/admin_announcement",
+      "location": "/admin_announcements",
       "image": AppImages.announcement,
     },
     {
@@ -34,7 +34,7 @@ class AdminPage extends StatelessWidget {
     },
     {
       "title": "Leads",
-      "location": "/admin_leads",
+      "location": "/admin_lead",
       "image": AppImages.leads,
     },
     {
@@ -49,7 +49,7 @@ class AdminPage extends StatelessWidget {
     },
     {
       "title": "Reports",
-      "location": "/admin_problem",
+      "location": "/admin_reports",
       "image": AppImages.problem,
     },
   ];
@@ -86,6 +86,7 @@ class AdminPage extends StatelessWidget {
                 return Semantics(
                   button: true,
                   child: InkWell(
+                    splashColor: Colors.transparent,
                     onTap: () {
                       Navigator.pushNamed(
                           context, adminActivities[index]["location"]);

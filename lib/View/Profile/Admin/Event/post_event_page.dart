@@ -9,7 +9,7 @@ import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class PostEvent extends StatelessWidget {
-  PostEvent({super.key});
+  PostEvent({super.key, required this.tabController});
 
   final idController = TextEditingController();
   final nameController = TextEditingController();
@@ -21,6 +21,8 @@ class PostEvent extends StatelessWidget {
   final linkController = TextEditingController();
   final organizersController = TextEditingController();
   final imageController = TextEditingController();
+
+  final TabController tabController;
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +45,8 @@ class PostEvent extends StatelessWidget {
                     ),
                   ),
                 );
+
+                tabController.animateTo(0);
               }
             },
             builder: (context, state) {
@@ -68,6 +72,17 @@ class PostEvent extends StatelessWidget {
                               startTime: startTimeController.text,
                               endTime: endTimeController.text,
                             );
+
+                            nameController.clear();
+                            descriptionController.clear();
+                            venueController.clear();
+                            organizersController.clear();
+                            linkController.clear();
+                            dateController.clear();
+                            startTimeController.clear();
+                            endTimeController.clear();
+                            imageController.clear();
+
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFF000000),
@@ -233,6 +248,8 @@ class PostEvent extends StatelessWidget {
                                   if (state is PickTime) {
                                     startTimeController.text = state.time;
                                   }
+
+
                                 },
                                 builder: (context, state) {
                                   return TextFormField(
