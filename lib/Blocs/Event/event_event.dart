@@ -29,8 +29,6 @@ class SearchPastEvent extends EventEvent {
   List<Object> get props => [query];
 }
 
-
-
 class GetSpaces extends EventEvent {}
 
 class SearchSpace extends EventEvent {
@@ -62,13 +60,42 @@ class GetResource extends EventEvent {
   List<Object> get props => [category];
 }
 
-class GetUserResources extends EventEvent {}
+class GetAllResource extends EventEvent {
+  const GetAllResource();
+}
 
+class GetAllAnnouncements extends EventEvent {
+  const GetAllAnnouncements();
+}
+class SearchAnnouncement extends EventEvent {
+  final String query;
+
+  const SearchAnnouncement({required this.query});
+
+  @override
+  List<Object> get props => [query];
+}
+
+
+class GetUnApprovedResource extends EventEvent {
+  const GetUnApprovedResource();
+}
+
+class GetUserResources extends EventEvent {}
 
 class SearchUserResource extends EventEvent {
   final String query;
 
-  const SearchUserResource ({required this.query});
+  const SearchUserResource({required this.query});
+
+  @override
+  List<Object> get props => [query];
+}
+
+class SearchUnApprovedResource extends EventEvent {
+  final String query;
+
+  const SearchUnApprovedResource({required this.query});
 
   @override
   List<Object> get props => [query];
@@ -77,7 +104,7 @@ class SearchUserResource extends EventEvent {
 class SearchResource extends EventEvent {
   final String query;
 
-  const SearchResource ({required this.query});
+  const SearchResource({required this.query});
 
   @override
   List<Object> get props => [query];
@@ -87,11 +114,12 @@ class SearchCategoryResource extends EventEvent {
   final String query;
   final String category;
 
-  const SearchCategoryResource ({required this.query, required this.category});
+  const SearchCategoryResource({required this.query, required this.category});
 
   @override
   List<Object> get props => [query, category];
 }
+
 class GetDevelopers extends EventEvent {}
 
 class Initial extends EventEvent {}

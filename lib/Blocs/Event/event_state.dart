@@ -272,5 +272,48 @@ class DeveloperFailure extends EventState {
   List<Object> get props => [message];
 }
 
-//twitter spaces
+// announcements
+
+class AnnouncementLoading extends EventState {}
+
+class AnnouncementSuccess extends EventState {
+  final List<AnnouncementModel> announcements;
+
+  const AnnouncementSuccess({required this.announcements});
+
+  @override
+  List<Object> get props => [announcements];
+}
+
+class AnnouncementFailure extends EventState {
+  final String message;
+
+  const AnnouncementFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+
+}
+
+//search for any event
+
+class SearchAnnouncementLoading extends EventState {}
+
+class SearchAnnouncementSuccess extends EventState {
+  final List<AnnouncementModel> announcements;
+
+  const SearchAnnouncementSuccess({required this.announcements});
+
+  @override
+  List<Object> get props => [announcements];
+}
+
+class SearchAnnouncementFailure extends EventState {
+  final String message;
+
+  const SearchAnnouncementFailure({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
 
