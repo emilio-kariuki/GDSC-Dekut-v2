@@ -1,13 +1,19 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
-import 'dart:math';
 
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
+import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
+import 'package:gdsc_bloc/Data/Models/feedback_model.dart';
+import 'package:gdsc_bloc/Data/Models/groups_model.dart';
 import 'package:gdsc_bloc/Data/Models/leads_model.dart';
+import 'package:gdsc_bloc/Data/Models/report_model.dart';
+import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Data/Repository/providers.dart';
 part 'app_functions_state.dart';
@@ -82,6 +88,31 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
     }
   }
 
+  void updateAnnouncement(
+      {required String id,
+      required String name,
+      required String position,
+      required String title}) async {
+    try {
+      emit(AnnouncementUpdating());
+      final user = await Providers().updateParticularAnnouncement(
+        id: id,
+        name: name,
+        position: position,
+        title: title,
+      );
+
+      if (user) {
+        emit(AnnouncementUpdated());
+      } else {
+        emit(
+            const AnnouncementUpdatingFailed(message: 'Failed to update user'));
+      }
+    } catch (e) {
+      emit(AnnouncementUpdatingFailed(message: e.toString()));
+    }
+  }
+
   void getLeads() async {
     try {
       emit(GetLeadsLoading());
@@ -92,9 +123,23 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
     }
   }
 
-  void deleteResource({required String title}) async {
+  void deleteResource({required String id}) async {
     try {
-      final isDeleted = await Providers().deleteResource(title: title);
+      final isDeleted = await Providers().deleteResource(id: id);
+
+      if (isDeleted) {
+        emit(GroupDeleted());
+      } else {
+        emit(const GroupDeletionFailed(message: 'Failed to delete Group'));
+      }
+    } catch (e) {
+      emit(GroupDeletionFailed(message: e.toString()));
+    }
+  }
+
+  void deleteGroup({required String id}) async {
+    try {
+      final isDeleted = await Providers().deleteParticularGroup(id: id);
 
       if (isDeleted) {
         emit(ResourceDeleted());
@@ -104,6 +149,63 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
       }
     } catch (e) {
       emit(ResourceDeletionFailed(message: e.toString()));
+    }
+  }
+
+  void deleteAnnouncement({required String id}) async {
+    try {
+      final isDeleted = await Providers().deleteParticularAnnouncement(id: id);
+
+      if (isDeleted) {
+        emit(AnnouncementDeleted());
+      } else {
+        emit(const AnnouncementDeletionFailed(
+            message: 'Failed to delete announcement'));
+      }
+    } catch (e) {
+      emit(ResourceDeletionFailed(message: e.toString()));
+    }
+  }
+
+  void deleteEvent({required String id}) async {
+    try {
+      final isDeleted = await Providers().deleteEvent(id: id);
+
+      if (isDeleted) {
+        emit(EventDeleted());
+      } else {
+        emit(const EventDeletionFailed(message: 'Failed to delete Event'));
+      }
+    } catch (e) {
+      emit(EventDeletionFailed(message: e.toString()));
+    }
+  }
+
+  void deleteLead({required String email}) async {
+    try {
+      final isDeleted = await Providers().deleteLead(email: email);
+
+      if (isDeleted) {
+        emit(LeadDeleted());
+      } else {
+        emit(const LeadDeletionFailed(message: 'Failed to delete lead'));
+      }
+    } catch (e) {
+      emit(LeadDeletionFailed(message: e.toString()));
+    }
+  }
+
+  void deleteSpace({required String id}) async {
+    try {
+      final isDeleted = await Providers().deleteParticularSpace(id: id);
+
+      if (isDeleted) {
+        emit(SpaceDeleted());
+      } else {
+        emit(const SpaceDeletionFailed(message: 'Failed to delete Space'));
+      }
+    } catch (e) {
+      emit(SpaceDeletionFailed(message: e.toString()));
     }
   }
 
@@ -188,6 +290,55 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
     }
   }
 
+  void createAnnouncement({
+    required String title,
+    required String name,
+    required String position,
+  }) async {
+    try {
+      emit(AnnouncementCreating());
+      final isCreated = await Providers().createAnnouncement(
+        title: title,
+        name: name,
+        position: position,
+      );
+
+      if (isCreated) {
+        emit(AnnouncementCreated());
+      } else {
+        emit(CreateAnnouncementFailed());
+      }
+    } catch (e) {
+      emit(CreateAnnouncementFailed());
+    }
+  }
+
+  void createAdminResource({
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    try {
+      final isCreated = await Providers().createAdminResource(
+        title: title,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+        category: category,
+      );
+
+      if (isCreated) {
+        emit(ResourceSent());
+      } else {
+        emit(const ResourceSendingFailed(message: 'Failed to send resource'));
+      }
+    } catch (e) {
+      emit(ResourceSendingFailed(message: e.toString()));
+    }
+  }
+
   void copyToClipboard({required String text}) async {
     try {
       await Providers().copyToClipboard(text: text);
@@ -219,6 +370,34 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
       }
     } catch (e) {
       emit(EventFetchingFailed(message: e.toString()));
+    }
+  }
+
+  void fetchLead({required String email}) async {
+    try {
+      final lead = await Providers().getLead(email: email);
+      if (lead != null) {
+        emit(LeadFetched(lead: lead));
+      } else {
+        emit(const LeadFetchingFailed(message: 'Failed to fetch Lead'));
+      }
+    } catch (e) {
+      emit(LeadFetchingFailed(message: e.toString()));
+    }
+  }
+
+  void fetchAnnouncement({required String id}) async {
+    try {
+      final announcement = await Providers().getParticularAnnouncement(id: id);
+
+      if (announcement != null) {
+        emit(AnnouncementFetched(announcement: announcement));
+      } else {
+        emit(const AnnouncementFetchingFailed(
+            message: 'Failed to fetch Announcement'));
+      }
+    } catch (e) {
+      emit(AnnouncementFetchingFailed(message: e.toString()));
     }
   }
 
@@ -260,11 +439,46 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
     }
   }
 
+  void updateSpace({
+    required String id,
+    required String title,
+    required String link,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required String image,
+    required Timestamp date,
+  }) async {
+    try {
+      emit(SpaceUpdating());
+      final isUpdated = await Providers().updateSpace(
+        id: id,
+        title: title,
+        link: link,
+        startTime: startTime,
+        endTime: endTime,
+        image: image,
+        date: date,
+      );
+
+      if (isUpdated) {
+        emit(SpaceUpdated());
+      } else {
+        emit(const SpaceUpdatingFailed(message: 'Failed to update Space'));
+      }
+    } catch (e) {
+      emit(SpaceUpdatingFailed(message: e.toString()));
+    }
+  }
+
   void pickTime({required BuildContext context}) async {
     final time = await Providers().selectTime(context);
     emit(PickTime(time: time));
   }
 
+  void pickSpaceTime({required BuildContext context}) async {
+    final time = await Providers().selectSpaceTime(context);
+    emit(PickSpaceTime(time: time));
+  }
 
   void pickDate({required BuildContext context}) async {
     final date = await Providers().selectDate(context);
@@ -277,7 +491,6 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
 
       if (isCompleted) {
         emit(EventCompleted());
-        EventBloc().add(GetEvents());
       } else {
         emit(CompleteEventFailed());
       }
@@ -327,12 +540,278 @@ class AppFunctionsCubit extends Cubit<AppFunctionsState> {
 
       if (isCreated) {
         emit(EventCreated());
-        EventBloc().add(GetEvents());
       } else {
         emit(CreateEventFailed());
       }
     } catch (e) {
       emit(CreateEventFailed());
+    }
+  }
+
+  void createLead({
+    required String name,
+    required String email,
+    required String phone,
+    required String role,
+    required String github,
+    required String twitter,
+    required String bio,
+    required String image,
+  }) async {
+    try {
+      emit(LeadCreating());
+      final isCreated = await Providers().createLead(
+        name: name,
+        email: email,
+        phone: phone,
+        role: role,
+        github: github,
+        twitter: twitter,
+        bio: bio,
+        image: image,
+      );
+
+      if (isCreated) {
+        emit(LeadCreated());
+      } else {
+        emit(CreateLeadFailed());
+      }
+    } catch (e) {
+      emit(CreateLeadFailed());
+    }
+  }
+
+  void updateLead({
+    required String name,
+    required String email,
+    required String phone,
+    required String role,
+    required String github,
+    required String twitter,
+    required String bio,
+    required String image,
+  }) async {
+    try {
+      emit(LeadUpdating());
+      final isCreated = await Providers().updateLead(
+        name: name,
+        email: email,
+        phone: phone,
+        role: role,
+        github: github,
+        twitter: twitter,
+        bio: bio,
+        image: image,
+      );
+
+      if (isCreated) {
+        emit(LeadUpdated());
+      } else {
+        emit(const LeadUpdatingFailed(message: "Failed to update the lead"));
+      }
+    } catch (e) {
+      emit(const LeadUpdatingFailed(message: "Failed to update the lead"));
+    }
+  }
+
+  void createSpace({
+    required String title,
+    required String link,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required String image,
+    required Timestamp date,
+  }) async {
+    try {
+      emit(SpaceCreating());
+      final isCreated = await Providers().createSpace(
+        title: title,
+        link: link,
+        startTime: startTime,
+        endTime: endTime,
+        image: image,
+        date: date,
+      );
+      if (isCreated) {
+        emit(SpaceCreated());
+      } else {
+        emit(CreateSpaceFailed());
+      }
+    } catch (e) {
+      emit(CreateSpaceFailed());
+    }
+  }
+
+  void createGroup({
+    required String title,
+    required String description,
+    required String imageUrl,
+    required String link,
+  }) async {
+    try {
+      emit(GroupCreating());
+      final isCreated = await Providers().createGroup(
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
+        link: link,
+      );
+
+      if (isCreated) {
+        emit(GroupCreated());
+      } else {
+        emit(CreateGroupFailed());
+      }
+    } catch (e) {
+      emit(CreateGroupFailed());
+    }
+  }
+
+  void approveResource({required String id}) async {
+    try {
+      final isApproved = await Providers().approveResource(id: id);
+
+      if (isApproved) {
+        emit(ResourceApproved());
+      } else {
+        emit(const ApprovingResourceFailed(
+            message: "Failed to approve resource"));
+      }
+    } catch (e) {
+      emit(
+          const ApprovingResourceFailed(message: "Failed to approve resource"));
+    }
+  }
+
+  void fetchResource({required String id}) async {
+    try {
+      emit(FetchResourcesLoading());
+      final resource = await Providers().getParticularResource(id: id);
+
+      if (resource != null) {
+        emit(FetchResourceSuccess(resource: resource));
+      } else {
+        emit(const FetchResourceFailure(message: "Failed to fetch resource"));
+      }
+    } catch (e) {
+      emit(const FetchResourceFailure(message: "Failed to fetch resource"));
+    }
+  }
+
+  void fetchSpace({required String id}) async {
+    try {
+      emit(FetchSpacesLoading());
+      final space = await Providers().getParticularSpaces(id: id);
+
+      if (space != null) {
+        emit(FetchSpaceSuccess(space: space));
+      } else {
+        emit(const FetchSpaceFailure(message: "Failed to fetch Space"));
+      }
+    } catch (e) {
+      emit(const FetchSpaceFailure(message: "Failed to fetch Space"));
+    }
+  }
+
+  void fetchGroup({required String id}) async {
+    try {
+      emit(FetchGroupLoading());
+      final group = await Providers().getParticularGroup(id: id);
+
+      if (group != null) {
+        emit(FetchGroupSuccess(group: group));
+      } else {
+        emit(const FetchGroupFailure(message: "Failed to fetch Group"));
+      }
+    } catch (e) {
+      emit(const FetchGroupFailure(message: "Failed to fetch Group"));
+    }
+  }
+
+  void updateGroup({
+    required String id,
+    required String title,
+    required String description,
+    required String imageUrl,
+    required String link,
+  }) async {
+    try {
+      emit(GroupUpdating());
+      final isUpdated = await Providers().updateGroup(
+        id: id,
+        title: title,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+      );
+
+      if (isUpdated) {
+        emit(GroupUpdated());
+      } else {
+        emit(const GroupUpdatingFailed(message: "Failed to update Group"));
+      }
+    } catch (e) {
+      emit(const GroupUpdatingFailed(message: "Failed to update Group"));
+    }
+  }
+
+  void updateResource({
+    required String id,
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    try {
+      emit(ResourceUpdating());
+      final isUpdated = await Providers().updateResource(
+        id: id,
+        title: title,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+        category: category,
+      );
+
+      if (isUpdated) {
+        emit(ResourceUpdated());
+      } else {
+        emit(
+            const ResourceUpdatingFailed(message: "Failed to update resource"));
+      }
+    } catch (e) {
+      emit(const ResourceUpdatingFailed(message: "Failed to update resource"));
+    }
+  }
+
+  void fetchFeedback() async {
+    try {
+      emit(FeedbackLoading());
+      final feedback = await Providers().getFeedback();
+
+      if (feedback != null) {
+        emit(FeedbackSuccess(feedback: feedback));
+      } else {
+        emit(const FeedbackFailure(message: "Failed to  feedback"));
+      }
+    } catch (e) {
+      emit(const FeedbackFailure(message: "Failed to  feedback"));
+    }
+  }
+
+  void getReports() async {
+    try {
+      emit(ReportLoading());
+      final reports = await Providers().getReports();
+
+      if (reports != null) {
+        emit(ReportSuccess(reports: reports));
+      } else {
+        emit(const ReportFailure(message: "Failed to  reports"));
+      }
+    } catch (e) {
+      emit(const ReportFailure(message: "Failed to  reports"));
     }
   }
 }
