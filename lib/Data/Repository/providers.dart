@@ -7,8 +7,10 @@ import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
 import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/developer_model.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
+import 'package:gdsc_bloc/Data/Models/feedback_model.dart';
 import 'package:gdsc_bloc/Data/Models/groups_model.dart';
 import 'package:gdsc_bloc/Data/Models/leads_model.dart';
+import 'package:gdsc_bloc/Data/Models/report_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Data/Models/user_model.dart';
@@ -104,8 +106,8 @@ class Providers {
     return Repository().searchUserResources(query: query, userId: userId);
   }
 
-  Future<bool> deleteResource({required String title}) async {
-    return Repository().deleteResource(title: title);
+  Future<bool> deleteResource({required String id}) async {
+    return Repository().deleteResource(id: id);
   }
 
   Future<List<Resource>> searchCategoryResources(
@@ -266,6 +268,22 @@ class Providers {
     return response;
   }
 
+  Future<bool> createAdminResource({
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    final response = Repository().createAdminResource(
+        title: title,
+        link: link,
+        imageUrl: imageUrl,
+        description: description,
+        category: category);
+    return response;
+  }
+
   Future<bool> copyToClipboard({required String text}) async {
     final response = await Repository().copyToClipboard(text: text);
     return response;
@@ -386,6 +404,11 @@ class Providers {
     return response;
   }
 
+  Future<Timestamp> selectSpaceTime(BuildContext context) async {
+    final response = await Repository().selectSpaceTime(context);
+    return response;
+  }
+
   Future<DateTime?> selectDate(BuildContext context) async {
     final response = await Repository().selectDate(context);
     return response;
@@ -393,6 +416,256 @@ class Providers {
 
   Future<bool> startParticularEvent({required String id}) async {
     final response = await Repository().startParticularEvent(id: id);
+    return response;
+  }
+
+  Future<List<Resource>> getAllResources() async {
+    final response = await Repository().getAllResources();
+    return response;
+  }
+
+  Future<List<Resource>> getUnApprovedResources() async {
+    final response = await Repository().getUnApprovedResources();
+    return response;
+  }
+
+  Future<List<Resource>> searchUnApprovedResources(
+      {required String query}) async {
+    final response = await Repository().searchUnApprovedResources(query: query);
+    return response;
+  }
+
+  Future<bool> approveResource({required String id}) async {
+    final response = await Repository().approveResource(id: id);
+    return response;
+  }
+
+  Future<Resource> getParticularResource({required String id}) async {
+    final response = await Repository().getParticularResource(id: id);
+    return response;
+  }
+
+  Future<bool> updateResource({
+    required String id,
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    final response = await Repository().updateResource(
+      id: id,
+      title: title,
+      link: link,
+      imageUrl: imageUrl,
+      description: description,
+      category: category,
+    );
+    return response;
+  }
+
+  Future<bool> deleteEvent({required String id}) async {
+    final response = await Repository().deleteEvent(id: id);
+    return response;
+  }
+
+  Future<AnnouncementModel> getParticularAnnouncement(
+      {required String id}) async {
+    final response = await Repository().getParticularAnnouncement(id: id);
+    return response;
+  }
+
+  Future<bool> deleteParticularAnnouncement({required String id}) async {
+    final response = await Repository().deleteParticularAnnouncement(id: id);
+    return response;
+  }
+
+  Future<bool> updateParticularAnnouncement(
+      {required String id,
+      required String name,
+      required String position,
+      required String title}) async {
+    final response = await Repository().updateParticularAnnouncement(
+        id: id, name: name, position: position, title: title);
+    return response;
+  }
+
+  Future<bool> createAnnouncement(
+      {required String name,
+      required String position,
+      required String title}) async {
+    final response = await Repository()
+        .createAnnouncement(name: name, position: position, title: title);
+    return response;
+  }
+
+  Future<List<AnnouncementModel>> getAnnouncements() async {
+    final response = await Repository().getAnnouncements();
+    return response;
+  }
+
+  Future<List<AnnouncementModel>> searchAnnouncement(
+      {required String query}) async {
+    final response = await Repository().searchAnnouncement(query: query);
+    return response;
+  }
+
+  Future<TwitterModel> getParticularSpaces({required String id}) async {
+    final response = await Repository().getParticularSpaces(id: id);
+    return response;
+  }
+
+  Future<bool> deleteParticularSpace({required String id}) async {
+    final response = await Repository().deleteParticularSpace(id: id);
+    return response;
+  }
+
+  Future<bool> createSpace({
+    required String title,
+    required String link,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required String image,
+    required Timestamp date,
+  }) async {
+    final response = await Repository().createSpace(
+      title: title,
+      link: link,
+      startTime: startTime,
+      endTime: endTime,
+      image: image,
+      date: date,
+    );
+    return response;
+  }
+
+  Future<bool> updateSpace({
+    required String id,
+    required String title,
+    required String link,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required String image,
+    required Timestamp date,
+  }) async {
+    final response = await Repository().updateSpace(
+      id: id,
+      title: title,
+      link: link,
+      startTime: startTime,
+      endTime: endTime,
+      image: image,
+      date: date,
+    );
+    return response;
+  }
+
+  Future<GroupsModel> getParticularGroup({required String id}) async {
+    final response = await Repository().getParticularGroup(id: id);
+    return response;
+  }
+
+  Future<bool> deleteParticularGroup({required String id}) async {
+    final response = await Repository().deleteParticularGroup(id: id);
+    return response;
+  }
+
+  Future<bool> createGroup({
+    required String title,
+    required String description,
+    required String imageUrl,
+    required String link,
+  }) async {
+    final response = await Repository().createGroup(
+      title: title,
+      description: description,
+      imageUrl: imageUrl,
+      link: link,
+    );
+    return response;
+  }
+
+  Future<bool> updateGroup({
+    required String id,
+    required String title,
+    required String description,
+    required String imageUrl,
+    required String link,
+  }) async {
+    final response = await Repository().updateGroup(
+      id: id,
+      title: title,
+      description: description,
+      imageUrl: imageUrl,
+      link: link,
+    );
+    return response;
+  }
+
+  Future<bool> createLead({
+    required String name,
+    required String email,
+    required String phone,
+    required String role,
+    required String github,
+    required String twitter,
+    required String bio,
+    required String image,
+  }) async {
+    final response = await Repository().createLead(
+      name: name,
+      email: email,
+      phone: phone,
+      role: role,
+      github: github,
+      twitter: twitter,
+      bio: bio,
+      image: image,
+    );
+    return response;
+  }
+
+  Future<bool> updateLead({
+    required String name,
+    required String email,
+    required String phone,
+    required String role,
+    required String github,
+    required String twitter,
+    required String bio,
+    required String image,
+  }) async {
+    final response = await Repository().updateLead(
+      name: name,
+      email: email,
+      phone: phone,
+      role: role,
+      github: github,
+      twitter: twitter,
+      bio: bio,
+      image: image,
+    );
+    return response;
+  }
+
+  Future<bool> deleteLead({required String email}) async {
+    final response = await Repository().deleteLead(email: email);
+    return response;
+  }
+
+  Future<LeadsModel> getLead({required String email}) async {
+    final response = await Repository().getLead(email: email);
+    return response;
+  }
+
+  Future<List<FeedbackModel>> getFeedback() async {
+    final response = await Repository().getFeedback();
+    return response;
+  }
+
+
+  Future<List<ReportModel>> getReports() async {
+    final response = await Repository().getReports();
     return response;
   }
 }

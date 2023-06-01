@@ -13,9 +13,11 @@ import 'package:gallery_saver/gallery_saver.dart';
 import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/developer_model.dart';
 import 'package:gdsc_bloc/Data/Models/event_model.dart';
+import 'package:gdsc_bloc/Data/Models/feedback_model.dart';
 import 'package:gdsc_bloc/Data/Models/groups_model.dart';
 import 'package:gdsc_bloc/Data/Models/leads_model.dart';
 import 'package:gdsc_bloc/Data/Models/message_model.dart';
+import 'package:gdsc_bloc/Data/Models/report_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Data/Models/user_model.dart';
@@ -303,6 +305,40 @@ class Repository {
     }
   }
 
+  Future<List<Resource>> getUnApprovedResources() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final resources = await firebaseFirestore
+          .collection("resource")
+          .where("isApproved", isEqualTo: false)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Resource.fromJson(e.data())).toList());
+      return resources;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Resource>> getAllResources() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final resources = await firebaseFirestore
+          .collection("resource")
+          .where("isApproved", isEqualTo: true)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Resource.fromJson(e.data())).toList());
+      return resources;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
   Future<List<Resource>> getUserResources({required String userId}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
@@ -392,6 +428,50 @@ class Repository {
     }
   }
 
+  Future<List<AnnouncementModel>> searchAnnouncement(
+      {required String query}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final announcement = await firebaseFirestore
+          .collection("announcement")
+          .get()
+          .then((value) => value.docs
+              .map((e) => AnnouncementModel.fromJson(e.data()))
+              .toList());
+
+      return announcement
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<Resource>> searchUnApprovedResources(
+      {required String query}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final resources = await firebaseFirestore
+          .collection("resource")
+          .where("isApproved", isEqualTo: false)
+          .get()
+          .then((value) =>
+              value.docs.map((e) => Resource.fromJson(e.data())).toList());
+
+      return resources
+          .where((element) =>
+              element.title!.toLowerCase().contains(query.toLowerCase()))
+          .toList();
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
   Future<List<Resource>> searchCategoryResources(
       {required String query, required String category}) async {
     try {
@@ -438,15 +518,32 @@ class Repository {
     }
   }
 
-  Future<bool> deleteResource({required String title}) async {
+  Future<bool> deleteResource({required String id}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
       await firebaseFirestore
           .collection("resource")
-          .where("title", isEqualTo: title)
+          .doc(id)
           .get()
-          .then((value) => value.docs.first.reference.delete());
+          .then((value) => value.reference.delete());
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteEvent({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("event")
+          .doc(id)
+          .get()
+          .then((value) => value.reference.delete());
 
       return true;
     } catch (e) {
@@ -510,6 +607,106 @@ class Repository {
     }
   }
 
+  Future<List<AnnouncementModel>> getAnnouncements() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final announcement = await firebaseFirestore
+          .collection("announcement")
+          .get()
+          .then((value) => value.docs
+              .map((e) => AnnouncementModel.fromJson(e.data()))
+              .toList());
+
+      return announcement;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<AnnouncementModel> getParticularAnnouncement(
+      {required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final announcement =
+          await firebaseFirestore.collection("announcement").doc(id).get();
+
+      return AnnouncementModel.fromJson(announcement.data()!);
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteParticularAnnouncement({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("announcement")
+          .doc(id)
+          .get()
+          .then((value) => value.reference.delete());
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> updateParticularAnnouncement(
+      {required String id,
+      required String name,
+      required String position,
+      required String title}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore.collection("announcement").doc(id).update({
+        "id": id,
+        "name": name,
+        "position": position,
+        "title": title,
+      });
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createAnnouncement(
+      {required String name,
+      required String position,
+      required String title}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final id = const uuid.Uuid().v1(options: {
+        'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+        'clockSeq': 0x1234,
+        'mSecs': DateTime.now().millisecondsSinceEpoch,
+        'nSecs': 5678
+      }); //
+
+      await firebaseFirestore.collection("announcement").doc(id).set({
+        "id": id,
+        "name": name,
+        "position": position,
+        "title": title,
+      });
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
   Future<bool> finishParticularEvent({required String id}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
@@ -518,6 +715,36 @@ class Repository {
           .collection("event")
           .doc(id)
           .update({"isCompleted": true});
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<Resource> getParticularResource({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final event =
+          await firebaseFirestore.collection("resource").doc(id.trim()).get();
+
+      return Resource.fromJson(event.data()!);
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> approveResource({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("resource")
+          .doc(id)
+          .update({"isApproved": true});
 
       return true;
     } catch (e) {
@@ -536,6 +763,134 @@ class Repository {
           .update({"isCompleted": false});
 
       return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createLead({
+    required String name,
+    required String email,
+    required String phone,
+    required String role,
+    required String github,
+    required String twitter,
+    required String bio,
+    required String image,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore.collection("lead").doc().set({
+        "name": name,
+        "email": email,
+        "phone": phone,
+        "role": role,
+        "github": github,
+        "twitter": twitter,
+        "bio": bio,
+        "image": image,
+      }, SetOptions(merge: true));
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> updateLead({
+    required String name,
+    required String email,
+    required String phone,
+    required String role,
+    required String github,
+    required String twitter,
+    required String bio,
+    required String image,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore.collection("lead").doc().update(
+        {
+          "name": name,
+          "email": email,
+          "phone": phone,
+          "role": role,
+          "github": github,
+          "twitter": twitter,
+          "bio": bio,
+          "image": image,
+        },
+      );
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteLead({required String email}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("lead")
+          .where("email", isEqualTo: email)
+          .get()
+          .then((value) => value.docs.first.reference.delete());
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<LeadsModel> getLead({required String email}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final lead = await firebaseFirestore
+          .collection("lead")
+          .where("email", isEqualTo: email)
+          .get()
+          .then((value) => value.docs.first.data());
+
+      return LeadsModel.fromJson(lead);
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<FeedbackModel>> getFeedback() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final feedback = await firebaseFirestore
+          .collection("feedback")
+          .get()
+          .then((value) =>
+              value.docs.map((e) => FeedbackModel.fromJson(e.data())).toList());
+
+      return feedback;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<List<ReportModel>> getReports() async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final problem = await firebaseFirestore.collection("problem").get().then(
+          (value) =>
+              value.docs.map((e) => ReportModel.fromJson(e.data())).toList());
+
+      return problem;
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
@@ -575,6 +930,124 @@ class Repository {
         "endTime": endTime,
         "date": date,
       }, SetOptions(merge: true));
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createGroup({
+    required String title,
+    required String description,
+    required String imageUrl,
+    required String link,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final id = const uuid.Uuid().v1(options: {
+        'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+        'clockSeq': 0x1234,
+        'mSecs': DateTime.now().millisecondsSinceEpoch,
+        'nSecs': 5678
+      }); //
+
+      await firebaseFirestore.collection("announcements").doc(id).set({
+        "id": id,
+        "title": title,
+        "link": link,
+        "imageUrl": imageUrl,
+        "description": description,
+      }, SetOptions(merge: true));
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> updateGroup({
+    required String id,
+    required String title,
+    required String description,
+    required String imageUrl,
+    required String link,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore.collection("announcements").doc(id).update(
+        {
+          "id": id,
+          "title": title,
+          "link": link,
+          "imageUrl": imageUrl,
+          "description": description,
+        },
+      );
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createSpace({
+    required String title,
+    required String link,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required String image,
+    required Timestamp date,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final id = const uuid.Uuid().v1(options: {
+        'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+        'clockSeq': 0x1234,
+        'mSecs': DateTime.now().millisecondsSinceEpoch,
+        'nSecs': 5678
+      }); //
+
+      await firebaseFirestore.collection("twitter").doc(id).set({
+        "id": id,
+        "title": title,
+        "link": link,
+        "image": image,
+        "startTime": startTime,
+        "endTime": endTime,
+        "date": date,
+      }, SetOptions(merge: true));
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> updateSpace({
+    required String id,
+    required String title,
+    required String link,
+    required Timestamp startTime,
+    required Timestamp endTime,
+    required String image,
+    required Timestamp date,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore.collection("twitter").doc(id).update(
+        {
+          "id": id,
+          "title": title,
+          "link": link,
+          "image": image,
+          "startTime": startTime,
+          "endTime": endTime,
+          "date": date,
+        },
+      );
       return true;
     } catch (e) {
       debugPrint(e.toString());
@@ -675,6 +1148,72 @@ class Repository {
           (value) =>
               value.docs.map((e) => TwitterModel.fromJson(e.data())).toList());
       return spaces;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<TwitterModel> getParticularSpaces({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final space = await firebaseFirestore
+          .collection("twitter")
+          .doc(id)
+          .get()
+          .then((value) => TwitterModel.fromJson(value.data()!));
+      return space;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteParticularSpace({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("twitter")
+          .doc(id)
+          .get()
+          .then((value) => value.reference.delete());
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<GroupsModel> getParticularGroup({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      final group = await firebaseFirestore
+          .collection("announcements")
+          .doc(id)
+          .get()
+          .then((value) => GroupsModel.fromJson(value.data()!));
+      return group;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> deleteParticularGroup({required String id}) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore
+          .collection("announcements")
+          .doc(id)
+          .get()
+          .then((value) => value.reference.delete());
+
+      return true;
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
@@ -1004,6 +1543,69 @@ class Repository {
     }
   }
 
+  Future<bool> updateResource({
+    required String id,
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+
+      await firebaseFirestore.collection("resource").doc(id).update({
+        "id": id,
+        "title": title,
+        "link": link,
+        "imageUrl": imageUrl,
+        "description": description,
+        "category": category,
+        "isApproved": true,
+      });
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createAdminResource({
+    required String title,
+    required String link,
+    required String imageUrl,
+    required String description,
+    required String category,
+  }) async {
+    try {
+      final firebaseFirestore = FirebaseFirestore.instance;
+      final id = const uuid.Uuid().v1(options: {
+        'node': [0x01, 0x23, 0x45, 0x67, 0x89, 0xab],
+        'clockSeq': 0x1234,
+        'mSecs': DateTime.now().millisecondsSinceEpoch,
+        'nSecs': 5678
+      }); //
+
+      final userId = await FirebaseAuth.instance.currentUser!.uid;
+
+      await firebaseFirestore.collection("resource").doc(id).set({
+        "id": id,
+        "title": title,
+        "link": link,
+        "imageUrl": imageUrl,
+        "description": description,
+        "category": category,
+        "isApproved": true,
+        "userId": userId,
+      }, SetOptions(merge: true));
+
+      return true;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
   Future<bool> copyToClipboard({required String text}) async {
     try {
       await Clipboard.setData(ClipboardData(text: text));
@@ -1085,6 +1687,18 @@ class Repository {
       initialTime: TimeOfDay.now(),
     );
     return pickedTime!.format(context);
+  }
+
+  Future<Timestamp> selectSpaceTime(BuildContext context) async {
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    final DateTime now = DateTime.now();
+    final DateTime date = DateTime(now.year, now.month, now.day);
+    final DateTime dateTime = DateTime(
+        date.year, date.month, date.day, pickedTime!.hour, pickedTime.minute);
+    return Timestamp.fromDate(dateTime);
   }
 
   Future<DateTime?> selectDate(BuildContext context) async {
