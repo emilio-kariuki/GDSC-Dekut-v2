@@ -421,7 +421,7 @@ class AdminResourceCard extends StatelessWidget {
                       imageBuilder: (context, imageProvider) {
                         return AnimatedContainer(
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
+                             shape: BoxShape.circle,
                             border: Border.all(
                                 width: 0.4, color: const Color(0xff666666)),
                             image: DecorationImage(
