@@ -621,3 +621,22 @@ class ReportFailure extends AppFunctionsState {
   @override
   List<Object> get props => [message];
 }
+
+class UserFetching extends AppFunctionsState {}
+class UserFetched extends AppFunctionsState {
+  final UserModel user;
+
+   const UserFetched({required this.user});
+
+  @override
+  List<Object> get props => [user];
+}
+
+class UserFetchingFailed extends AppFunctionsState {
+  final String message;
+
+   const UserFetchingFailed({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
