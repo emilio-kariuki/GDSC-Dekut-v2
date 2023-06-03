@@ -7,8 +7,8 @@ class LoadingCircle extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Center(
       child: SizedBox(
-        height: 25,
-        width: 25,
+        height: 15,
+        width: 15,
         child: CircularProgressIndicator(
           color: Colors.black,
           strokeWidth: 3,
