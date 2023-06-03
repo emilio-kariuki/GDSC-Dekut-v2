@@ -29,6 +29,7 @@ class AppImages {
   static const leads = "Assets/leads.json";
   static const developers = "Assets/developers.json";
   static const announcement = "Assets/announcement.json";
+    static const logo = "Assets/logo.json";
   static const background = "Assets/whatsapp.png";
   static const eventImage =
       "https://firebasestorage.googleapis.com/v0/b/apt-rite-346310.appspot.com/o/about04.png?alt=media&token=f80825e5-3be5-4e17-817b-cda37d213d29";
