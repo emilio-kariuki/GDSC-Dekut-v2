@@ -19,7 +19,7 @@ class CategoryWidget extends StatelessWidget {
           title,
           style: GoogleFonts.inter(
             fontWeight: FontWeight.w600,
-            fontSize: 18,
+            fontSize: 17,
             color: const Color(0xff000000),
           ),
         ),
