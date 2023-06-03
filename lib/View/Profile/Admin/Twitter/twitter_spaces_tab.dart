@@ -202,8 +202,7 @@ class AppSpaces extends StatelessWidget {
                                           padding: EdgeInsets.zero,
                                         ),
                                         onPressed: () {
-                                          BlocProvider.of<EventBloc>(context)
-                                              .add(const GetAllResource());
+                                          BlocProvider.of<EventBloc>(context).add(GetSpaces());
                                           searchController.clear();
                                         },
                                         icon: const Icon(
