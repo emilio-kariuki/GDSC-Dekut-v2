@@ -1,4 +1,8 @@
+import 'dart:typed_data';
+
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -21,6 +25,8 @@ void main() async {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
+  FirebaseMessaging.instance.subscribeToTopic('test');
+
 
   runApp(const MyApp());
 }
@@ -34,6 +40,71 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+    AwesomeNotifications().initialize(
+        'resource://drawable/logo',
+        [
+          NotificationChannel(
+            channelGroupKey: 'event_channel',
+            channelKey: 'event_key',
+            channelName: 'Event Notifications',
+            channelDescription: 'Notification channel for events',
+            defaultColor: const Color(0xFF9D50DD),
+            ledColor: Colors.white,
+            playSound: false,
+            enableVibration: true,
+            vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
+            importance: NotificationImportance.Min,
+          )
+        ],
+        channelGroups: [
+          NotificationChannelGroup(
+            channelGroupkey: 'event_channel',
+            channelGroupName: 'Event Channel',
+          )
+        ],
+        debug: true);
+
+    AwesomeNotifications()
+        .actionStream
+        .listen((ReceivedNotification receivedAction) {
+     if (receivedAction.payload != null) {
+    AwesomeNotifications().createNotificationFromJsonData(receivedAction.payload!);
+  }
+
+      print('Received a notification: ${receivedAction.id}');
+    });
+
+    AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
+      if (!isAllowed) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Allow Notifications'),
+            content: const Text('Our app would like to show notifications'),
+            actions: [
+              TextButton(
+                child: const Text('Don\'t Allow'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              TextButton(
+                child: const Text('Allow'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  AwesomeNotifications().requestPermissionToSendNotifications();
+                },
+              ),
+            ],
+          ),
+        );
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
@@ -46,17 +117,15 @@ class MyAppState extends State<MyApp> {
         BlocProvider(
           create: (context) => EventBloc(),
         ),
-         BlocProvider(
+        BlocProvider(
           create: (context) => AppFunctionsCubit(),
         ),
-        
       ],
       child: MaterialApp(
         onGenerateRoute: RouteGenerator.generateRoute,
         themeMode: ThemeMode.dark,
         theme: ThemeData(
           primarySwatch: Colors.blue,
-          
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
