@@ -9,6 +9,8 @@ import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Util/Widgets/divider_or.dart';
+
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
   final emailController = TextEditingController();
@@ -204,7 +206,7 @@ class RegisterPage extends StatelessWidget {
                                   child: Text(
                                     "Register",
                                     style: GoogleFonts.inter(
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xffffffff),
                                     ),
@@ -248,39 +250,7 @@ class RegisterPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Expanded(
-                          child: Divider(
-                            color: Colors.black,
-                            height: 20,
-                            thickness: 0.4,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "OR",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff000000),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Expanded(
-                          child: Divider(
-                            color: Colors.black,
-                            height: 20,
-                            thickness: 0.4,
-                          ),
-                        ),
-                      ],
-                    ),
+                    const DividerOr(),
                     const SizedBox(
                       height: 25,
                     ),
@@ -307,7 +277,7 @@ class RegisterPage extends StatelessWidget {
                                         .add(GoogleAuthentication());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xffEB5757),
+                                    backgroundColor: const Color(0xFFF74A00),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
@@ -315,7 +285,7 @@ class RegisterPage extends StatelessWidget {
                                   child: Text(
                                     "Sign up with Google",
                                     style: GoogleFonts.inter(
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xffffffff),
                                     ),

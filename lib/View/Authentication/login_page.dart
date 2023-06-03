@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Blocs/AuthBloc/auth_bloc.dart';
+import 'package:gdsc_bloc/Util/Widgets/divider_or.dart';
 import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -50,7 +51,7 @@ class LoginPage extends StatelessWidget {
                       width: width,
                     )),
                     SizedBox(
-                      height: height * 0.06,
+                      height: height * 0.065,
                     ),
                     Text(
                       "Login",
@@ -214,7 +215,7 @@ class LoginPage extends StatelessWidget {
                                   child: Text(
                                     "Login",
                                     style: GoogleFonts.inter(
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xffffffff),
                                     ),
@@ -258,39 +259,7 @@ class LoginPage extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        const Expanded(
-                          child: Divider(
-                            color: Colors.black,
-                            height: 20,
-                            thickness: 0.4,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          "OR",
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xff000000),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Expanded(
-                          child: Divider(
-                            color: Colors.black,
-                            height: 20,
-                            thickness: 0.4,
-                          ),
-                        ),
-                      ],
-                    ),
+                    const DividerOr(),
                     const SizedBox(
                       height: 25,
                     ),
@@ -317,7 +286,7 @@ class LoginPage extends StatelessWidget {
                                         .add(GoogleAuthentication());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xffEB5757),
+                                    backgroundColor: const Color(0xFFF74A00),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(5),
                                     ),
@@ -325,7 +294,7 @@ class LoginPage extends StatelessWidget {
                                   child: Text(
                                     "Sign in with Google",
                                     style: GoogleFonts.inter(
-                                      fontSize: 16,
+                                      fontSize: 15,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xffffffff),
                                     ),
@@ -344,3 +313,4 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
+
