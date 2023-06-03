@@ -24,7 +24,6 @@ class AppGroupsTab extends StatelessWidget {
 
   final TabController tabController;
 
-
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
@@ -180,6 +179,7 @@ class AppGroupsTab extends StatelessWidget {
                                         onPressed: () {
                                           BlocProvider.of<EventBloc>(context)
                                               .add(const GetAllResource());
+
                                           searchController.clear();
                                         },
                                         icon: const Icon(
@@ -215,39 +215,39 @@ class AppGroupsTab extends StatelessWidget {
                                         child: BlocConsumer<AppFunctionsCubit,
                                             AppFunctionsState>(
                                           listener: (context, appState) {
-                                             if (appState is FetchGroupSuccess) {
-                                            idController.text =
-                                                appState.group.id!;
-                                            imageController.text =
-                                                appState.group.imageUrl!;
-                                            idController.text =
-                                                appState.group.id!;
-                                            nameController.text =
-                                                appState.group.title!;
-                                            descriptionController.text =
-                                                appState.group.description!;
-                                            linkController.text =
-                                                appState.group.link!;
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return EditGroupDialog(
-                                                  descriptionController: descriptionController,
-                                                  tabController: tabController,
-                                                  imageController:
-                                                      imageController,
-                                                  idController: idController,
-                                                  nameController:
-                                                      nameController,
-                                                  
-                                                  linkController:
-                                                      linkController,
-                                                  context: context,
-                                                  
-                                                );
-                                              },
-                                            );
-                                          }
+                                            if (appState is FetchGroupSuccess) {
+                                              idController.text =
+                                                  appState.group.id!;
+                                              imageController.text =
+                                                  appState.group.imageUrl!;
+                                              idController.text =
+                                                  appState.group.id!;
+                                              nameController.text =
+                                                  appState.group.title!;
+                                              descriptionController.text =
+                                                  appState.group.description!;
+                                              linkController.text =
+                                                  appState.group.link!;
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return EditGroupDialog(
+                                                    descriptionController:
+                                                        descriptionController,
+                                                    tabController:
+                                                        tabController,
+                                                    imageController:
+                                                        imageController,
+                                                    idController: idController,
+                                                    nameController:
+                                                        nameController,
+                                                    linkController:
+                                                        linkController,
+                                                    context: context,
+                                                  );
+                                                },
+                                              );
+                                            }
                                           },
                                           builder: (context, appState) {
                                             return state.groups.isEmpty
@@ -288,46 +288,51 @@ class AppGroupsTab extends StatelessWidget {
                                                     itemBuilder:
                                                         (context, index) {
                                                       return AdminGroupsCard(
-                                                      id: state.groups[index]
-                                                              .id ??
-                                                          "",
-                                                      about: state.groups[index]
-                                                              .description ??
-                                                          "",
-                                                      width: width,
-                                                      height: height,
-                                                      title: state.groups[index]
-                                                              .title ??
-                                                          "",
-                                                      link: state.groups[index]
-                                                              .link ??
-                                                          "",
-                                                      image: state.groups[index]
-                                                              .imageUrl ??
-                                                          AppImages.eventImage,
-                                                      function: () async {
-                                                        BlocProvider.of<
-                                                                    AppFunctionsCubit>(
-                                                                context)
-                                                            .fetchGroup(
-                                                                id: state
-                                                                        .groups[
-                                                                            index]
-                                                                        .id ??
-                                                                    "");
-                                                      },
-                                                      completeFunction: () {
-                                                        BlocProvider.of<
-                                                                    AppFunctionsCubit>(
-                                                                context)
-                                                            .deleteGroup(
-                                                                id: state
-                                                                        .groups[
-                                                                            index]
-                                                                        .id ??
-                                                                    "");
-                                                      },
-                                                    );
+                                                        id: state.groups[index]
+                                                                .id ??
+                                                            "",
+                                                        about: state
+                                                                .groups[index]
+                                                                .description ??
+                                                            "",
+                                                        width: width,
+                                                        height: height,
+                                                        title: state
+                                                                .groups[index]
+                                                                .title ??
+                                                            "",
+                                                        link: state
+                                                                .groups[index]
+                                                                .link ??
+                                                            "",
+                                                        image: state
+                                                                .groups[index]
+                                                                .imageUrl ??
+                                                            AppImages
+                                                                .eventImage,
+                                                        function: () async {
+                                                          BlocProvider.of<
+                                                                      AppFunctionsCubit>(
+                                                                  context)
+                                                              .fetchGroup(
+                                                                  id: state
+                                                                          .groups[
+                                                                              index]
+                                                                          .id ??
+                                                                      "");
+                                                        },
+                                                        completeFunction: () {
+                                                          BlocProvider.of<
+                                                                      AppFunctionsCubit>(
+                                                                  context)
+                                                              .deleteGroup(
+                                                                  id: state
+                                                                          .groups[
+                                                                              index]
+                                                                          .id ??
+                                                                      "");
+                                                        },
+                                                      );
                                                     },
                                                   );
                                           },
@@ -383,18 +388,17 @@ class AppGroupsTab extends StatelessWidget {
                                               context: context,
                                               builder: (context) {
                                                 return EditGroupDialog(
-                                                  descriptionController: descriptionController,
+                                                  descriptionController:
+                                                      descriptionController,
                                                   tabController: tabController,
                                                   imageController:
                                                       imageController,
                                                   idController: idController,
                                                   nameController:
                                                       nameController,
-                                                  
                                                   linkController:
                                                       linkController,
                                                   context: context,
-                                                  
                                                 );
                                               },
                                             );
