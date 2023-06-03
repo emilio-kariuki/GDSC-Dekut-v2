@@ -93,9 +93,9 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (_) => const AdminLead());
 
       case '/admin_feedback':
-        return MaterialPageRoute(builder: (_) =>  const AppFeedback());
-        case '/admin_reports':
-        return MaterialPageRoute(builder: (_) =>  const AppReports());
+        return MaterialPageRoute(builder: (_) => const AppFeedback());
+      case '/admin_reports':
+        return MaterialPageRoute(builder: (_) => const AppReports());
       case '/more_resource':
         if (resourceArgs is ResourceArguments) {
           return MaterialPageRoute(
