@@ -569,7 +569,7 @@ class AdminPastEventCard extends StatelessWidget {
                               return AnimatedContainer(
                                 padding: const EdgeInsets.only(top: 5),
                                 decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
+                                   shape: BoxShape.circle,
                                   border: Border.all(
                                       width: 0.4,
                                       color: const Color(0xff666666)),
