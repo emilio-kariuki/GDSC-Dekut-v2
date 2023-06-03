@@ -139,8 +139,12 @@ class PastEvents extends StatelessWidget {
                             ),
                           ),
                         ),
+                        const SizedBox(
+                          width: 8,
+                        ),
                         SizedBox(
                           height: 49,
+                          width: 49,
                           child: ElevatedButton(
                             onPressed: () {
                               BlocProvider.of<EventBloc>(context)
