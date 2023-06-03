@@ -1,10 +1,9 @@
-// ignore_for_file: avoid_print, use_build_context_synchronously
+// ignore_for_file: avoid_print, use_build_context_synchronously, must_be_immutable
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
-import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
@@ -12,62 +11,61 @@ import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PersonalInformation extends StatefulWidget {
+class PersonalInformation extends StatelessWidget {
   PersonalInformation({super.key});
 
-  @override
-  State<PersonalInformation> createState() => _PersonalInformationState();
-}
-
-class _PersonalInformationState extends State<PersonalInformation> {
   final imagePicker = ImagePicker();
 
   final nameController = TextEditingController();
+
   final emailController = TextEditingController();
+
   final phoneController = TextEditingController();
+
   final githubController = TextEditingController();
+
   final twitterController = TextEditingController();
+
   final linkedinController = TextEditingController();
+
   final technologyController = TextEditingController();
+
   String image = AppImages.defaultImage;
-
-  @override
-  void initState() {
-    super.initState();
-    fetchUser();
-  }
-
-  fetchUser() async {
-    try {
-      final userId = await SharedPreferencesManager().getId();
-      print(userId);
-      final user = await Providers().getUser(userId: userId);
-      print(user);
-      nameController.text = user.name!;
-      emailController.text = user.email!;
-      phoneController.text = user.phone!;
-      githubController.text = user.github!;
-      twitterController.text = user.twitter!;
-      linkedinController.text = user.linkedin!;
-      technologyController.text = user.technology!;
-      image = user.imageUrl!;
-    } catch (e) {
-      print(e);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
 
     return BlocProvider(
-      create: (context) => AppFunctionsCubit(),
+      create: (context) => AppFunctionsCubit()..fetchUser(),
       child: Builder(builder: (context) {
         return Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            iconTheme: const IconThemeData(color: Color(0xff666666), size: 20),
+            title: Text(
+              "Personal Information",
+              style: GoogleFonts.inter(
+                fontSize: 17,
+                fontWeight: FontWeight.w500,
+                color: const Color(0xff666666),
+              ),
+            ),
+          ),
           bottomNavigationBar: Padding(
             padding: const EdgeInsets.all(10),
             child: BlocListener<AppFunctionsCubit, AppFunctionsState>(
               listener: (context, state) {
+                if (state is UserFetched) {
+                  nameController.text = state.user.name!;
+                  emailController.text = state.user.email!;
+                  phoneController.text = state.user.phone!;
+                  githubController.text = state.user.github!;
+                  twitterController.text = state.user.twitter!;
+                  linkedinController.text = state.user.linkedin!;
+                  technologyController.text = state.user.technology!;
+                  image = state.user.imageUrl!;
+                }
                 if (state is UpdateUserSuccess) {
                   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                       backgroundColor: Colors.green,
@@ -132,9 +130,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
           backgroundColor: Colors.white,
           body: SafeArea(
             child: RefreshIndicator(
-               onRefresh: () async {
-                  await fetchUser();
-                },
+              onRefresh: () async {
+                context.read<AppFunctionsCubit>().fetchUser();
+              },
               child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
@@ -208,7 +206,9 @@ class _PersonalInformationState extends State<PersonalInformation> {
                                 button: true,
                                 child: InkWell(
                                   onTap: () {
-                                    context.read<AppFunctionsCubit>().getImage();
+                                    context
+                                        .read<AppFunctionsCubit>()
+                                        .getImage();
                                   },
                                   child: Container(
                                     height: 30,
