@@ -38,49 +38,52 @@ class AdminReportCard extends StatelessWidget {
         child: Row(
           children: [
             Semantics(
-              button: true,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, '/image_view',
-                      arguments: ImageArguments(title: title, image: image));
-                },
-                child: CachedNetworkImage(
-                  height: height * 0.07,
-                  width: width * 0.2,
-                  placeholder: (context, url) {
-                    return Container(
-                        height: height * 0.07,
-                        width: width * 0.2,
-                        decoration: const BoxDecoration(
-                          color: Color.fromARGB(255, 243, 243, 243),
-                        ));
-                  },
-                  errorWidget: ((context, url, error) {
-                    return const Icon(
-                      Icons.error,
-                      size: 20,
-                      color: Colors.red,
-                    );
-                  }),
-                  imageUrl: image,
-                  fit: BoxFit.cover,
-                  imageBuilder: (context, imageProvider) {
-                    return AnimatedContainer(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
-                            width: 0.4, color: const Color(0xff666666)),
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                      duration: const Duration(milliseconds: 500),
-                    );
-                  },
+                  button: true,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, '/image_view',
+                                  arguments: ImageArguments(
+                                      title: title, image: image));
+                    },
+                    child: CachedNetworkImage(
+                      height: 50,
+                      width: 50,
+                      placeholder: (context, url) {
+                        return Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 243, 243, 243),
+                              // border: Border.all(width: 0.4, color: Color(0xff666666)),
+                              borderRadius: BorderRadius.circular(10)),
+                        );
+                      },
+                      errorWidget: ((context, url, error) {
+                        return const Icon(
+                          Icons.error,
+                          size: 20,
+                          color: Colors.red,
+                        );
+                      }),
+                      imageUrl: image,
+                      fit: BoxFit.fitHeight,
+                      imageBuilder: (context, imageProvider) {
+                        return AnimatedContainer(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            border: Border.all(
+                                width: 0.4, color: const Color(0xff666666)),
+                            image: DecorationImage(
+                              image: imageProvider,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          duration: const Duration(milliseconds: 500),
+                        );
+                      },
+                    ),
+                  ),
                 ),
-              ),
-            ),
             SizedBox(
               width: width * 0.03,
             ),
