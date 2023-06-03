@@ -2,47 +2,29 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/AdminCubit/admin_cubit.dart';
+import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/Widgets/profile_card.dart';
 import 'package:gdsc_bloc/Util/Widgets/profile_padding.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
-import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfilePage extends StatefulWidget {
+class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
-
-  @override
-  State<ProfilePage> createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  String name = "Tech Doe";
-  String email = "tech@gmail.com";
-
-  @override
-  void initState() {
-    super.initState();
-    fetchUser();
-  }
-
-  fetchUser() async {
-    try {
-      final userId = await SharedPreferencesManager().getId();
-      final user = await Providers().getUser(userId: userId);
-      name = user.name!;
-      email = user.email!;
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-    return BlocProvider(
-      create: (context) => AdminCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AdminCubit(),
+        ),
+        BlocProvider(
+          create: (context) => AppFunctionsCubit()..fetchUser(),
+        ),
+      ],
       child: Builder(builder: (context) {
         return Scaffold(
             backgroundColor: Colors.white,
@@ -81,48 +63,70 @@ class _ProfilePageState extends State<ProfilePage> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(
-                        height: height * 0.03,
-                      ),
-                      CachedNetworkImage(
-                        imageUrl: AppImages.eventImage,
-                        imageBuilder: (context, imageProvider) => Container(
-                          height: 100,
-                          width: 100,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(100),
-                            border: Border.all(
-                              width: 0.5,
-                              color: Colors.grey[500]!,
-                            ),
-                            image: DecorationImage(
-                              image: imageProvider,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 8,
-                      ),
-                      Text(
-                        name,
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 17,
-                          color: const Color(0xff000000),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 2,
-                      ),
-                      Text(
-                        email,
-                        style: GoogleFonts.inter(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14,
-                          color: const Color(0xff666666),
-                        ),
+                      BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
+                        builder: (context, state) {
+                          if (state is UserFetching) {
+                            return const Center(
+                                child: SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                              ),
+                            ));
+                          } else if (state is UserFetched) {
+                            return Column(
+                              children: [
+                                SizedBox(
+                                  height: height * 0.01,
+                                ),
+                                CachedNetworkImage(
+                                  imageUrl:state.user.imageUrl ?? AppImages.eventImage,
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    height: 100,
+                                    width: 100,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      border: Border.all(
+                                        width: 0.5,
+                                        color: Colors.grey[500]!,
+                                      ),
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Text(
+                                  state.user.name!,
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                    color: const Color(0xff000000),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  height: 2,
+                                ),
+                                Text(
+                                  state.user.email!,
+                                  style: GoogleFonts.inter(
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14,
+                                    color: const Color(0xff666666),
+                                  ),
+                                ),
+                              ],
+                            );
+                          } else {
+                            return const SizedBox.shrink();
+                          }
+                        },
                       ),
                       SizedBox(
                         height: height * 0.03,
@@ -194,8 +198,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   showTrailing: true,
                                 ),
                                 const ProfilePadding(),
-                                BlocConsumer<AdminCubit,
-                                    AdminState>(
+                                BlocConsumer<AdminCubit, AdminState>(
                                   listener: (context, state) {
                                     if (state is UserAdmin) {
                                       Navigator.pushNamed(
@@ -208,8 +211,8 @@ class _ProfilePageState extends State<ProfilePage> {
                                           backgroundColor: Colors.red,
                                           behavior: SnackBarBehavior.floating,
                                           shape: RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.circular(20)
-                                          ),
+                                              borderRadius:
+                                                  BorderRadius.circular(20)),
                                           content: Center(
                                             child: Text(
                                               "You are not an admin",
@@ -228,8 +231,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     return ProfileCard(
                                       title: "Admin",
                                       function: () {
-                                        BlocProvider.of<AdminCubit>(
-                                                context)
+                                        BlocProvider.of<AdminCubit>(context)
                                             .checkUserStatus();
                                       },
                                       showTrailing: true,
