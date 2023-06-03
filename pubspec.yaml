@@ -72,6 +72,7 @@ dependencies:
   gallery_saver: ^2.3.2
   grouped_list: ^5.1.2
   flutter_linkify: ^6.0.0
+  firebase_messaging: ^14.6.2
 
   
 
