@@ -148,39 +148,43 @@ class EventCard extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              width: 5,
-                            ),
-                            Tooltip(
-                              message: "Add event to calendar",
-                              child: Column(
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(
-                                        top: 10, bottom: 5),
-                                    // padding: const EdgeInsets.all(5),
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[800],
-                                        shape: BoxShape.circle),
-                                    child: IconButton(
-                                      onPressed: () {
-                                        // Providers().openLink(link: link);
-                                      },
-                                      icon: const Icon(Icons.calendar_month,
-                                          size: 22, color: Colors.white),
-                                    ),
-                                  ),
-                                  Text(
-                                    "Calendar",
-                                    style: GoogleFonts.inter(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                ],
-                              ),
-                            ),
+                            // const SizedBox(
+                            //   width: 5,
+                            // ),
+                            // Tooltip(
+                            //   message: "Add event to calendar",
+                            //   child: Column(
+                            //     children: [
+                            //       Container(
+                            //         margin: const EdgeInsets.only(
+                            //             top: 10, bottom: 5),
+                            //         // padding: const EdgeInsets.all(5),
+                            //         decoration: BoxDecoration(
+                            //             color: Colors.grey[800],
+                            //             shape: BoxShape.circle),
+                            //         child: IconButton(
+                            //           onPressed: () {
+                            //             Repository().addEventToCalendar(
+                            //                title: title,
+                            //                 summary: about,
+                            //                 startTime: Timestamp.now(),
+                            //                 endTime: Timestamp.now());
+                            //           },
+                            //           icon: const Icon(Icons.calendar_month,
+                            //               size: 22, color: Colors.white),
+                            //         ),
+                            //       ),
+                            //       Text(
+                            //         "Calendar",
+                            //         style: GoogleFonts.inter(
+                            //           fontSize: 13,
+                            //           fontWeight: FontWeight.w500,
+                            //           color: Colors.white,
+                            //         ),
+                            //       )
+                            //     ],
+                            //   ),
+                            // ),
                             const SizedBox(
                               width: 5,
                             ),
