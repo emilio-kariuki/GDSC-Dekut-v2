@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison, avoid_print, deprecated_member_use, use_build_context_synchronously
 
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,6 +22,9 @@ import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Data/Models/user_model.dart';
 import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:googleapis/calendar/v3.dart' as calendar;
+import 'package:googleapis_auth/auth.dart';
+import 'package:googleapis_auth/auth_io.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -166,7 +168,8 @@ class Repository {
     final GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: [
         'email',
-        // 'https://www.googleapis.com/auth/calendar',
+        'https://www.googleapis.com/auth/calendar',
+
       ],
     );
     try {
@@ -214,12 +217,13 @@ class Repository {
     }
   }
 
-  Stream<List<Event>> getEvents() async* {
+  Stream<List<EventModel>> getEvents() async* {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
       final events = firebaseFirestore.collection("event").snapshots().map(
-          (event) => event.docs.map((e) => Event.fromJson(e.data())).toList());
+          (event) =>
+              event.docs.map((e) => EventModel.fromJson(e.data())).toList());
 
       yield* events;
     } catch (e) {
@@ -373,7 +377,7 @@ class Repository {
     }
   }
 
-  Future<List<Event>> getEvent() async {
+  Future<List<EventModel>> getEvent() async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
@@ -382,7 +386,7 @@ class Repository {
           .where("isCompleted", isEqualTo: false)
           .get()
           .then((value) =>
-              value.docs.map((e) => Event.fromJson(e.data())).toList());
+              value.docs.map((e) => EventModel.fromJson(e.data())).toList());
       return event;
     } catch (e) {
       debugPrint(e.toString());
@@ -390,7 +394,7 @@ class Repository {
     }
   }
 
-  Future<List<Event>> getPastEvent() async {
+  Future<List<EventModel>> getPastEvent() async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
@@ -399,7 +403,7 @@ class Repository {
           .where("isCompleted", isEqualTo: true)
           .get()
           .then((value) =>
-              value.docs.map((e) => Event.fromJson(e.data())).toList());
+              value.docs.map((e) => EventModel.fromJson(e.data())).toList());
       return event;
     } catch (e) {
       debugPrint(e.toString());
@@ -552,7 +556,7 @@ class Repository {
     }
   }
 
-  Future<List<Event>> searchEvent({required String query}) async {
+  Future<List<EventModel>> searchEvent({required String query}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
@@ -561,7 +565,7 @@ class Repository {
           .where("isCompleted", isEqualTo: false)
           .get()
           .then((value) =>
-              value.docs.map((e) => Event.fromJson(e.data())).toList());
+              value.docs.map((e) => EventModel.fromJson(e.data())).toList());
 
       return events
           .where((element) =>
@@ -573,7 +577,7 @@ class Repository {
     }
   }
 
-  Future<List<Event>> searchPastEvent({required String query}) async {
+  Future<List<EventModel>> searchPastEvent({required String query}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
@@ -582,7 +586,7 @@ class Repository {
           .where("isCompleted", isEqualTo: true)
           .get()
           .then((value) =>
-              value.docs.map((e) => Event.fromJson(e.data())).toList());
+              value.docs.map((e) => EventModel.fromJson(e.data())).toList());
 
       return events
           .where((element) =>
@@ -594,13 +598,13 @@ class Repository {
     }
   }
 
-  Future<Event> getParticularEvent({required String id}) async {
+  Future<EventModel> getParticularEvent({required String id}) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
 
       final event = await firebaseFirestore.collection("event").doc(id).get();
 
-      return Event.fromJson(event.data()!);
+      return EventModel.fromJson(event.data()!);
     } catch (e) {
       debugPrint(e.toString());
       throw Exception(e);
@@ -1090,54 +1094,110 @@ class Repository {
     }
   }
 
-  Future<bool> addEventToCalendar(
-      {required String summary,
-      required Timestamp start,
-      required Timestamp end}) async {
+  Future<bool> addEventToCalendar({
+    required String title,
+    required String summary,
+    required Timestamp startTime,
+    required Timestamp endTime,
+  }) async {
+
+
+    final GoogleSignIn googleSignIn = GoogleSignIn(scopes: <String>[
+      'email',
+      'https://www.googleapis.com/auth/calendar',
+      'https://www.googleapis.com/auth/calendar.events'
+    ]);
+
+    await googleSignIn.signIn();
+
+    final GoogleSignInAuthentication googleAuth =
+        await googleSignIn.currentUser!.authentication;
+
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final AuthClient authClient = authenticatedClient(
+      http.Client(),
+      AccessCredentials(
+        AccessToken(
+          'Bearer',
+          credential.accessToken!,
+          DateTime.now().toUtc().add(
+            const Duration(seconds: 10),
+          ),
+        ),
+        credential.idToken,
+        ['https://www.googleapis.com/auth/calendar'],
+      ),
+    );
+    final calendar.CalendarApi calendarApi = calendar.CalendarApi(authClient);
+
+    calendar.Event event = calendar.Event();
+
+    event.summary = title;
+    event.description = summary;
+
+    calendar.EventDateTime start =  calendar.EventDateTime();
+    start.dateTime =  startTime.toDate();
+    start.timeZone = "GMT+03:00";
+    event.start = start;
+
+    calendar.EventDateTime end =  calendar.EventDateTime();
+    end.dateTime =  endTime.toDate().add(const Duration(hours: 1));
+    end.timeZone = "GMT+03:00";
+    event.end = end;
+
     try {
-      print("Calendar called");
-      const String url =
-          'https://www.googleapis.com/calendar/v3/calendars/emilio/events';
-
-      final String accessToken =
-          await SharedPreferencesManager().getAuthAccessToken();
-
-      final Map<String, dynamic> event = {
-        "summary": summary,
-        "start": {
-          "dateTime": start.toDate().toIso8601String(),
-          "timeZone": "Nairobi"
-        },
-        "end": {
-          "dateTime": end.toDate().toIso8601String(),
-          "timeZone": "Nairobi"
-        }
-      };
-
-      final String body = json.encode(event);
-
-      var response = await http.post(
-        Uri.parse(url),
-        headers: {
-          'Authorization': 'Bearer $accessToken',
-          'Content-Type': 'application/json',
-        },
-        body: body,
-      );
-
-      print(response.body);
-
-      if (response.statusCode == 200) {
-        debugPrint("event added to calendar");
-        return true;
-      } else {
-        return false;
-      }
+      await calendarApi.events.insert(event, 'primary');
+      print('Event added to the calendar');
+      return true;
     } catch (e) {
-      debugPrint(e.toString());
-
+      print('Error creating calendar event: $e');
       return false;
     }
+
+    // try {
+
+    //   ////////////////////////////////////
+    //   print("Called");
+    //   final scopes = [
+    //     calendar.CalendarApi.calendarScope,
+    //     calendar.CalendarApi.calendarEventsScope,
+    //     calendar.CalendarApi.calendarEventsReadonlyScope,
+    //   ];
+
+    //   var credentials = ServiceAccountCredentials.fromJson({
+    //     'private_key':
+    //         '-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCuJFvmMykM1KT9\nHC4lWFgkk4AGdNb87jeel/tCubJe7sN7MasYXYbgMAcrRBDUomX5NCaI4ZWIm3xX\nLgmje8gchTyK6/cfWHhdwYM1I39H6+Ykg2IaDhrIM8NW/yITPh0Oz/6V5EUsl6ic\n4oLOsoTxrHVmaHLul2QNRLPkXlMVD1DKJT/SnVEgWzcsOkEKRqPXIsaHwWaujTqy\nneqHDevzCs5aTJxZkSN6gMZC7Us2H6AMR343HKWPzI/5SmmTAzfCPyxyrtH2JqQB\nyEfvJ706y1QOcLV1c/BzpoqYRY80pkaMu4EfZSQT7Uic8Ms/ah7inl5g/YzGhZCc\nQ3XzyYp3AgMBAAECggEAB687DvF7AkHv9etkbel0GkkYATDuu8KXWbxDLjKbmGzY\n23rZnf2ikgoMhvA9/eQcs96FRM0PmDOkTQSPEFPKBNgsT8UR5qQ0y45ah+HFIBtc\n0IersJKmw+bk29XuXwMCrUCob1zfYJRgsGuechiWnUOK+rXpPHYZyCwb9Bvldqxf\nfZXGiTMwbwdPrDKGbcACJbanR2RkdsSzhu/mGNnySJ1XlbwEfekzMaqfJb452Ep6\njhXr+BDYU9jZM0+eGTr0/Nno8OkkARI5g59yXpAZS3kRH31+YOOnlI1i+NqJXMo3\nrrunGRVKQcJZC8AZIslB8VsPsuFwo2bnGZVhRFw5gQKBgQD2JrEBGa5ptJTgRizG\nY/DpmHz4Eiz/c6PUMaX85Ozd3FGpiqhNiEdmTcue0bxFJ3NtautvJJ/x/biTKT1V\nvGXaMxvNSY3zlAs994ewgv/fQuEHmu0ASrFGSv6aEEg+n36HNPGnwtEOXpoYtigx\n97UFUmtkL3q1Xt4kgzkUmZ93sQKBgQC1HBVXPp9yBi0jPxYZQNopoKgye6DPDMc0\nnEiRJufFRo6i8gXWQnGm98n5Bn3lQlb3cu7R/pYpEGFwOo6Ly+YcEj7U0dcjllBI\nIj6lDcB8/QRypIAAYAvq7+rnIHbsFV6WiiBvx9SV+DFNGrtrWTMWf9KS+/G2C/zj\nYTr9s51WpwKBgGLrX5yilm3SbTXH3byIc0tcxXPn0f+CmGbw4NTFps7t+D9bApHN\n32ukfdzASpm75e4l1qFepYxZOzCglQ58XK4YdebE1W/6oZ3weK4dpvgw5z/oKbBB\nVAZ8ot6FBpNsAywQwcB6UQsmR2UA5xxVgIC4A4JKdlSm4DzqIyk9J1GxAoGABBWc\nDZml8uZcwjy7/NnPkbzDzk+ncsPxAii8IjnkZDiRIu+eXhSlh4RzE6Cn2jHC0FXR\nOP8q18Y8zFElwdVZXSy0KgyJc44CRX4wN3y16Ju0K/m1wUxpOGUswQWkaPKabX6z\n+JFjI/ay9fAyZdtfIZTEZPg1nUtr6pzYvbv9QmUCgYAF243whL/waoHGl3NpqQ1X\nrNL3xpAs9+WcnwkTCUtqvclnZMEoKypUooDLzluN2G5bxwPYyllOI3g08GnqtW1Y\nPN4QEqRA5hx1WOxajjNXY8i8m1yO7S0tvCcicSdoiGwl8Tk6Ae+q6FjUSB0CGhYH\n1lCe5Avx/qBvfJ4pG3dNyw==\n-----END PRIVATE KEY-----\n',
+    //     'client_email': 'exemplary-oven-364223@appspot.gserviceaccount.com',
+    //     'client_id':
+    //         '377119171510-p8tcasg9ldjo5lrofb2kkc0aiprgn9oc.apps.googleusercontent.com',
+    //     'type': 'service_account'
+    //   });
+
+    //   print("Step 1");
+
+    //   var client = await clientViaServiceAccount(credentials, scopes);
+    //   var calendarApi = calendar.CalendarApi(client);
+    //   var event = calendar.Event();
+    //   event.summary = "Flutter Event";
+    //   print("Step 2");
+    //   event.start = calendar.EventDateTime(dateTime: DateTime.now());
+    //   event.end = calendar.EventDateTime(
+    //       dateTime: DateTime.now().add(const Duration(hours: 1)));
+
+    //   await calendarApi.events.insert(event, 'primary');
+
+    //   print("Event created");
+
+    //   return true;
+    // } catch (e) {
+    //   debugPrint(e.toString());
+
+    //   return false;
+    // }
   }
 
   Future<List<TwitterModel>> getSpaces() async {
