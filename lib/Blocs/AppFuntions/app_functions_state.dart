@@ -248,7 +248,7 @@ class SavingFailed extends AppFunctionsState {
 }
 
 class EventFetched extends AppFunctionsState {
-  final Event event;
+  final EventModel event;
 
    const EventFetched({required this.event});
 

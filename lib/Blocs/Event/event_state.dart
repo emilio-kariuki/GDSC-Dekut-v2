@@ -12,7 +12,7 @@ class EventInitial extends EventState {}
 class EventLoading extends EventState {}
 
 class EventSuccess extends EventState {
-  final List<Event> events;
+  final List<EventModel> events;
 
   const EventSuccess({required this.events});
 
@@ -34,7 +34,7 @@ class EventFailure extends EventState {
 class SearchEventLoading extends EventState {}
 
 class SearchEventSuccess extends EventState {
-  final List<Event> events;
+  final List<EventModel> events;
 
   const SearchEventSuccess({required this.events});
 

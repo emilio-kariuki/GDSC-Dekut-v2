@@ -81,11 +81,11 @@ class Providers {
     });
   }
 
-  Stream<List<Event>> getEvents() {
+  Stream<List<EventModel>> getEvents() {
     return Repository().getEvents();
   }
 
-  Future<List<Event>> getEvent() {
+  Future<List<EventModel>> getEvent() {
     return Repository().getEvent();
   }
 
@@ -118,20 +118,20 @@ class Providers {
     return response;
   }
 
-  Future<List<Event>> searchEvent({required String query}) async {
+  Future<List<EventModel>> searchEvent({required String query}) async {
     final response = await Repository().searchEvent(query: query);
     return response;
   }
 
-  Future<bool> addEventToCalendar(
-      {required String summary,
-      required Timestamp start,
-      required Timestamp end}) async {
-    final response = await Repository()
-        .addEventToCalendar(summary: summary, start: start, end: end);
+  // Future<bool> addEventToCalendar(
+  //     {required String summary,
+  //     required Timestamp start,
+  //     required Timestamp end}) async {
+  //   final response = await Repository()
+  //       .addEventToCalendar(summary: summary, startTime: start, endTime: end);
 
-    return response;
-  }
+  //   return response;
+  // }
 
   Future<List<TwitterModel>> getSpaces() async {
     final response = await Repository().getSpaces();
@@ -352,17 +352,17 @@ class Providers {
     return response;
   }
 
-  Future<List<Event>> getPastEvent() async {
+  Future<List<EventModel>> getPastEvent() async {
     final response = await Repository().getPastEvent();
     return response;
   }
 
-  Future<List<Event>> searchPastEvent({required String query}) async {
+  Future<List<EventModel>> searchPastEvent({required String query}) async {
     final response = await Repository().searchPastEvent(query: query);
     return response;
   }
 
-  Future<Event> getParticularEvent({required String id}) async {
+  Future<EventModel> getParticularEvent({required String id}) async {
     final response = await Repository().getParticularEvent(id: id);
     return response;
   }

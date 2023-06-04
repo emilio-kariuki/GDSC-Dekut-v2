@@ -6,11 +6,11 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-Event eventFromJson(String str) => Event.fromJson(json.decode(str));
+EventModel eventFromJson(String str) => EventModel.fromJson(json.decode(str));
 
-String eventToJson(Event data) => json.encode(data.toJson());
+String eventToJson(EventModel data) => json.encode(data.toJson());
 
-class Event {
+class EventModel {
   final String?id;
   String? title;//
   String? venue;//
@@ -24,7 +24,7 @@ class Event {
   Timestamp? date;
   bool? isCompleted;
 
-  Event({
+  EventModel({
     this.id,
     this.title,
     this.venue,
@@ -39,7 +39,7 @@ class Event {
     required this.endTime,
   });
 
-  factory Event.fromJson(Map<String, dynamic> json) => Event(
+  factory EventModel.fromJson(Map<String, dynamic> json) => EventModel(
         isCompleted: json["isCompleted"],
         id: json["id"],
         title: json["title"],
