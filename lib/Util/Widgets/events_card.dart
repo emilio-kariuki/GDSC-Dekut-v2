@@ -231,9 +231,13 @@ class EventCard extends StatelessWidget {
                                       shape: BoxShape.circle),
                                   child: IconButton(
                                     onPressed: () {
+                                      // Providers().shareEvent(
+                                      //   image: image,
+                                      //    title:
+                                      //         "$title and the link is : $link");
                                       Providers().share(
                                           message:
-                                              "The link to join $title is $link");
+                                              "$title and the link is : $link");
                                     },
                                     icon: const Icon(Icons.share,
                                         size: 22, color: Colors.white),
