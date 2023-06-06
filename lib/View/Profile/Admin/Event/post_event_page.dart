@@ -9,6 +9,8 @@ import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../../../Data/Repository/providers.dart';
+
 class PostEvent extends StatelessWidget {
   PostEvent({super.key, required this.tabController});
 
@@ -46,36 +48,12 @@ class PostEvent extends StatelessWidget {
               );
               print(imageController.text);
 
-              AwesomeNotifications().createNotification(
-                  content: NotificationContent(
-                    id: 10,
-                    channelKey: 'event_key',
-                    title: "New Event Created",
-                    body: nameController.text,
-                    bigPicture: imageController.text,
-                    criticalAlert: false,
-                    wakeUpScreen: true,
-                    category: NotificationCategory.Event,
-                    notificationLayout: NotificationLayout.BigPicture,
-                    payload: {'title': nameController.text},
-                  ),
-                  actionButtons: [
-                    NotificationActionButton(
-                      key: 'OPEN_EVENT',
-                      label: 'Open Event',
-                      buttonType: ActionButtonType.Default,
-                      enabled: true,
-                      icon: 'resource://drawable/logo',
-                    ),
-                  ]);
+              Providers().sendFirebaseNotification(
+                title: nameController.text,
+                body: descriptionController.text,
+                image: imageController.text,
+              );
 
-              AwesomeNotifications()
-                  .actionStream
-                  .listen((receivedNotification) {
-                if (receivedNotification.buttonKeyPressed == 'OPEN_EVENT') {
-                  Navigator.pushNamed(context, '/events_page');
-                }
-              });
               tabController.animateTo(0);
             }
           },
