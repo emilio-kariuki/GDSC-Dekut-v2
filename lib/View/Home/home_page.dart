@@ -144,12 +144,21 @@ class EventPage extends StatelessWidget {
                                 ),
                               ],
                             ),
-                             const  Spacer(),
-                             IconButton(
-                               padding:  EdgeInsets.zero,
-                               onPressed: (){
-                              Navigator.pushNamed(context, '/announcement_page');
-                               }, icon: const Icon(Icons.notifications_active_outlined, size: 24, color: Colors.black,),)
+                            const Spacer(),
+                            IconButton(
+                              padding: EdgeInsets.zero,
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                    context, '/announcement_page');
+
+                                
+                              },
+                              icon: const Icon(
+                                Icons.notifications_active_outlined,
+                                size: 24,
+                                color: Colors.black,
+                              ),
+                            )
                           ],
                         ),
                         const SizedBox(
@@ -197,6 +206,64 @@ class EventPage extends StatelessWidget {
                               ),
                             ),
                           ),
+                        ),
+                        const SizedBox(height: 10),
+                        StreamBuilder<List<AnnouncementModel>>(
+                          stream: Repository().getAnnoucements(),
+                          builder: (context, snapshot) {
+                            Widget output = const SizedBox.shrink();
+                            final data = snapshot.data;
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              output = SizedBox(
+                                height: height * 0.2,
+                                child: const Center(child: LoadingCircle()),
+                              );
+                            }
+                            if (snapshot.hasData) {
+                              output = Column(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const CategoryWidget(
+                                    title: "Announcements",
+                                    location: '/announcement_page',
+                                  ),
+                                  data!.isEmpty
+                                      ? Center(
+                                          child: NotFoundCard(
+                                            height: height,
+                                            width: width,
+                                            title: "No annoucement found",
+                                            body:
+                                                "Incase of any announcements\n they will displayed here",
+                                          ),
+                                        )
+                                      : ListView.builder(
+                                          shrinkWrap: true,
+                                          scrollDirection: Axis.vertical,
+                                          physics:
+                                              const NeverScrollableScrollPhysics(),
+                                          itemCount:
+                                              data.length > 2 ? 2 : data.length,
+                                          itemBuilder: (context, index) {
+                                            return AnnouncementCard(
+                                              id: data[index].id ?? "",
+                                              height: height,
+                                              width: width,
+                                              title: data[index].title ?? "",
+                                              name: data[index].name ?? "",
+                                              position:
+                                                  data[index].position ?? "",
+                                            );
+                                          },
+                                        ),
+                                ],
+                              );
+                            }
+                            return output;
+                          },
                         ),
                         const SizedBox(
                           height: 10,
@@ -295,162 +362,108 @@ class EventPage extends StatelessWidget {
                             }
                           },
                         ),
+                        
                         BlocProvider(
-                          create: (context) =>   AppFunctionsCubit()..getTwitterSpaces(),
-                          child:
-                              Builder(
-                                builder: (context) {
-                                  return BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
-                            builder: (context, state) {
-                                  if (state is TwitterSpaceLoading) {
-                                    return SizedBox(
-                                        height: height * 0.65,
-                                        child:
-                                            const Center(child: LoadingCircle()));
-                                  } else if (state is TwitterSpaceSuccess) {
-                                    return Column(
-                                      mainAxisSize: MainAxisSize.min,
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        const CategoryWidget(
-                                          title: "Twitter Spaces",
-                                          location: '/twitter_page',
-                                        ),
-                                        state.spaces.isEmpty
-                                            ? Center(
-                                                child: NotFoundCard(
-                                                  height: height,
-                                                  width: width,
-                                                  title: "No spaces found",
-                                                  body:
-                                                      "Incase of any twitter spaces\n they will displayed here",
-                                                ),
-                                              )
-                                            : SizedBox(
-                                                height: height * 0.22,
-                                                child: ListView.builder(
-                                                  shrinkWrap: true,
-                                                  scrollDirection: Axis.horizontal,
-                                                  itemCount: state.spaces.length,
-                                                  itemBuilder: (context, index) {
-                                                    final Timestamp startTime =
-                                                        state.spaces[index]
-                                                            .startTime;
-                                                    final Timestamp endTime =
-                                                        state.spaces[index].endTime;
-                                                    final DateTime startDateTime =
-                                                        startTime.toDate();
-                                                    final DateTime endDateTime =
-                                                        endTime.toDate();
-
-                                                    final String startTimeString =
-                                                        DateFormat.jm()
-                                                            .format(startDateTime);
-                                                    final String endTimeString =
-                                                        DateFormat.jm()
-                                                            .format(endDateTime);
-
-                                                    final Timestamp timestamp =
-                                                        state.spaces[index]
-                                                            .startTime;
-
-                                                    final DateTime dateTime =
-                                                        timestamp.toDate();
-
-                                                    // final String dateString =
-                                                    //     DateFormat.yMMMMd().format(dateTime);
-
-                                                    final String dateString =
-                                                        DateFormat.MMMEd()
-                                                            .format(dateTime);
-                                                    return TwitterCard(
-                                                      width: width,
-                                                      height: height,
-                                                      title: state.spaces[index]
-                                                              .title ??
-                                                          "",
-                                                      link: state
-                                                              .spaces[index].link ??
-                                                          "",
-                                                      image: state.spaces[index]
-                                                              .image ??
-                                                          AppImages.eventImage,
-                                                      startTime: startTimeString,
-                                                      endTime: endTimeString,
-                                                      date: dateString,
-                                                    );
-                                                  },
-                                                ),
+                          create: (context) =>
+                              AppFunctionsCubit()..getTwitterSpaces(),
+                          child: Builder(builder: (context) {
+                            return BlocBuilder<AppFunctionsCubit,
+                                AppFunctionsState>(
+                              builder: (context, state) {
+                                if (state is TwitterSpaceLoading) {
+                                  return SizedBox(
+                                      height: height * 0.65,
+                                      child:
+                                          const Center(child: LoadingCircle()));
+                                } else if (state is TwitterSpaceSuccess) {
+                                  return Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      const CategoryWidget(
+                                        title: "Twitter Spaces",
+                                        location: '/twitter_page',
+                                      ),
+                                      state.spaces.isEmpty
+                                          ? Center(
+                                              child: NotFoundCard(
+                                                height: height,
+                                                width: width,
+                                                title: "No spaces found",
+                                                body:
+                                                    "Incase of any twitter spaces\n they will displayed here",
                                               ),
-                                      ],
-                                    );
-                                  } else {
-                                    return const SizedBox.shrink();
-                                  }
-                            },
-                          );
+                                            )
+                                          : SizedBox(
+                                              height: height * 0.22,
+                                              child: ListView.builder(
+                                                shrinkWrap: true,
+                                                scrollDirection:
+                                                    Axis.horizontal,
+                                                itemCount: state.spaces.length,
+                                                itemBuilder: (context, index) {
+                                                  final Timestamp startTime =
+                                                      state.spaces[index]
+                                                          .startTime;
+                                                  final Timestamp endTime =
+                                                      state.spaces[index]
+                                                          .endTime;
+                                                  final DateTime startDateTime =
+                                                      startTime.toDate();
+                                                  final DateTime endDateTime =
+                                                      endTime.toDate();
+
+                                                  final String startTimeString =
+                                                      DateFormat.jm().format(
+                                                          startDateTime);
+                                                  final String endTimeString =
+                                                      DateFormat.jm()
+                                                          .format(endDateTime);
+
+                                                  final Timestamp timestamp =
+                                                      state.spaces[index]
+                                                          .startTime;
+
+                                                  final DateTime dateTime =
+                                                      timestamp.toDate();
+
+                                                  // final String dateString =
+                                                  //     DateFormat.yMMMMd().format(dateTime);
+
+                                                  final String dateString =
+                                                      DateFormat.MMMEd()
+                                                          .format(dateTime);
+                                                  return TwitterCard(
+                                                    width: width,
+                                                    height: height,
+                                                    title: state.spaces[index]
+                                                            .title ??
+                                                        "",
+                                                    link: state.spaces[index]
+                                                            .link ??
+                                                        "",
+                                                    image: state.spaces[index]
+                                                            .image ??
+                                                        AppImages.eventImage,
+                                                    startTime: startTimeString,
+                                                    endTime: endTimeString,
+                                                    date: dateString,
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                    ],
+                                  );
+                                } else {
+                                  return const SizedBox.shrink();
                                 }
-                              ),
+                              },
+                            );
+                          }),
                         ),
-                        const SizedBox(height: 10),
-                        StreamBuilder<List<AnnouncementModel>>(
-                          stream: Repository().getAnnoucements(),
-                          builder: (context, snapshot) {
-                            Widget output = const SizedBox.shrink();
-                            final data = snapshot.data;
-                            if (snapshot.connectionState ==
-                                ConnectionState.waiting) {
-                              output = SizedBox(
-                                height: height * 0.2,
-                                child: const Center(child: LoadingCircle()),
-                              );
-                            }
-                            if (snapshot.hasData) {
-                              output = Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const CategoryWidget(
-                                    title: "Announcements",
-                                    location: '/announcement_page',
-                                  ),
-                                  data!.isEmpty
-                                      ? Center(
-                                          child: NotFoundCard(
-                                            height: height,
-                                            width: width,
-                                            title: "No annoucement found",
-                                            body:
-                                                "Incase of any announcements\n they will displayed here",
-                                          ),
-                                        )
-                                      : ListView.builder(
-                                          shrinkWrap: true,
-                                          scrollDirection: Axis.vertical,
-                                          physics:
-                                              const NeverScrollableScrollPhysics(),
-                                          itemCount:
-                                              data.length > 2 ? 2 : data.length,
-                                          itemBuilder: (context, index) {
-                                            return AnnouncementCard(
-                                              id: data[index].id ?? "",
-                                              height: height,
-                                              width: width,
-                                              title: data[index].title ?? "",
-                                              name: data[index].name ?? "",
-                                              position:
-                                                  data[index].position ?? "",
-                                            );
-                                          },
-                                        ),
-                                ],
-                              );
-                            }
-                            return output;
-                          },
-                        ),
+                        
                         const CategoryWidget(
                           title: "Tech Groups",
                           location: '/tech_groups_page',
