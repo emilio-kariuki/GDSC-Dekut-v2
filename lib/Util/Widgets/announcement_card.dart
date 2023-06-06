@@ -49,13 +49,17 @@ class AnnouncementCard extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Text(
-                title,
-                style: GoogleFonts.inter(
-                  fontSize: 15,
-                  color: const Color(0xff000000),
-                  fontWeight: FontWeight.w600,
-                ),
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 5,

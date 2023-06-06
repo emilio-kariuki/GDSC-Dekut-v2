@@ -53,13 +53,17 @@ class AnnouncementAdminCard extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Text(
-                title,
-                style: GoogleFonts.inter(
-                  fontSize: 15,
-                  color: const Color(0xff000000),
-                  fontWeight: FontWeight.w600,
-                ),
+              Row(
+                children: [
+                  Text(
+                    title,
+                    style: GoogleFonts.inter(
+                      fontSize: 15,
+                      color: const Color(0xff000000),
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
               ),
               const SizedBox(
                 height: 5,
@@ -76,66 +80,65 @@ class AnnouncementAdminCard extends StatelessWidget {
                 height: 15,
               ),
               SizedBox(
-                    height: 40,
-                    width: width ,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          width: 120,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.white,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                  color: Colors.black,
-                                  width: 0.55,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
+                height: 40,
+                width: width,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    SizedBox(
+                      width: 120,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.white,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 0.55,
                             ),
-                            onPressed: editFunction,
-                            child: Text(
-                              "Edit",
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                color: const Color(0xff5B5561),
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                            borderRadius: BorderRadius.circular(20),
                           ),
                         ),
-                        const Spacer(),
-                        SizedBox(
-                          width: 120,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              primary: Colors.red,
-                              elevation: 0,
-                              shape: RoundedRectangleBorder(
-                                side: const BorderSide(
-                                  color: Colors.black,
-                                  width: 0.1,
-                                ),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                            ),
-                            onPressed: deleteFunction,
-                            child: Text(
-                              "Delete",
-                              style: GoogleFonts.inter(
-                                fontSize: 14,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                        onPressed: editFunction,
+                        child: Text(
+                          "Edit",
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: const Color(0xff5B5561),
+                            fontWeight: FontWeight.w500,
                           ),
                         ),
-                      ],
+                      ),
                     ),
-                  )
-              
+                    const Spacer(),
+                    SizedBox(
+                      width: 120,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                          elevation: 0,
+                          shape: RoundedRectangleBorder(
+                            side: const BorderSide(
+                              color: Colors.black,
+                              width: 0.1,
+                            ),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                        ),
+                        onPressed: deleteFunction,
+                        child: Text(
+                          "Delete",
+                          style: GoogleFonts.inter(
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         ),
