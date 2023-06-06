@@ -35,7 +35,7 @@ class PostAdminSpace extends StatelessWidget {
                   const Duration(milliseconds: 100),
                   () => ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(
-                      behavior: SnackBarBehavior.floating,
+                      // behavior: SnackBarBehavior.floating,
                       backgroundColor: Color(0xFF0C7319),
                       content: Text("Space created"),
                     ),
