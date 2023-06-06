@@ -1,5 +1,6 @@
-// ignore_for_file: unnecessary_null_comparison, avoid_print, deprecated_member_use, use_build_context_synchronously
+// ignore_for_file: unnecessary_null_comparison, avoid_print, deprecated_member_use, use_build_context_synchronously, depend_on_referenced_packages
 
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_native_api/flutter_native_api.dart';
 import 'package:gallery_saver/gallery_saver.dart';
 import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/developer_model.dart';
@@ -169,7 +171,6 @@ class Repository {
       scopes: [
         'email',
         'https://www.googleapis.com/auth/calendar',
-
       ],
     );
     try {
@@ -1100,12 +1101,10 @@ class Repository {
     required Timestamp startTime,
     required Timestamp endTime,
   }) async {
-
-
     final GoogleSignIn googleSignIn = GoogleSignIn(scopes: <String>[
       'email',
-      'https://www.googleapis.com/auth/calendar',
-      'https://www.googleapis.com/auth/calendar.events'
+      // 'https://www.googleapis.com/auth/calendar',
+      // 'https://www.googleapis.com/auth/calendar.events'
     ]);
 
     await googleSignIn.signIn();
@@ -1125,8 +1124,8 @@ class Repository {
           'Bearer',
           credential.accessToken!,
           DateTime.now().toUtc().add(
-            const Duration(seconds: 10),
-          ),
+                const Duration(seconds: 10),
+              ),
         ),
         credential.idToken,
         ['https://www.googleapis.com/auth/calendar'],
@@ -1139,13 +1138,13 @@ class Repository {
     event.summary = title;
     event.description = summary;
 
-    calendar.EventDateTime start =  calendar.EventDateTime();
-    start.dateTime =  startTime.toDate();
+    calendar.EventDateTime start = calendar.EventDateTime();
+    start.dateTime = startTime.toDate();
     start.timeZone = "GMT+03:00";
     event.start = start;
 
-    calendar.EventDateTime end =  calendar.EventDateTime();
-    end.dateTime =  endTime.toDate().add(const Duration(hours: 1));
+    calendar.EventDateTime end = calendar.EventDateTime();
+    end.dateTime = endTime.toDate().add(const Duration(hours: 1));
     end.timeZone = "GMT+03:00";
     event.end = end;
 
@@ -1501,7 +1500,7 @@ class Repository {
 
   Future<bool> openLink({required String link}) async {
     try {
-      if (await canLaunchUrl(Uri.parse(link))) {
+      if (await canLaunchUrl(Uri.parse(link.trim()))) {
         await launch(link, forceSafariVC: false);
       } else {
         throw 'Could not launch $link';
@@ -1702,6 +1701,17 @@ class Repository {
     }
   }
 
+  Future shareEvent({required String image, required String title}) async {
+    try {
+      await FlutterNativeApi.shareImage(
+        image,
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
   Future tweet({required String message}) async {
     try {
       var tweetUrl =
@@ -1769,5 +1779,158 @@ class Repository {
       lastDate: DateTime(2101),
     );
     return picked;
+  }
+
+  Future<bool> createEventNotification({
+    required String title,
+    required String body,
+    required String image,
+  }) async {
+    try {
+      final client = http.Client();
+      const postUrl = 'https://fcm.googleapis.com/fcm/send';
+
+      final data = {
+        "to": "/topics/test",
+        "mutable_content": true,
+        'notification': {
+          'title': title,
+          'body': body,
+        },
+        'priority': 'high',
+        'data': {
+          "content": {
+            "id": 1,
+            "badge": 42,
+            "channelKey": "event_key",
+            "displayOnForeground": true,
+            "notificationLayout": "BigPicture",
+            "largeIcon": image,
+            "bigPicture": image,
+            "showWhen": false,
+            "autoDismissible": true,
+            "privacy": "Public",
+            "payload": {"secret": "Awesome Notifications Rocks!"}
+          },
+          "actionButtons": [
+            {"key": "REDIRECT", "label": "Redirect", "autoDismissible": true},
+            {
+              "key": "DISMISS",
+              "label": "Dismiss",
+              "actionType": "DismissAction",
+              "isDangerousOption": true,
+              "autoDismissible": true
+            }
+          ],
+          "Android": {
+            "content": {
+              "title": "Android! The eagle has landed!",
+              "payload": {"android": "android custom content!"}
+            }
+          },
+        },
+      };
+
+      //hi there
+
+      final headers = {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'key=AAAAta6X3Qk:APA91bGweK3WrC4RhucqVV29O__UAyeCbu-Jen34MTdaxlzux6QvwENfPCRwoPXMDnHQJTJ_f3lsvafud24OnQzbri2o12Y_YB7dXWdPcA71aHc00Cds5ZnF_JEw6MyBdG6UUe-jBouQ',
+      };
+
+      final response = await client.post(
+        Uri.parse(postUrl),
+        headers: headers,
+        encoding: Encoding.getByName('utf-8'),
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        print('Notification sent successfully.');
+        return true;
+      } else {
+        print('Notification sent failed.');
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
+  }
+
+  Future<bool> createAnnouncementNotification({
+    required String title,
+    required String body,
+  }) async {
+    try {
+      final client = http.Client();
+      const postUrl = 'https://fcm.googleapis.com/fcm/send';
+
+      final data = {
+        "to": "/topics/test",
+        "mutable_content": true,
+        'notification': {
+          'title': title,
+          'body': body,
+        },
+        'priority': 'high',
+        'data': {
+          "content": {
+            "id": 1,
+            "badge": 42,
+            "channelKey": "announcement_key",
+            "displayOnForeground": true,
+            "notificationLayout": "BigPicture",
+            "showWhen": false,
+            "autoDismissible": true,
+            "privacy": "Public",
+            "payload": {"secret": "Awesome Notifications Rocks!"}
+          },
+          "actionButtons": [
+            {"key": "REDIRECT", "label": "Redirect", "autoDismissible": true},
+            {
+              "key": "DISMISS",
+              "label": "Dismiss",
+              "actionType": "DismissAction",
+              "isDangerousOption": true,
+              "autoDismissible": true
+            }
+          ],
+          "Android": {
+            "content": {
+              "title": "Android! The eagle has landed!",
+              "payload": {"android": "android custom content!"}
+            }
+          },
+        },
+      };
+
+      //hi there
+
+      final headers = {
+        'Content-Type': 'application/json',
+        'Authorization':
+            'key=AAAAta6X3Qk:APA91bGweK3WrC4RhucqVV29O__UAyeCbu-Jen34MTdaxlzux6QvwENfPCRwoPXMDnHQJTJ_f3lsvafud24OnQzbri2o12Y_YB7dXWdPcA71aHc00Cds5ZnF_JEw6MyBdG6UUe-jBouQ',
+      };
+
+      final response = await client.post(
+        Uri.parse(postUrl),
+        headers: headers,
+        encoding: Encoding.getByName('utf-8'),
+        body: json.encode(data),
+      );
+
+      if (response.statusCode == 200) {
+        print('Notification sent successfully.');
+        return true;
+      } else {
+        print('Notification sent failed.');
+        return false;
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+      throw Exception(e);
+    }
   }
 }

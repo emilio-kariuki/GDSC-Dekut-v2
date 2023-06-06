@@ -663,9 +663,37 @@ class Providers {
     return response;
   }
 
-
   Future<List<ReportModel>> getReports() async {
     final response = await Repository().getReports();
+    return response;
+  }
+
+  Future shareEvent({required String image, required String title}) async {
+    final response = await Repository().shareEvent(image: image, title: title);
+    return response;
+  }
+
+  Future<bool> sendFirebaseNotification({
+    required String title,
+    required String body,
+    required String image,
+  }) async {
+    final response = await Repository().createEventNotification(
+      title: title,
+      body: body,
+      image: image,
+    );
+    return response;
+  }
+
+  Future<bool> createAnnouncementNotification({
+    required String title,
+    required String body,
+  }) async {
+    final response = await Repository().createAnnouncementNotification(
+      title: title,
+      body: body,
+    );
     return response;
   }
 }
