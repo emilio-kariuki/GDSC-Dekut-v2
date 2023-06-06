@@ -183,6 +183,8 @@ class TwitterPage extends StatelessWidget {
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                                 crossAxisCount: 3,
+                                                mainAxisSpacing: 10,
+                                                crossAxisSpacing: 4,
                                                 childAspectRatio: 0.65),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
@@ -267,6 +269,8 @@ class TwitterPage extends StatelessWidget {
                                         gridDelegate:
                                             const SliverGridDelegateWithFixedCrossAxisCount(
                                           crossAxisCount: 3,
+                                          mainAxisSpacing: 10,
+                                                crossAxisSpacing: 4,
                                           childAspectRatio: 0.65,
                                         ),
                                         physics:
