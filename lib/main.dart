@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:typed_data';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -21,14 +22,97 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
   FirebaseMessaging.instance.subscribeToTopic('test');
 
+  FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    RemoteNotification? notification = message.notification;
+    AndroidNotification? android = message.notification?.android;
+    if (notification != null && android != null) {
+      Map<String, dynamic> data = message.data;
+      String content = data["content"];
+      final contentData = jsonDecode(content);
+      final channelKey = contentData["channelKey"];
+      if (channelKey == "event_key") {
+        displayEventNotification(
+          notification: notification,
+          android: android,
+          image: contentData["largeIcon"],
+          channelKey: channelKey,
+        );
+      } else if (channelKey == "announcement_key") {
+        displayAnnouncementNotification(
+          notification: notification,
+          android: android,
+          channelKey: channelKey,
+        );
+      }
+    }
+    //call awesome notifications fcm
+  });
 
   runApp(const MyApp());
+}
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
+
+void displayEventNotification(
+    {required RemoteNotification notification,
+    required AndroidNotification android,
+    required String image,
+    required String channelKey}) {
+  AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 0,
+        channelKey: channelKey,
+        title: notification.title,
+        body: notification.body,
+        bigPicture: image,
+        criticalAlert: true,
+        wakeUpScreen: true,
+        notificationLayout: NotificationLayout.BigPicture,
+        category: NotificationCategory.Event,
+      ),
+      actionButtons: [
+        NotificationActionButton(
+          key: 'OPEN_EVENT',
+          label: 'Open',
+          buttonType: ActionButtonType.Default,
+          enabled: true,
+          icon: 'resource://drawable/logo',
+        ),
+      ]);
+}
+
+void displayAnnouncementNotification(
+    {required RemoteNotification notification,
+    required AndroidNotification android,
+    required String channelKey}) {
+  AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: 0,
+        channelKey: channelKey,
+        title: notification.title,
+        body: notification.body,
+        criticalAlert: true,
+        wakeUpScreen: true,
+        notificationLayout: NotificationLayout.Default,
+      ),
+      actionButtons: [
+        NotificationActionButton(
+          key: 'OPEN_ANNOUNCEMENT',
+          label: 'Open',
+          buttonType: ActionButtonType.Default,
+          enabled: true,
+          icon: 'resource://drawable/logo',
+        ),
+      ]);
 }
 
 class MyApp extends StatefulWidget {
@@ -39,6 +123,8 @@ class MyApp extends StatefulWidget {
 }
 
 class MyAppState extends State<MyApp> {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
   @override
   void initState() {
     super.initState();
@@ -56,24 +142,36 @@ class MyAppState extends State<MyApp> {
             enableVibration: true,
             vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
             importance: NotificationImportance.Min,
+          ),
+          NotificationChannel(
+            channelGroupKey: 'announcement_channel',
+            channelKey: 'announcement_key',
+            channelName: 'announcement Notifications',
+            channelDescription: 'Notification channel for announcements',
+            defaultColor: const Color(0xFF9D50DD),
+            ledColor: Colors.white,
+            playSound: false,
+            enableVibration: true,
+            vibrationPattern: Int64List.fromList([0, 1000, 500, 1000]),
+            importance: NotificationImportance.Max,
           )
         ],
         channelGroups: [
           NotificationChannelGroup(
-            channelGroupkey: 'event_channel',
-            channelGroupName: 'Event Channel',
+            channelGroupkey: 'announcement_channel',
+            channelGroupName: 'announcement Channel',
           )
         ],
         debug: true);
 
-    AwesomeNotifications()
-        .actionStream
-        .listen((ReceivedNotification receivedAction) {
-     if (receivedAction.payload != null) {
-    AwesomeNotifications().createNotificationFromJsonData(receivedAction.payload!);
-  }
+    AwesomeNotifications().actionStream.listen((receivedNotification) {
+      receivedNotification.createdSource = NotificationSource.Local;
 
-      print('Received a notification: ${receivedAction.id}');
+      if (receivedNotification.buttonKeyPressed == 'OPEN_EVENT') {
+        navigatorKey.currentState!.pushNamed('/events_page');
+      } else if (receivedNotification.buttonKeyPressed == 'OPEN_ANNOUNCEMENT') {
+        navigatorKey.currentState!.pushNamed('/announcement_page');
+      }
     });
 
     AwesomeNotifications().isNotificationAllowed().then((isAllowed) {
@@ -122,7 +220,10 @@ class MyAppState extends State<MyApp> {
         ),
       ],
       child: MaterialApp(
-        onGenerateRoute: RouteGenerator.generateRoute,
+        navigatorKey: navigatorKey,
+        onGenerateRoute: (settings) {
+          return RouteGenerator.generateRoute(settings, context);
+        },
         themeMode: ThemeMode.dark,
         theme: ThemeData(
           primarySwatch: Colors.blue,
