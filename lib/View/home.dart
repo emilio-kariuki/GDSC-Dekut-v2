@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
     List<Widget> pages = [
       EventPage(),
       ResourcesPage(),
-      MessagesPage(),
+      const MessagesPage(),
       const ProfilePage(),
     ];
     return BlocBuilder<AppFunctionsCubit, AppFunctionsState>(

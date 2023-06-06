@@ -222,7 +222,7 @@ class MyAppState extends State<MyApp> {
       child: MaterialApp(
         navigatorKey: navigatorKey,
         onGenerateRoute: (settings) {
-          return RouteGenerator.generateRoute(settings, context);
+          return RouteGenerator.generateRoute(settings);
         },
         themeMode: ThemeMode.dark,
         theme: ThemeData(

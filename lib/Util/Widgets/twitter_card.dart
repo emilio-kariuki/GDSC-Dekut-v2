@@ -5,6 +5,7 @@ import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/route_generator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 
 class TwitterCard extends StatelessWidget {
   const TwitterCard({
@@ -343,6 +344,7 @@ class TwitterCard extends StatelessWidget {
                   fontWeight: FontWeight.w700,
                   fontSize: 11,
                   color: Colors.black,
+                  // decoration: TextDecoration.lineThrough
                 ),
               ),
               body: Column(
@@ -373,6 +375,7 @@ class TwitterCard extends StatelessWidget {
                     style: GoogleFonts.inter(
                       fontWeight: FontWeight.w600,
                       fontSize: 10,
+                      
                       color: const Color(0xff666666),
                     ),
                   ),
