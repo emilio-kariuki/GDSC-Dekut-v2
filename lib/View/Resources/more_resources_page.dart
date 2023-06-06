@@ -189,7 +189,7 @@ class MoreResourcesPage extends StatelessWidget {
                                                 crossAxisCount: 3,
                                                 childAspectRatio: 0.7,
 
-                                                mainAxisSpacing: 5,
+                                                mainAxisSpacing: 2,
                                                 crossAxisSpacing: 8),
                                         physics:
                                             const NeverScrollableScrollPhysics(),
