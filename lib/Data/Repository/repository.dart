@@ -170,7 +170,7 @@ class Repository {
     final GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: [
         'email',
-        'https://www.googleapis.com/auth/calendar',
+        // 'https://www.googleapis.com/auth/calendar',
       ],
     );
     try {
