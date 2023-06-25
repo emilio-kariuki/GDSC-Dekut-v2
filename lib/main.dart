@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
 
@@ -16,11 +17,16 @@ import 'package:gdsc_bloc/Util/route_generator.dart';
 import 'package:gdsc_bloc/View/Authentication/login_page.dart';
 import 'package:gdsc_bloc/View/home.dart';
 import 'package:gdsc_bloc/firebase_options.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
+  );
+  FirebaseFirestore.instance.settings = Settings(
+    persistenceEnabled: true,
+    cacheSizeBytes: Settings.CACHE_SIZE_UNLIMITED,
   );
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   SystemChrome.setPreferredOrientations([
@@ -56,6 +62,7 @@ void main() async {
   });
 
   runApp(const MyApp());
+
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
