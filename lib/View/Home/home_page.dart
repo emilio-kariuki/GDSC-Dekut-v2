@@ -150,8 +150,6 @@ class EventPage extends StatelessWidget {
                               onPressed: () {
                                 Navigator.pushNamed(
                                     context, '/announcement_page');
-
-                                
                               },
                               icon: const Icon(
                                 Icons.notifications_active_outlined,
@@ -221,26 +219,20 @@ class EventPage extends StatelessWidget {
                               );
                             }
                             if (snapshot.hasData) {
-                              output = Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const CategoryWidget(
-                                    title: "Announcements",
-                                    location: '/announcement_page',
-                                  ),
-                                  data!.isEmpty
-                                      ? Center(
-                                          child: NotFoundCard(
-                                            height: height,
-                                            width: width,
-                                            title: "No annoucement found",
-                                            body:
-                                                "Incase of any announcements\n they will displayed here",
-                                          ),
-                                        )
-                                      : ListView.builder(
+                              output = data!.isEmpty
+                                  ? SizedBox.shrink()
+                                  : Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const CategoryWidget(
+                                          title: "Announcements",
+                                          location: '/announcement_page',
+                                        ),
+                                        ListView.builder(
                                           shrinkWrap: true,
                                           scrollDirection: Axis.vertical,
                                           physics:
@@ -259,14 +251,11 @@ class EventPage extends StatelessWidget {
                                             );
                                           },
                                         ),
-                                ],
-                              );
+                                      ],
+                                    );
                             }
                             return output;
                           },
-                        ),
-                        const SizedBox(
-                          height: 10,
                         ),
                         BlocBuilder<EventBloc, EventState>(
                           builder: (context, state) {
@@ -275,26 +264,20 @@ class EventPage extends StatelessWidget {
                                   height: height * 0.2,
                                   child: const Center(child: LoadingCircle()));
                             } else if (state is EventSuccess) {
-                              return Column(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const CategoryWidget(
-                                    title: "Upcoming Events",
-                                    location: '/events_page',
-                                  ),
-                                  state.events.isEmpty
-                                      ? Center(
-                                          child: NotFoundCard(
-                                            height: height,
-                                            width: width,
-                                            title: "No events found",
-                                            body:
-                                                "Incase of any upcoming events\n they will displayed here",
-                                          ),
-                                        )
-                                      : ListView.builder(
+                              return state.events.isEmpty
+                                  ? SizedBox.shrink()
+                                  : Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        const CategoryWidget(
+                                          title: "Upcoming Events",
+                                          location: '/events_page',
+                                        ),
+                                        ListView.builder(
                                           scrollDirection: Axis.vertical,
                                           physics:
                                               const NeverScrollableScrollPhysics(),
@@ -350,8 +333,8 @@ class EventPage extends StatelessWidget {
                                             );
                                           },
                                         ),
-                                ],
-                              );
+                                      ],
+                                    );
                             } else if (state is EventFailure) {
                               return SizedBox(
                                   height: height * 0.2,
@@ -362,7 +345,6 @@ class EventPage extends StatelessWidget {
                             }
                           },
                         ),
-                        
                         BlocProvider(
                           create: (context) =>
                               AppFunctionsCubit()..getTwitterSpaces(),
@@ -436,6 +418,7 @@ class EventPage extends StatelessWidget {
                                                       DateFormat.MMMEd()
                                                           .format(dateTime);
                                                   return TwitterCard(
+                                                    time: dateTime,
                                                     width: width,
                                                     height: height,
                                                     title: state.spaces[index]
@@ -463,7 +446,6 @@ class EventPage extends StatelessWidget {
                             );
                           }),
                         ),
-                        
                         const CategoryWidget(
                           title: "Tech Groups",
                           location: '/tech_groups_page',
