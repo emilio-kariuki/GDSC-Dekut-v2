@@ -51,7 +51,7 @@ class EventCard extends StatelessWidget {
               child: Container(
                   height: double.infinity,
                   constraints: BoxConstraints(
-                    maxHeight: height * 0.66,
+                    maxHeight: height * 0.67,
                   ),
                   width: double.infinity,
                   decoration:
@@ -411,7 +411,7 @@ class EventCard extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10),
                               child: SizedBox(
-                                height: 40,
+                                height: 45,
                                 width: width * 0.7,
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
@@ -517,7 +517,7 @@ class EventCard extends StatelessWidget {
           shape: RoundedRectangleBorder(
             side: const BorderSide(
               color: Color.fromARGB(255, 106, 81, 81),
-              width: 0.2,
+              width: 0.1,
             ),
             borderRadius: BorderRadius.circular(10),
           ),
