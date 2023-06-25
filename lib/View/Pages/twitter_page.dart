@@ -220,6 +220,7 @@ class TwitterPage extends StatelessWidget {
                                               DateFormat.MMMEd()
                                                   .format(dateTime);
                                           return TwitterCard(
+                                             time: dateTime,
                                             width: width,
                                             height: height,
                                             title:
@@ -307,6 +308,7 @@ class TwitterPage extends StatelessWidget {
                                               DateFormat.MMMEd()
                                                   .format(dateTime);
                                           return TwitterCard(
+                                             time: dateTime,
                                             width: width,
                                             height: height,
                                             title:

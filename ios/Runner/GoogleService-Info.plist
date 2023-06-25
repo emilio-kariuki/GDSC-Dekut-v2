@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>780318268681-8blntegm1mv66gc7kviaqid9l2bup2mi.apps.googleusercontent.com</string>
+	<string>780318268681-mr0nh8ltetpujdp9ebd9bejsvj6n3f6k.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.780318268681-8blntegm1mv66gc7kviaqid9l2bup2mi</string>
+	<string>com.googleusercontent.apps.780318268681-mr0nh8ltetpujdp9ebd9bejsvj6n3f6k</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>780318268681-04qc0jau87cr1e7u8g1bla3u8e14alon.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.gdscBloc</string>
+	<string>com.gdsc.gdscapp</string>
 	<key>PROJECT_ID</key>
 	<string>apt-rite-346310</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,7 +31,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:780318268681:ios:8f426463321479119487d8</string>
+	<string>1:780318268681:ios:d8ea43b9fed3388a9487d8</string>
 	<key>DATABASE_URL</key>
 	<string>https://apt-rite-346310-default-rtdb.firebaseio.com</string>
 </dict>
