@@ -5,7 +5,6 @@ import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Data/Repository/providers.dart';
 import 'package:gdsc_bloc/Util/route_generator.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 
 class TwitterCard extends StatelessWidget {
   const TwitterCard({
@@ -18,6 +17,7 @@ class TwitterCard extends StatelessWidget {
     required this.endTime,
     required this.date,
     required this.link,
+    required this.time,
   });
 
   final double width;
@@ -28,6 +28,7 @@ class TwitterCard extends StatelessWidget {
   final String endTime;
   final String date;
   final String link;
+  final DateTime time;
 
   void _showImageDialog(BuildContext context, String imageUrl, String title) {
     showDialog(
@@ -258,8 +259,7 @@ class TwitterCard extends StatelessWidget {
                           return AnimatedContainer(
                             decoration: BoxDecoration(
                               border: Border.all(
-                                  width: 0.4,
-                                  color: const Color(0xff666666)),
+                                  width: 0.4, color: const Color(0xff666666)),
                               image: DecorationImage(
                                 image: imageProvider,
                                 fit: BoxFit.cover,
@@ -341,11 +341,15 @@ class TwitterCard extends StatelessWidget {
                 overflow: TextOverflow.clip,
                 maxLines: 1,
                 style: GoogleFonts.inter(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 11,
-                  color: Colors.black,
-                  // decoration: TextDecoration.lineThrough
-                ),
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
+                    color: Colors.black,
+                    decoration: DateTime.now().isAfter(time)
+                        ? TextDecoration.lineThrough
+                        : null
+
+                    // decoration: TextDecoration.lineThrough
+                    ),
               ),
               body: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -373,11 +377,12 @@ class TwitterCard extends StatelessWidget {
                     overflow: TextOverflow.clip,
                     maxLines: 1,
                     style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 10,
-                      
-                      color: const Color(0xff666666),
-                    ),
+                        fontWeight: FontWeight.w600,
+                        fontSize: 10,
+                        color: DateTime.now().isAfter(time)
+                            ? Colors.red
+                            : Color.fromARGB(255, 42, 192, 8),
+                        ),
                   ),
                 ],
               ),
