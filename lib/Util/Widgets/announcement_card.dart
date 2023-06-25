@@ -37,7 +37,7 @@ class AnnouncementCard extends StatelessWidget {
             shape: RoundedRectangleBorder(
               side: const BorderSide(
                 color: Color.fromARGB(255, 106, 81, 81),
-                width: 0.15,
+                width: 0.1,
               ),
               borderRadius: BorderRadius.circular(10),
             ),
@@ -49,17 +49,13 @@ class AnnouncementCard extends StatelessWidget {
               const SizedBox(
                 height: 5,
               ),
-              Row(
-                children: [
-                  Text(
-                    title,
-                    style: GoogleFonts.inter(
-                      fontSize: 15,
-                      color: const Color(0xff000000),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ],
+              Text(
+                title,
+                style: GoogleFonts.inter(
+                  fontSize: 15,
+                  color: const Color(0xff000000),
+                  fontWeight: FontWeight.w600,
+                ),
               ),
               const SizedBox(
                 height: 5,
