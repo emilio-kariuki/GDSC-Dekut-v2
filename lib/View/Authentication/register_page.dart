@@ -1,15 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Blocs/AuthBloc/auth_bloc.dart';
 import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
+import 'package:gdsc_bloc/View/Authentication/login_page.dart';
+import 'package:gdsc_bloc/View/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Util/Widgets/divider_or.dart';
+import '../../Util/Widgets/fade_in_route.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});
@@ -24,6 +28,19 @@ class RegisterPage extends StatelessWidget {
 
     return Scaffold(
       backgroundColor: Colors.white,
+      appBar: PreferredSize(
+            preferredSize: Size.fromHeight(0),
+            child: AppBar(
+              elevation: 0,
+              automaticallyImplyLeading: false,
+              systemOverlayStyle: SystemUiOverlayStyle(
+                statusBarColor: Colors.white,
+                statusBarIconBrightness: Brightness.dark,
+              
+              ),
+            
+            ),
+          ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -43,17 +60,15 @@ class RegisterPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    SizedBox(
-                      height: height * 0.06,
-                    ),
+                    
                     Center(
                         child: SvgPicture.asset(
-                      AppImages.gdsc,
-                      height: height * 0.05,
+                      AppImages.register,
+                      height: height * 0.25,
                       width: width,
                     )),
-                    SizedBox(
-                      height: height * 0.04,
+                    const SizedBox(
+                      height: 20,
                     ),
                     Text(
                       "Register",
@@ -143,10 +158,13 @@ class RegisterPage extends StatelessWidget {
                         if (state is GoogleLoginSuccess) {
                           Timer(
                             const Duration(seconds: 1),
-                            () => Navigator.pushReplacementNamed(
-                              context,
-                              "/home",
-                            ),
+                            () =>  Navigator.pushReplacement(
+                        context,
+                        FadeInRoute(
+                          routeName: "/home",
+                          page: Home(),
+                        ),
+                      )
                           );
                         }
 
@@ -200,7 +218,7 @@ class RegisterPage extends StatelessWidget {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xff000000),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
+                                      borderRadius: BorderRadius.circular(25),
                                     ),
                                   ),
                                   child: Text(
@@ -234,7 +252,13 @@ class RegisterPage extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.pushNamed(context, "/login");
+                           Navigator.push(
+                        context,
+                        FadeInRoute(
+                          routeName: "/login",
+                          page: LoginPage(),
+                        ),
+                      );
                           },
                           child: Text(
                             "Sign in",
@@ -277,18 +301,25 @@ class RegisterPage extends StatelessWidget {
                                         .add(GoogleAuthentication());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xFFF74A00),
+                                    backgroundColor: Color.fromARGB(255, 33, 0, 166),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(5),
+                                      borderRadius: BorderRadius.circular(25),
                                     ),
                                   ),
-                                  child: Text(
-                                    "Sign up with Google",
-                                    style: GoogleFonts.inter(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w600,
-                                      color: const Color(0xffffffff),
-                                    ),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SvgPicture.asset(AppImages.google, height: 25,),
+                                      SizedBox(width: 8,),
+                                      Text(
+                                        "Sign in with Google",
+                                        style: GoogleFonts.inter(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: const Color(0xffffffff),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               );
