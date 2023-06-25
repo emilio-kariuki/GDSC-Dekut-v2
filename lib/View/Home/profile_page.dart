@@ -153,10 +153,11 @@ class ProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(
-                                  height: 8,
+                                  height: 10,
                                 ),
                                 const ProfilePadding(),
                                 ProfileCard(
+                                  leadingLogo: AppImages.person_black,
                                   title: "Profile",
                                   function: () {
                                     Navigator.pushNamed(
@@ -166,6 +167,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 const ProfilePadding(),
                                 ProfileCard(
+                                  leadingLogo: AppImages.resources_black,
                                   title: "Resources",
                                   function: () {
                                     Navigator.pushNamed(
@@ -173,6 +175,7 @@ class ProfilePage extends StatelessWidget {
                                   },
                                   showTrailing: true,
                                 ),
+                                 const ProfilePadding(),
                               ],
                             ),
                           ),
@@ -187,10 +190,12 @@ class ProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(
-                                  height: 8,
+                                  height: 10,
                                 ),
+                                 const ProfilePadding(),
                                 ProfileCard(
-                                  title: "community leads",
+                                  leadingLogo: AppImages.community_leads,
+                                  title: "Community leads",
                                   function: () {
                                     Navigator.pushNamed(
                                         context, '/community_leads');
@@ -229,6 +234,7 @@ class ProfilePage extends StatelessWidget {
                                   },
                                   builder: (context, state) {
                                     return ProfileCard(
+                                      leadingLogo: AppImages.admin,
                                       title: "Admin",
                                       function: () {
                                         BlocProvider.of<AdminCubit>(context)
@@ -238,6 +244,7 @@ class ProfilePage extends StatelessWidget {
                                     );
                                   },
                                 ),
+                                 const ProfilePadding(),
                               ],
                             ),
                           ),
@@ -255,9 +262,11 @@ class ProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(
-                                  height: 8,
+                                  height: 10,
                                 ),
+                                 const ProfilePadding(),
                                 ProfileCard(
+                                  leadingLogo: AppImages.feedbackz,
                                   title: "Send Feedback",
                                   function: () {
                                     Navigator.pushNamed(
@@ -267,6 +276,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 const ProfilePadding(),
                                 ProfileCard(
+                                  leadingLogo: AppImages.problemz,
                                   title: "Report problem",
                                   function: () {
                                     Navigator.pushNamed(
@@ -276,6 +286,7 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 const ProfilePadding(),
                                 ProfileCard(
+                                   leadingLogo: AppImages.contact,
                                   title: "Contact Developer",
                                   function: () {
                                     Navigator.pushNamed(
@@ -283,6 +294,7 @@ class ProfilePage extends StatelessWidget {
                                   },
                                   showTrailing: true,
                                 ),
+                                 const ProfilePadding(),
                               ],
                             ),
                           ),
@@ -297,9 +309,11 @@ class ProfilePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const SizedBox(
-                                  height: 8,
+                                  height: 10,
                                 ),
+                                 const ProfilePadding(),
                                 ProfileCard(
+                                  leadingLogo: AppImages.about,
                                   title: "About app",
                                   function: () {
                                     Navigator.pushNamed(context, '/about_app');
@@ -308,10 +322,12 @@ class ProfilePage extends StatelessWidget {
                                 ),
                                 const ProfilePadding(),
                                 ProfileCard(
-                                  title: "Version - 2.0.0",
+                                  leadingLogo: AppImages.version,
+                                  title: "Version - 0.1.0",
                                   function: () {},
                                   showTrailing: false,
                                 ),
+                                 const ProfilePadding(),
                               ],
                             ),
                           )
@@ -342,9 +358,9 @@ class ProfileTitle extends StatelessWidget {
     return Container(
       height: 30,
       width: width,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 10,),
       decoration: BoxDecoration(
-        color: Colors.grey[100],
+        color: const Color.fromARGB(255, 255, 255, 255),
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
