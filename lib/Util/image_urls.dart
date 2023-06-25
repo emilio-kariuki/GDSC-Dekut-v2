@@ -18,6 +18,16 @@ class AppImages {
   static const resources_black = "Assets/resources_black.svg";
   static const resources_white = "Assets/resources_white.svg";
   static const search = "Assets/search.svg";
+    static const google = "Assets/google.svg";
+    static const login = "Assets/login.svg";
+    static const register = "Assets/register.svg";
+    static const admin = "Assets/admin.svg";
+    static const about = "Assets/about.svg";
+    static const version = "Assets/version.svg";
+    static const contact = "Assets/contact.svg";
+     static const problemz = "Assets/problem.svg";
+     static const feedbackz = "Assets/feedback.svg";
+    static const community_leads= "Assets/community_leads.svg";
   static const location = "Assets/location.svg";
   static const attach = "Assets/attach.svg";
   static const event = "Assets/event.json";
