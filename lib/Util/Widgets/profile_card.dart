@@ -1,21 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ProfileCard extends StatelessWidget {
-  const ProfileCard({
-    super.key,
-    required this.title,
-    required this.function,
-    required this.showTrailing,
-  });
+  const ProfileCard(
+      {super.key,
+      required this.title,
+      required this.function,
+      required this.showTrailing,
+      required this.leadingLogo});
   final String title;
+  final String leadingLogo;
   final Function() function;
   final bool showTrailing;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: function,
+      onPressed: (){
+         SystemChannels.textInput.invokeMethod('TextInput.hide');
+        function();
+      },
       style: ElevatedButton.styleFrom(
         shadowColor: Colors.white,
         foregroundColor: Colors.grey[200],
@@ -28,10 +34,18 @@ class ProfileCard extends StatelessWidget {
       ),
       child: Row(
         children: [
+          SvgPicture.asset(
+            leadingLogo,
+            height: 15,
+            width: 15,
+          ),
+          const SizedBox(
+            width: 12,
+          ),
           Text(
             title,
             style: GoogleFonts.inter(
-              fontSize: 15,
+              fontSize: 14,
               fontWeight: FontWeight.w500,
               color: Colors.grey[800],
             ),
@@ -41,7 +55,7 @@ class ProfileCard extends StatelessWidget {
               ? Icon(
                   Icons.arrow_forward_ios,
                   color: Colors.grey[800],
-                  size: 15,
+                  size: 12,
                 )
               : const SizedBox.shrink(),
         ],
