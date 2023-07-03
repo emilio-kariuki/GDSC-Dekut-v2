@@ -420,7 +420,7 @@ class ResourceCard extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: width * 0.28,
-                    height: height * 0.04,
+                    
                     child: Text(
                       title,
                       overflow: TextOverflow.clip,

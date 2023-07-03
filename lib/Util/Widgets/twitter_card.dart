@@ -357,7 +357,6 @@ class TwitterCard extends StatelessWidget {
                 children: [
                   SizedBox(
                     width: width * 0.28,
-                    height: height * 0.04,
                     child: Text(
                       title,
                       overflow: TextOverflow.clip,
@@ -369,20 +368,20 @@ class TwitterCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    height: 2,
+                  SizedBox(
+                    height: height * 0.01,
                   ),
                   Text(
                     date,
                     overflow: TextOverflow.clip,
                     maxLines: 1,
                     style: GoogleFonts.inter(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 10,
-                        color: DateTime.now().isAfter(time)
-                            ? Colors.red
-                            : Color.fromARGB(255, 42, 192, 8),
-                        ),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 10,
+                      color: DateTime.now().isAfter(time)
+                          ? Colors.red
+                          : Color.fromARGB(255, 42, 192, 8),
+                    ),
                   ),
                 ],
               ),
