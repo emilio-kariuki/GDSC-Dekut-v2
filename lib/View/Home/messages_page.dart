@@ -186,14 +186,25 @@ class _MessagesPageState extends State<MessagesPage> {
                           ),
                           TextFormField(
                             onTap: () {
-                              Future.delayed(Duration(microseconds: 500), () {
+                              scrollController.animateTo(
+                                  scrollController.position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.easeIn,
+                                );
+                            },
+                            onTapOutside: (event) {
+                              if (event.runtimeType == TapUpDetails) {
+                                focusNode.unfocus();
+                              }else{
                                 scrollController.animateTo(
                                   scrollController.position.maxScrollExtent,
-                                  duration: const Duration(milliseconds: 300),
-                                  curve: Curves.easeOut,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.easeIn,
                                 );
-                              });
+                              }
+
                             },
+                            
                             controller: messageController,
                             focusNode: focusNode,
                             keyboardType: TextInputType.multiline,
@@ -262,16 +273,17 @@ class _MessagesPageState extends State<MessagesPage> {
                                 message: messageController.text,
                                 image: image ?? "null");
                             messageController.clear();
-                            scrollController.animateTo(
-                              scrollController.position.maxScrollExtent,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.easeOut,
-                            );
+                            
                             context
                                 .read<AppFunctionsCubit>()
                                 .emit(ImagePickingFailed(message: "null"));
                             image = null;
                           }
+                          scrollController.animateTo(
+                                  scrollController.position.maxScrollExtent,
+                                  duration: const Duration(milliseconds: 100),
+                                  curve: Curves.easeIn,
+                                );
                         },
                         icon: Icon(
                           Icons.send,
@@ -299,7 +311,7 @@ class _MessagesPageState extends State<MessagesPage> {
                     elements: snapshot.data!,
                     order: GroupedListOrder.ASC,
                     groupBy: (element) {
-                      final timestamp = element.timestamp;
+                      final timestamp = element.timestamp.toLocal();
                       final now = DateTime.now();
                       final startOfToday =
                           DateTime(now.year, now.month, now.day);
