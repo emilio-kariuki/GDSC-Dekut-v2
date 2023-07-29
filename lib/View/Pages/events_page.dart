@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
 import 'package:gdsc_bloc/Util/Widgets/events_card.dart';
@@ -27,6 +28,8 @@ class EventsPage extends StatelessWidget {
           backgroundColor: Colors.white,
           appBar: AppBar(
             backgroundColor: Colors.white,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+            centerTitle: true,
             title: Text(
               "Events Page",
               style: GoogleFonts.inter(
