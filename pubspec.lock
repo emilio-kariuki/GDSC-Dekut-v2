@@ -470,14 +470,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.0"
-  flutter_native_api:
-    dependency: "direct main"
-    description:
-      name: flutter_native_api
-      sha256: "33355ec913129795305b86bc3a62621cea487140dc29d34ffbc6200f0cb059bd"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.1"
   flutter_plugin_android_lifecycle:
     dependency: transitive
     description:

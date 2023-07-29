@@ -52,7 +52,7 @@ dependencies:
   flutter_linkify: ^6.0.0
   firebase_messaging: ^14.6.2
   add_2_calendar: ^2.2.3
-  flutter_native_api: ^0.0.1
+
  
 
 dev_dependencies:
@@ -64,7 +64,7 @@ dev_dependencies:
 flutter_launcher_icons:
   android: "launcher_icon"
   ios: true
-  image_path: "Assets/logo.jpeg"
+  image_path: "Assets/logo.png"
   min_sdk_android: 21
 
   flutter_lints: ^2.0.0
