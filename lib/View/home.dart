@@ -6,9 +6,9 @@ import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'package:gdsc_bloc/View/Home/home_page.dart';
-import 'package:gdsc_bloc/View/Home/messages_page.dart';
 import 'package:gdsc_bloc/View/Home/profile_page.dart';
 import 'package:gdsc_bloc/View/Home/resources_page.dart';
+import 'package:gdsc_bloc/View/Pages/events_page.dart';
 
 class Home extends StatelessWidget {
   const Home({Key? key}) : super(key: key);
@@ -17,7 +17,7 @@ class Home extends StatelessWidget {
     List<Widget> pages = [
       EventPage(),
       ResourcesPage(),
-      const MessagesPage(),
+       EventsPage(),
       const ProfilePage(),
     ];
     return BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
