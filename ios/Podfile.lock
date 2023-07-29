@@ -699,8 +699,6 @@ PODS:
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
   - Flutter (1.0.0)
-  - flutter_native_api (0.0.1):
-    - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
   - FMDB/standard (2.7.5)
@@ -831,7 +829,6 @@ DEPENDENCIES:
   - firebase_messaging (from `.symlinks/plugins/firebase_messaging/ios`)
   - firebase_storage (from `.symlinks/plugins/firebase_storage/ios`)
   - Flutter (from `Flutter`)
-  - flutter_native_api (from `.symlinks/plugins/flutter_native_api/ios`)
   - gallery_saver (from `.symlinks/plugins/gallery_saver/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
@@ -891,8 +888,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/firebase_storage/ios"
   Flutter:
     :path: Flutter
-  flutter_native_api:
-    :path: ".symlinks/plugins/flutter_native_api/ios"
   gallery_saver:
     :path: ".symlinks/plugins/gallery_saver/ios"
   google_sign_in_ios:
@@ -936,7 +931,6 @@ SPEC CHECKSUMS:
   FirebaseMessaging: 6b7052cc3da7bc8e5f72bef871243e8f04a14eed
   FirebaseStorage: 075a0c10ec43f24193018c539d65e991db65d9ef
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  flutter_native_api: df253046f4aa8ffa5caef7326d47c5f07264ea24
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   gallery_saver: 9fc173c9f4fcc48af53b2a9ebea1b643255be542
   google_sign_in_ios: 1256ff9d941db546373826966720b0c24804bcdd
