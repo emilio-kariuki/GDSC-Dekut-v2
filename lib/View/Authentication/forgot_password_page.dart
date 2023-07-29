@@ -76,7 +76,7 @@ class ForgotPassword extends StatelessWidget {
                       height: height * 0.02,
                     ),
                     InputField(
-                      title: "Email",
+                     
                       controller: emailController,
                       hintText: "Enter your email",
                     ),
@@ -86,7 +86,7 @@ class ForgotPassword extends StatelessWidget {
                     BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
                       builder: (context, state) {
                         return InputField(
-                            title: "Old Password",
+                           
                             hintText: "Enter your old password",
                             obScureText: state is PasswordInvisibile
                                 ? true
@@ -135,7 +135,7 @@ class ForgotPassword extends StatelessWidget {
                           return BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
                             builder: (context, dstate) {
                               return InputField(
-                                  title: "New Password",
+                               
                                   hintText: "Enter your new password",
                                   obScureText: dstate is PasswordInvisibile
                                       ? true

@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:gdsc_bloc/Data/Repository/providers.dart';
+import 'package:gdsc_bloc/Data/Services/Providers/providers.dart';
 
 part 'admin_state.dart';
 

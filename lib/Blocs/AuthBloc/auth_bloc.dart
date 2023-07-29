@@ -1,8 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gdsc_bloc/Blocs/AuthenticationBloc/authentication_bloc.dart';
-import 'package:gdsc_bloc/Data/Repository/providers.dart';
+import 'package:gdsc_bloc/Data/Services/Providers/providers.dart';
 import 'package:meta/meta.dart';
+
+import '../../Data/Services/Providers/user_providers.dart';
 part 'auth_event.dart';
 part 'auth_state.dart';
 
@@ -11,7 +13,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<Login>((event, emit) async {
       try {
         emit(LoginLoading());
-        final user = await Providers()
+        final user = await UserProviders()
             .loginAccount(email: event.email, password: event.password);
         if (user) {
           AuthenticationBloc().add(LoggedIn());
@@ -27,7 +29,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<Register>((event, emit) async {
       try {
         emit(RegisterLoading());
-        final user = await Providers().createAccount(
+        final user = await UserProviders().createAccount(
             email: event.email, password: event.password, name: event.name);
         if (user) {
           AuthenticationBloc().add(LoggedIn());
@@ -43,7 +45,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<Logout>((event, emit) async {
       try {
         emit(LogoutLoading());
-        final user = await Providers().logoutAccount();
+        final user = await UserProviders().logoutAccount();
         if (user) {
           AuthenticationBloc().add(LoggedOut());
           emit(LogoutSuccess());
@@ -58,7 +60,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ResetPasswordEvent>((event, emit) async {
       try {
         emit(ResetPasswordLoading());
-        final user = await Providers().resetPassword(email: event.email);
+        final user = await UserProviders().resetPassword(email: event.email);
         if (user) {
           emit(ResetPasswordSuccess());
         } else {
@@ -72,7 +74,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<ChangePassword>((event, emit) async {
       try {
         emit(ResetPasswordLoading());
-        final user = await Providers().changePassword(
+        final user = await UserProviders().changePassword(
             email: event.email,
             oldPassword: event.oldPassword,
             newPassword: event.newPassword);
@@ -89,7 +91,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<DeleteAccount>((event, emit) async {
       try {
         emit(DeleteAccountLoading());
-        final user = await Providers()
+        final user = await UserProviders()
             .deleteAccount(email: event.email, password: event.password);
         if (user) {
           emit(DeleteAccountSuccess());
@@ -104,7 +106,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<GoogleAuthentication>((event, emit) async {
       try {
         emit(GoogleLoginLoading());
-        final user = await Providers().signInWithGoogle();
+        final user = await UserProviders().signInWithGoogle();
 
         if (user) {
           AuthenticationBloc().add(LoggedIn());

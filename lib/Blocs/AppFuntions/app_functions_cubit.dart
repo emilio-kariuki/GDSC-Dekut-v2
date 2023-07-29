@@ -16,7 +16,7 @@ import 'package:gdsc_bloc/Data/Models/report_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Data/Models/user_model.dart';
-import 'package:gdsc_bloc/Data/Repository/providers.dart';
+import 'package:gdsc_bloc/Data/Services/Providers/providers.dart';
 import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
 part 'app_functions_state.dart';
 

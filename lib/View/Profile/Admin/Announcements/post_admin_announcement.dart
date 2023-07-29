@@ -9,7 +9,7 @@ import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../../../Data/Repository/providers.dart';
+import '../../../../Data/Services/Providers/providers.dart';
 
 class AdminAnnouncementPostPage extends StatelessWidget {
   AdminAnnouncementPostPage({super.key, required this.tabController});

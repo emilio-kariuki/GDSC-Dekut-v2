@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
-import 'package:gdsc_bloc/Data/Repository/providers.dart';
+import 'package:gdsc_bloc/Data/Services/Providers/providers.dart';
 import 'package:gdsc_bloc/Util/Widgets/group_container.dart';
 import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';

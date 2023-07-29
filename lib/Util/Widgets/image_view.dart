@@ -1,7 +1,7 @@
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:gdsc_bloc/Data/Repository/providers.dart';
+import 'package:gdsc_bloc/Data/Services/Providers/providers.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ImageView extends StatelessWidget {

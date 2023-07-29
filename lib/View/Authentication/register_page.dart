@@ -82,7 +82,7 @@ class RegisterPage extends StatelessWidget {
                       height: height * 0.02,
                     ),
                     InputField(
-                      title: "Name",
+                    
                       controller: nameController,
                       hintText: "Enter your name",
                     ),
@@ -90,7 +90,7 @@ class RegisterPage extends StatelessWidget {
                       height: 10,
                     ),
                     InputField(
-                      title: "Email",
+                  
                       controller: emailController,
                       hintText: "Enter your email",
                     ),
@@ -100,7 +100,7 @@ class RegisterPage extends StatelessWidget {
                     BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
                       builder: (context, state) {
                         return InputField(
-                            title: "Password",
+                          
                             hintText: "Enter your password",
                             obScureText: state is PasswordInvisibile
                                 ? true
@@ -207,6 +207,21 @@ class RegisterPage extends StatelessWidget {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
+                                    if (
+                                      nameController.text.isEmpty||
+                                      emailController.text.isEmpty ||
+                                        passwordController.text.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              const Color(0xffEB5757),
+                                          content: Text(
+                                              "Please fill all the fields"),
+                                        ),
+                                      );
+                                    }else{
                                     context.read<AuthBloc>().add(
                                           Register(
                                             name: nameController.text,
@@ -214,6 +229,7 @@ class RegisterPage extends StatelessWidget {
                                             password: passwordController.text,
                                           ),
                                         );
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xff000000),
@@ -301,7 +317,7 @@ class RegisterPage extends StatelessWidget {
                                         .add(GoogleAuthentication());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor: Color.fromARGB(255, 33, 0, 166),
+                                    backgroundColor: const Color(0xff000000),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(25),
                                     ),

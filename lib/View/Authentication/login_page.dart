@@ -72,20 +72,18 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.02,
+                      height: height * 0.01,
                     ),
                     InputField(
-                      title: "Email",
                       controller: emailController,
                       hintText: "Enter your email",
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
                     BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
                       builder: (context, state) {
                         return InputField(
-                            title: "Password",
                             hintText: "Enter your password",
                             obScureText: state is PasswordInvisibile
                                 ? true
@@ -211,12 +209,26 @@ class LoginPage extends StatelessWidget {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    context.read<AuthBloc>().add(
-                                          Login(
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          ),
-                                        );
+                                    if (emailController.text.isEmpty ||
+                                        passwordController.text.isEmpty) {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          behavior: SnackBarBehavior.floating,
+                                          backgroundColor:
+                                              const Color(0xffEB5757),
+                                          content: Text(
+                                              "Please fill all the fields"),
+                                        ),
+                                      );
+                                    } else {
+                                      context.read<AuthBloc>().add(
+                                            Login(
+                                              email: emailController.text,
+                                              password: passwordController.text,
+                                            ),
+                                          );
+                                    }
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xff000000),
@@ -304,8 +316,7 @@ class LoginPage extends StatelessWidget {
                                         .add(GoogleAuthentication());
                                   },
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Color.fromARGB(255, 33, 0, 166),
+                                    backgroundColor: const Color(0xff000000),
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(25),
                                     ),

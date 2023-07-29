@@ -10,8 +10,8 @@ import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
 import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
 import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
 import 'package:gdsc_bloc/Data/Models/groups_model.dart';
-import 'package:gdsc_bloc/Data/Repository/providers.dart';
-import 'package:gdsc_bloc/Data/Repository/repository.dart';
+import 'package:gdsc_bloc/Data/Services/Providers/providers.dart';
+import 'package:gdsc_bloc/Data/Services/Repositories/repository.dart';
 
 import 'package:gdsc_bloc/Util/Widgets/announcement_card.dart';
 import 'package:gdsc_bloc/Util/Widgets/category_widget.dart';

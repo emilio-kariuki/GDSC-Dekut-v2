@@ -56,7 +56,7 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyALI_BdxpN7o_cKJOPAaPDRKb81v64syP0',
-    appId: '1:780318268681:android:749231b8d88096589487d8',
+    appId: '1:780318268681:android:c7be1068b3f120779487d8',
     messagingSenderId: '780318268681',
     projectId: 'apt-rite-346310',
     databaseURL: 'https://apt-rite-346310-default-rtdb.firebaseio.com',
@@ -65,25 +65,25 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyBDEwlhHainxSwHd1g20UheITR8pOTY--A',
-    appId: '1:780318268681:ios:8f426463321479119487d8',
+    appId: '1:780318268681:ios:6eba7c16404f28f29487d8',
     messagingSenderId: '780318268681',
     projectId: 'apt-rite-346310',
     databaseURL: 'https://apt-rite-346310-default-rtdb.firebaseio.com',
     storageBucket: 'apt-rite-346310.appspot.com',
     androidClientId: '780318268681-04qc0jau87cr1e7u8g1bla3u8e14alon.apps.googleusercontent.com',
     iosClientId: '780318268681-8blntegm1mv66gc7kviaqid9l2bup2mi.apps.googleusercontent.com',
-    iosBundleId: 'com.gdsc.gdsc_app',
+    iosBundleId: 'com.example.gdscBloc',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyBDEwlhHainxSwHd1g20UheITR8pOTY--A',
-    appId: '1:780318268681:ios:50a526c49a6029779487d8',
+    appId: '1:780318268681:ios:c90fa328a5784fe79487d8',
     messagingSenderId: '780318268681',
     projectId: 'apt-rite-346310',
     databaseURL: 'https://apt-rite-346310-default-rtdb.firebaseio.com',
     storageBucket: 'apt-rite-346310.appspot.com',
     androidClientId: '780318268681-04qc0jau87cr1e7u8g1bla3u8e14alon.apps.googleusercontent.com',
     iosClientId: '780318268681-utpk006bkq4genrck6smrd7o42ahdffl.apps.googleusercontent.com',
-    iosBundleId: 'com.gdsc.gdsc_app',
+    iosBundleId: 'com.example.gdscBloc.RunnerTests',
   );
 }

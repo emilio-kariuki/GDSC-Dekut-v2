@@ -14,62 +14,10 @@ import 'package:gdsc_bloc/Data/Models/report_model.dart';
 import 'package:gdsc_bloc/Data/Models/resource_model.dart';
 import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
 import 'package:gdsc_bloc/Data/Models/user_model.dart';
-import 'package:gdsc_bloc/Data/Repository/repository.dart';
+import 'package:gdsc_bloc/Data/Services/Repositories/repository.dart';
 
 class Providers {
-  Future<bool> createAccount(
-      {required String email,
-      required String password,
-      required String name}) async {
-    var response = Repository().registerUser(
-      email: email,
-      password: password,
-      name: name,
-    );
-    return response;
-  }
-
-  Future<bool> loginAccount(
-      {required String email, required String password}) async {
-    var response = Repository().loginUser(
-      email: email,
-      password: password,
-    );
-    return response;
-  }
-
-  Future<bool> logoutAccount() async {
-    var response = Repository().logoutUser();
-    return response;
-  }
-
-  Future<bool> resetPassword({required String email}) async {
-    var response = Repository().resetPassword(email: email);
-    return response;
-  }
-
-  Future<bool> changePassword(
-      {required String email,
-      required String oldPassword,
-      required String newPassword}) async {
-    var response = Repository().changePassword(
-      email: email,
-      oldPassword: oldPassword,
-      newPassword: newPassword,
-    );
-    return response;
-  }
-
-  Future<bool> deleteAccount(
-      {required String email, required String password}) async {
-    var response = Repository().deleteUser(email: email, password: password);
-    return response;
-  }
-
-  Future<bool> signInWithGoogle() async {
-    var response = Repository().signInWithGoogle();
-    return response;
-  }
+  
 
   observeNetwork() {
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
