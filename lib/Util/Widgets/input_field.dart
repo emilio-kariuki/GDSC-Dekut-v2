@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class InputField extends StatelessWidget {
-  const InputField(
+   InputField(
       {super.key,
-      required this.title,
+       this.title,
       required this.controller,
       this.obScureText = false,
-     this.suffixIcon, required this.hintText});
-  final String title;
+      this.suffixIcon,
+      required this.hintText});
+  String? title;
   final TextEditingController controller;
-  final Widget ?suffixIcon;
+  final Widget? suffixIcon;
   final bool obScureText;
   final String hintText;
 
@@ -20,14 +21,16 @@ class InputField extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          title,
-          style: GoogleFonts.inter(
-            fontSize: 16,
-            fontWeight: FontWeight.w500,
-            color: const Color(0xff000000),
-          ),
-        ),
+        title == null
+            ? const SizedBox.shrink()
+            : Text(
+                title!,
+                style: GoogleFonts.inter(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xff000000),
+                ),
+              ),
         const SizedBox(
           height: 5,
         ),
@@ -44,7 +47,6 @@ class InputField extends StatelessWidget {
           child: TextFormField(
             controller: controller,
             obscureText: obScureText,
-            
             style: GoogleFonts.inter(
               fontWeight: FontWeight.w500,
               fontSize: 14,
@@ -56,7 +58,7 @@ class InputField extends StatelessWidget {
               border: InputBorder.none,
               hintStyle: GoogleFonts.inter(
                 fontSize: 14,
-                color: Colors.grey[400],
+                color: Colors.grey[700],
                 fontWeight: FontWeight.w500,
               ),
             ),
