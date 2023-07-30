@@ -11,6 +11,10 @@ You can find the application here
 
 *[![Play Store Badge](https://developer.android.com/images/brand/en_app_rgb_wo_60.png)](https://play.google.com/store/apps/details?id=com.gdsc.gdsc_app&hl=en&gl=US)*
 
+[![Buy Me a Coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-donate-orange.svg)](https://www.buymeacoffee.com/emiliokariuki)
+
+
+
 ## Technologies Used in the project
 > The mobile application is completely built on the the `flutter` framework and `firebase` platform
  1. Flutter 
