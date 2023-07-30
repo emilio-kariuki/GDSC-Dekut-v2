@@ -58,31 +58,39 @@ The FlutterFire CLI extracts information from your Firebase project and selected
 In the root of your `application`, run the configure command:
 
 ```
-//paste this
+// paste this
 flutterfire configure
 ```
 
 After you install, all the configurations in your `build.gradle` file are added and the `google-service.json` are added in the android folder and `Firebase` will be integrated in your system this will save you all the trouble of having to install all the configurations one by one and this may cause some of the things to be oeverlooked.
 
+### 5. Home Page
+The `home page` tries to feature all the sub sections of the application from the events announcements, groups, twitter and even the profile page.
 
-### 5. Event Page
+<img src="Assets/home_page1.png" alt="Event" width= 300 height= 600>
+<img src="Assets/home_page2.png" alt="Event" width= 300 height= 600>
+
+### 6. Event Page
 All the events that are upcoming in the tech community can be found in the `event page`
 
-<img src="https://firebasestorage.googleapis.com/v0/b/maps-333402.appspot.com/o/Screenshot_20221109-165831.jpg?alt=media&token=52b67c82-2de3-45b1-b27e-0f8df1e4d28a" alt="Event" width= 300 height= 600>
+<img src="Assets/event_page.png" alt="Event" width= 300 height= 600>
+<img src="Assets/event_dialog.png" alt="Event" width= 300 height= 600>
 
-### 6. Resources Page
+### 7. Resources Page
 All the resources that the members of the tech community will be found `here`
 
 In the `resources` page the members are given the ability to post new reources if they have any to share with the other members
 
-<img src="https://github.com/emilio-kariuki/GDSC_DEKUT/blob/master/resources.jpg" alt="Event" width= 300 height= 600>
+<img src="Assets/resource_page.png" alt="Event" width= 300 height= 600>
+<img src="Assets/resource_dialog.png" alt="Event" width= 300 height= 600>
 
-### 7. Groups Page
+### 8. Groups Page
 All the tech groups in the community will be found  `here`
 
 In the `news` page the members are given the ability to get acess to the groups in the tech comunity and also the newly posted news in Community
 
-<img src="https://github.com/emilio-kariuki/GDSC_DEKUT/blob/master/groups.jpg" alt="Event" width= 300 height= 600>
+<img src="Assets/group_page.png" alt="Event" width= 300 height= 600>
+<img src="Assets/group_dialog.png" alt="Event" width= 300 height= 600>
 
 ### Feel Free to contribute
 You can `fork` the repo and feel free to contribute 
