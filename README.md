@@ -66,31 +66,41 @@ After you install, all the configurations in your `build.gradle` file are added 
 
 ### 5. Home Page
 The `home page` tries to feature all the sub sections of the application from the events announcements, groups, twitter and even the profile page.
+<div style="display: flex;">
+    <img src="Assets/home_page1.png" alt="Event" width= 300 height= 600>
+    <img src="Assets/home_page2.png" alt="Event" width= 300 height= 600>
+</div>
 
-<img src="Assets/home_page1.png" alt="Event" width= 300 height= 600>
-<img src="Assets/home_page2.png" alt="Event" width= 300 height= 600>
+
 
 ### 6. Event Page
 All the events that are upcoming in the tech community can be found in the `event page`
 
-<img src="Assets/event_page.png" alt="Event" width= 300 height= 600>
-<img src="Assets/event_dialog.png" alt="Event" width= 300 height= 600>
+ 
+<div style="display: flex;">
+    <img src="Assets/event_page.png" alt="Event" width= 300 height= 600>
+    <img src="Assets/event_dialog.png" alt="Event" width= 300 height= 600>
+</div>
 
 ### 7. Resources Page
 All the resources that the members of the tech community will be found `here`
 
 In the `resources` page the members are given the ability to post new reources if they have any to share with the other members
 
-<img src="Assets/resource_page.png" alt="Event" width= 300 height= 600>
-<img src="Assets/resource_dialog.png" alt="Event" width= 300 height= 600>
+<div style="display: flex;">
+    <img src="Assets/resource_page.png" alt="Event" width= 300 height= 600>
+    <img src="Assets/resource_dialog.png" alt="Event" width= 300 height= 600>
+</div>
 
 ### 8. Groups Page
 All the tech groups in the community will be found  `here`
 
 In the `news` page the members are given the ability to get acess to the groups in the tech comunity and also the newly posted news in Community
 
-<img src="Assets/group_page.png" alt="Event" width= 300 height= 600>
-<img src="Assets/group_dialog.png" alt="Event" width= 300 height= 600>
+<div style="display: flex;">
+    <img src="Assets/group_page.png" alt="Event" width= 300 height= 600>
+    <img src="Assets/group_dialog.png" alt="Event" width= 300 height= 600>
+</div>
 
 ### Feel Free to contribute
 You can `fork` the repo and feel free to contribute 
