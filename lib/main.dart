@@ -5,19 +5,23 @@ import 'dart:typed_data';
 import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
-import 'package:gdsc_bloc/Blocs/AuthenticationBloc/authentication_bloc.dart';
-import 'package:gdsc_bloc/Blocs/Event/event_bloc.dart';
-import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
 import 'package:gdsc_bloc/Util/Widgets/no_internet_page.dart';
 import 'package:gdsc_bloc/Util/route_generator.dart';
+import 'package:gdsc_bloc/Util/themes.dart';
 import 'package:gdsc_bloc/View/Authentication/login_page.dart';
 import 'package:gdsc_bloc/View/home.dart';
 import 'package:gdsc_bloc/firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import 'Blocs/app_functions_cubit/app_functions_cubit.dart';
+import 'Blocs/authentication_bloc/authentication_bloc.dart';
+import 'Blocs/event_bloc/event_bloc.dart';
+import 'Blocs/network_bloc/network_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -62,7 +66,6 @@ void main() async {
   });
 
   runApp(const MyApp());
-
 }
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
@@ -232,10 +235,67 @@ class MyAppState extends State<MyApp> {
           return RouteGenerator.generateRoute(settings);
         },
         themeMode: ThemeMode.dark,
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
-          useMaterial3: true,
-        ),
+        // Made for FlexColorScheme version 7.0.5. Make sure you
+// use same or higher package version, but still same major version.
+// If you use a lower version, some properties may not be supported.
+// In that case remove them after copying this theme to your app.
+// Made for FlexColorScheme version 7.0.5. Make sure you
+// use same or higher package version, but still same major version.
+// If you use a lower version, some properties may not be supported.
+// In that case remove them after copying this theme to your app.
+theme: FlexThemeData.light(
+  primary: Color(0x14C7DEFF),
+  scheme: FlexScheme.bigStone,
+  surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+  blendLevel: 7,
+  appBarStyle: FlexAppBarStyle.material,
+  transparentStatusBar: false,
+  subThemesData: const FlexSubThemesData(
+    useTextTheme: false,
+    useM2StyleDividerInM3: true,
+    inputDecoratorBorderType: FlexInputBorderType.underline,
+    inputDecoratorUnfocusedBorderIsColored: false,
+  ),
+  keyColors: const FlexKeyColors(
+    useSecondary: true,
+    useTertiary: true,
+  ),
+  visualDensity: FlexColorScheme.comfortablePlatformDensity,
+  useMaterial3: true,
+  swapLegacyOnMaterial3: true,
+  // To use the playground font, add GoogleFonts package and uncomment
+  fontFamily: GoogleFonts.inter().fontFamily,
+  textTheme: lightTextTheme,
+),
+darkTheme: FlexThemeData.dark(
+  scheme: FlexScheme.bigStone,
+  surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+   primary: Color(0xFFFFFFFF), // Replace with your desired primary color
+  blendLevel: 30,
+  transparentStatusBar: false,
+  bottomAppBarElevation: 1.5,
+  subThemesData: const FlexSubThemesData(
+    useTextTheme: false,
+    useM2StyleDividerInM3: true,
+    inputDecoratorBorderType: FlexInputBorderType.underline,
+    inputDecoratorUnfocusedBorderIsColored: false,
+  ),
+  keyColors: const FlexKeyColors(
+    useSecondary: true,
+    useTertiary: true,
+  ),
+  visualDensity: FlexColorScheme.comfortablePlatformDensity,
+  useMaterial3: true,
+  swapLegacyOnMaterial3: true,
+  // To use the Playground font, add GoogleFonts package and uncomment
+  fontFamily: GoogleFonts.inter().fontFamily,
+  textTheme: darkTextTheme,
+),
+// If you do not have a themeMode switch, uncomment this line
+// to let the device system mode control the theme mode:
+// themeMode: ThemeMode.system,
+
+
         debugShowCheckedModeBanner: false,
         home: BlocBuilder<NetworkBloc, NetworkState>(
           builder: (context, state) {
