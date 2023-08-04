@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -42,7 +43,7 @@ class ProfileCard extends StatelessWidget {
           const SizedBox(
             width: 12,
           ),
-          Text(
+          AutoSizeText(
             title,
             style: GoogleFonts.inter(
               fontSize: 14,
