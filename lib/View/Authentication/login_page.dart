@@ -1,11 +1,10 @@
 import 'dart:async';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gdsc_bloc/Blocs/AppFuntions/app_functions_cubit.dart';
-import 'package:gdsc_bloc/Blocs/AuthBloc/auth_bloc.dart';
 import 'package:gdsc_bloc/Util/Widgets/divider_or.dart';
 import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
 import 'package:gdsc_bloc/Util/image_urls.dart';
@@ -13,6 +12,8 @@ import 'package:gdsc_bloc/View/Authentication/register_page.dart';
 import 'package:gdsc_bloc/View/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../Blocs/app_functions_cubit/app_functions_cubit.dart';
+import '../../Blocs/auth_bloc/auth_bloc.dart';
 import '../../Util/Widgets/fade_in_route.dart';
 
 class LoginPage extends StatelessWidget {
@@ -63,7 +64,7 @@ class LoginPage extends StatelessWidget {
                       height: height * 0.3,
                       width: width,
                     )),
-                    Text(
+                    AutoSizeText(
                       "Login",
                       style: GoogleFonts.inter(
                         fontSize: 20,
@@ -132,7 +133,7 @@ class LoginPage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          Text(
+                          AutoSizeText(
                             "Forgot Password?",
                             style: GoogleFonts.inter(
                               fontSize: 14,
@@ -236,7 +237,7 @@ class LoginPage extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(25),
                                     ),
                                   ),
-                                  child: Text(
+                                  child: AutoSizeText(
                                     "Login",
                                     style: GoogleFonts.inter(
                                       fontSize: 15,
@@ -254,7 +255,7 @@ class LoginPage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
+                        AutoSizeText(
                           "Don't have an account?",
                           style: GoogleFonts.inter(
                             fontSize: 14,
@@ -275,7 +276,7 @@ class LoginPage extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text(
+                          child: AutoSizeText(
                             "Sign Up",
                             style: GoogleFonts.inter(
                               fontSize: 14,
@@ -331,7 +332,7 @@ class LoginPage extends StatelessWidget {
                                       SizedBox(
                                         width: 8,
                                       ),
-                                      Text(
+                                      AutoSizeText(
                                         "Sign in with Google",
                                         style: GoogleFonts.inter(
                                           fontSize: 15,
