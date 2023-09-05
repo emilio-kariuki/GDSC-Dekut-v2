@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gdsc_bloc/Util/Widgets/announcement_card.dart';
-import 'package:gdsc_bloc/Util/Widgets/loading_circle.dart';
+import 'package:gdsc_bloc/utilities/Widgets/announcement_card.dart';
+import 'package:gdsc_bloc/utilities/Widgets/loading_circle.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Blocs/announcement_cubit/announcement_cubit.dart';

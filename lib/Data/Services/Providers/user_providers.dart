@@ -1,4 +1,4 @@
-import '../Repositories/user_repositories.dart';
+import '../repositories/user_repositories.dart';
 
 class UserProviders {
   //* register a user using firebase auth

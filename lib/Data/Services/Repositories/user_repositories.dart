@@ -5,8 +5,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
-import '../../../Util/image_urls.dart';
-import '../../../Util/shared_preference_manager.dart';
+import '../../../utilities/image_urls.dart';
+import '../../../utilities/shared_preference_manager.dart';
 import '../../Models/user_model.dart';
 
 class UserRepository {

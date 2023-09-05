@@ -2,46 +2,39 @@ import 'dart:async';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
-import 'package:gdsc_bloc/Util/image_urls.dart';
-import 'package:gdsc_bloc/View/Authentication/login_page.dart';
-import 'package:gdsc_bloc/View/home.dart';
+import 'package:gdsc_bloc/utilities/Widgets/input_field.dart';
+import 'package:gdsc_bloc/utilities/image_urls.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Blocs/app_functions_cubit/app_functions_cubit.dart';
 import '../../Blocs/auth_bloc/auth_bloc.dart';
-import '../../Util/Widgets/divider_or.dart';
-import '../../Util/Widgets/fade_in_route.dart';
 
-class RegisterPage extends StatelessWidget {
-  RegisterPage({super.key});
+class ForgotPassword extends StatelessWidget {
+  ForgotPassword({super.key});
   final emailController = TextEditingController();
-  final passwordController = TextEditingController();
-  final nameController = TextEditingController();
+  final oldPasswordController = TextEditingController();
+  final newPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
-
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
-            preferredSize: Size.fromHeight(0),
-            child: AppBar(
-              elevation: 0,
-              automaticallyImplyLeading: false,
-              systemOverlayStyle: SystemUiOverlayStyle(
-                statusBarColor: Colors.white,
-                statusBarIconBrightness: Brightness.dark,
-              
-              ),
-            
-            ),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        iconTheme: const IconThemeData(color: Color(0xff000000)),
+        title: AutoSizeText(
+          'Forgot Password',
+          style: GoogleFonts.inter(
+            color: const Color(0xff000000),
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
           ),
+        ),
+      ),
       body: MultiBlocProvider(
         providers: [
           BlocProvider(
@@ -54,6 +47,7 @@ class RegisterPage extends StatelessWidget {
         child: Builder(builder: (context) {
           return SafeArea(
             child: SingleChildScrollView(
+              primary: true,
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
@@ -61,10 +55,9 @@ class RegisterPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    
                     Center(
                         child: SvgPicture.asset(
-                      AppImages.register,
+                      AppImages.login,
                       height: height * 0.25,
                       width: width,
                     )),
@@ -72,7 +65,7 @@ class RegisterPage extends StatelessWidget {
                       height: 20,
                     ),
                     AutoSizeText(
-                      "Register",
+                      "Forgot Password",
                       style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -83,15 +76,6 @@ class RegisterPage extends StatelessWidget {
                       height: height * 0.02,
                     ),
                     InputField(
-                    
-                      controller: nameController,
-                      hintText: "Enter your name",
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    InputField(
-                  
                       controller: emailController,
                       hintText: "Enter your email",
                     ),
@@ -101,14 +85,13 @@ class RegisterPage extends StatelessWidget {
                     BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
                       builder: (context, state) {
                         return InputField(
-                          
-                            hintText: "Enter your password",
+                            hintText: "Enter your old password",
                             obScureText: state is PasswordInvisibile
                                 ? true
                                 : state is PasswordVisibile
                                     ? false
                                     : true,
-                            controller: passwordController,
+                            controller: oldPasswordController,
                             suffixIcon: state is PasswordInvisibile
                                 ? InkWell(
                                     onTap: () {
@@ -140,36 +123,78 @@ class RegisterPage extends StatelessWidget {
                                     : Container());
                       },
                     ),
-                    
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    BlocProvider(
+                      create: (context) => AppFunctionsCubit(),
+                      child: Builder(builder: (context) {
+                        return BlocBuilder<AppFunctionsCubit,
+                            AppFunctionsState>(
+                          builder: (context, dstate) {
+                            return InputField(
+                                hintText: "Enter your new password",
+                                obScureText: dstate is PasswordInvisibile
+                                    ? true
+                                    : dstate is PasswordVisibile
+                                        ? false
+                                        : true,
+                                controller: newPasswordController,
+                                suffixIcon: dstate is PasswordInvisibile
+                                    ? InkWell(
+                                        onTap: () {
+                                          context
+                                              .read<AppFunctionsCubit>()
+                                              .changePasswordVisibility(
+                                                  isVisible: true);
+                                        },
+                                        child: const Icon(
+                                          Icons.visibility,
+                                          color: Colors.black,
+                                          size: 20,
+                                        ),
+                                      )
+                                    : dstate is PasswordVisibile
+                                        ? InkWell(
+                                            onTap: () {
+                                              context
+                                                  .read<AppFunctionsCubit>()
+                                                  .changePasswordVisibility(
+                                                      isVisible: false);
+                                            },
+                                            child: const Icon(
+                                              Icons.visibility_off,
+                                              color: Colors.black,
+                                              size: 20,
+                                            ),
+                                          )
+                                        : Container());
+                          },
+                        );
+                      }),
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
                     BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
-                        if (state is RegisterSuccess) {
-                          Timer(
-                            const Duration(seconds: 1),
-                            () => Navigator.pushReplacementNamed(
+                        if (state is ResetPasswordSuccess) {
+                          Timer(const Duration(seconds: 1), () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                behavior: SnackBarBehavior.floating,
+                                backgroundColor:
+                                    Color.fromARGB(255, 31, 165, 83),
+                                content: Text("Password Changed Successfully"),
+                              ),
+                            );
+                            Navigator.pushReplacementNamed(
                               context,
-                              "/home",
-                            ),
-                          );
+                              "/login",
+                            );
+                          });
                         }
-
-                        if (state is GoogleLoginSuccess) {
-                          Timer(
-                            const Duration(seconds: 1),
-                            () =>  Navigator.pushReplacement(
-                        context,
-                        FadeInRoute(
-                          routeName: "/home",
-                          page: Home(),
-                        ),
-                      )
-                          );
-                        }
-
-                        if (state is GoogleLoginFailure) {
+                        if (state is ResetPasswordFailure) {
                           Timer(
                               const Duration(seconds: 1),
                               () => ScaffoldMessenger.of(context).showSnackBar(
@@ -180,19 +205,7 @@ class RegisterPage extends StatelessWidget {
                                     ),
                                   ));
                         }
-
-                        if (state is RegisterFailure) {
-                          Timer(
-                              const Duration(seconds: 1),
-                              () => ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: const Color(0xffEB5757),
-                                      content: Text(state.message),
-                                    ),
-                                  ));
-                        }
-                        return state is RegisterLoading
+                        return state is ResetPasswordLoading
                             ? const Center(
                                 child: SizedBox(
                                   height: 20,
@@ -208,40 +221,22 @@ class RegisterPage extends StatelessWidget {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    if (
-                                      nameController.text.isEmpty||
-                                      emailController.text.isEmpty ||
-                                        passwordController.text.isEmpty) {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        SnackBar(
-                                          behavior: SnackBarBehavior.floating,
-                                          backgroundColor:
-                                              const Color(0xffEB5757),
-                                          content: Text(
-                                              "Please fill all the fields"),
-                                        ),
-                                      );
-                                    }else{
-                                    context.read<AuthBloc>().add(
-                                          Register(
-                                            name: nameController.text,
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          ),
-                                        );
-                                    }
+                                    context.read<AuthBloc>().add(ChangePassword(
+                                        email: emailController.text,
+                                        oldPassword: oldPasswordController.text,
+                                        newPassword:
+                                            newPasswordController.text));
                                   },
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor: const Color(0xff000000),
                                     shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
+                                      borderRadius: BorderRadius.circular(5),
                                     ),
                                   ),
                                   child: AutoSizeText(
-                                    "Register",
+                                    "Change Password",
                                     style: GoogleFonts.inter(
-                                      fontSize: 15,
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: const Color(0xffffffff),
                                     ),
@@ -257,7 +252,7 @@ class RegisterPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AutoSizeText(
-                          "Have an account?",
+                          "Dont remember your password?",
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -269,16 +264,10 @@ class RegisterPage extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                           Navigator.push(
-                        context,
-                        FadeInRoute(
-                          routeName: "/login",
-                          page: LoginPage(),
-                        ),
-                      );
+                            Navigator.pushNamed(context, "/reset_password");
                           },
                           child: AutoSizeText(
-                            "Sign in",
+                            "Reset ",
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -287,60 +276,6 @@ class RegisterPage extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    const DividerOr(),
-                    const SizedBox(
-                      height: 25,
-                    ),
-                    BlocBuilder<AuthBloc, AuthState>(
-                      builder: (context, state) {
-                        return state is GoogleLoginLoading
-                            ? const Center(
-                                child: SizedBox(
-                                  height: 20,
-                                  width: 20,
-                                  child: CircularProgressIndicator(
-                                    color: Color(0xff000000),
-                                    strokeWidth: 3,
-                                  ),
-                                ),
-                              )
-                            : SizedBox(
-                                height: 50,
-                                width: double.infinity,
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    context
-                                        .read<AuthBloc>()
-                                        .add(GoogleAuthentication());
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    backgroundColor: const Color(0xff000000),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(25),
-                                    ),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SvgPicture.asset(AppImages.google, height: 25,),
-                                      SizedBox(width: 8,),
-                                      AutoSizeText(
-                                        "Sign in with Google",
-                                        style: GoogleFonts.inter(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w600,
-                                          color: const Color(0xffffffff),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              );
-                      },
                     ),
                   ],
                 ),

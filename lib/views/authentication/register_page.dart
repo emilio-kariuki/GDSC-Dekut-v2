@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
-import 'package:gdsc_bloc/Util/image_urls.dart';
-import 'package:gdsc_bloc/View/Authentication/login_page.dart';
-import 'package:gdsc_bloc/View/home.dart';
+import 'package:gdsc_bloc/utilities/Widgets/input_field.dart';
+import 'package:gdsc_bloc/utilities/image_urls.dart';
+import 'package:gdsc_bloc/views/authentication/login_page.dart';
+import 'package:gdsc_bloc/views/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Blocs/app_functions_cubit/app_functions_cubit.dart';
 import '../../Blocs/auth_bloc/auth_bloc.dart';
-import '../../Util/Widgets/divider_or.dart';
-import '../../Util/Widgets/fade_in_route.dart';
+import '../../utilities/Widgets/divider_or.dart';
+import '../../utilities/Widgets/fade_in_route.dart';
 
 class RegisterPage extends StatelessWidget {
   RegisterPage({super.key});

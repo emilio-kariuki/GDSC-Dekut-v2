@@ -3,18 +3,19 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:gdsc_bloc/Blocs/Network/network_bloc.dart';
-import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
-import 'package:gdsc_bloc/Data/Models/developer_model.dart';
-import 'package:gdsc_bloc/Data/Models/event_model.dart';
-import 'package:gdsc_bloc/Data/Models/feedback_model.dart';
-import 'package:gdsc_bloc/Data/Models/groups_model.dart';
-import 'package:gdsc_bloc/Data/Models/leads_model.dart';
-import 'package:gdsc_bloc/Data/Models/report_model.dart';
-import 'package:gdsc_bloc/Data/Models/resource_model.dart';
-import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
-import 'package:gdsc_bloc/Data/Models/user_model.dart';
-import 'package:gdsc_bloc/Data/Services/Repositories/repository.dart';
+import 'package:gdsc_bloc/data/Models/announcement_model.dart';
+import 'package:gdsc_bloc/data/Models/developer_model.dart';
+import 'package:gdsc_bloc/data/Models/event_model.dart';
+import 'package:gdsc_bloc/data/Models/feedback_model.dart';
+import 'package:gdsc_bloc/data/Models/groups_model.dart';
+import 'package:gdsc_bloc/data/Models/leads_model.dart';
+import 'package:gdsc_bloc/data/Models/report_model.dart';
+import 'package:gdsc_bloc/data/Models/resource_model.dart';
+import 'package:gdsc_bloc/data/Models/twitter_model.dart';
+import 'package:gdsc_bloc/data/Models/user_model.dart';
+import 'package:gdsc_bloc/data/Services/Repositories/repository.dart';
+
+import '../../../Blocs/network_bloc/network_bloc.dart';
 
 class Providers {
   

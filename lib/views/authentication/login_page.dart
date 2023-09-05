@@ -5,31 +5,40 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gdsc_bloc/Util/Widgets/input_field.dart';
-import 'package:gdsc_bloc/Util/image_urls.dart';
-import 'package:gdsc_bloc/View/Authentication/login_page.dart';
-import 'package:gdsc_bloc/View/home.dart';
+import 'package:gdsc_bloc/utilities/Widgets/divider_or.dart';
+import 'package:gdsc_bloc/utilities/Widgets/input_field.dart';
+import 'package:gdsc_bloc/utilities/image_urls.dart';
+import 'package:gdsc_bloc/views/authentication/register_page.dart';
+import 'package:gdsc_bloc/views/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../Blocs/app_functions_cubit/app_functions_cubit.dart';
 import '../../Blocs/auth_bloc/auth_bloc.dart';
-import '../../Util/Widgets/divider_or.dart';
-import '../../Util/Widgets/fade_in_route.dart';
+import '../../utilities/Widgets/fade_in_route.dart';
 
-class RegisterPage extends StatelessWidget {
-  RegisterPage({super.key});
+class LoginPage extends StatelessWidget {
+  LoginPage({super.key});
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final nameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final height = MediaQuery.of(context).size.height;
     final width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: PreferredSize(
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(),
+        ),
+        BlocProvider(
+          create: (context) => AppFunctionsCubit(),
+        ),
+      ],
+      child: Builder(builder: (context) {
+        return Scaffold(
+          backgroundColor: Colors.white,
+          appBar: PreferredSize(
             preferredSize: Size.fromHeight(0),
             child: AppBar(
               elevation: 0,
@@ -37,22 +46,10 @@ class RegisterPage extends StatelessWidget {
               systemOverlayStyle: SystemUiOverlayStyle(
                 statusBarColor: Colors.white,
                 statusBarIconBrightness: Brightness.dark,
-              
               ),
-            
             ),
           ),
-      body: MultiBlocProvider(
-        providers: [
-          BlocProvider(
-            create: (context) => AuthBloc(),
-          ),
-          BlocProvider(
-            create: (context) => AppFunctionsCubit(),
-          ),
-        ],
-        child: Builder(builder: (context) {
-          return SafeArea(
+          body: SafeArea(
             child: SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
@@ -61,18 +58,14 @@ class RegisterPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    
                     Center(
                         child: SvgPicture.asset(
-                      AppImages.register,
-                      height: height * 0.25,
+                      AppImages.login,
+                      height: height * 0.3,
                       width: width,
                     )),
-                    const SizedBox(
-                      height: 20,
-                    ),
                     AutoSizeText(
-                      "Register",
+                      "Login",
                       style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
@@ -80,28 +73,18 @@ class RegisterPage extends StatelessWidget {
                       ),
                     ),
                     SizedBox(
-                      height: height * 0.02,
+                      height: height * 0.01,
                     ),
                     InputField(
-                    
-                      controller: nameController,
-                      hintText: "Enter your name",
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    InputField(
-                  
                       controller: emailController,
                       hintText: "Enter your email",
                     ),
                     const SizedBox(
-                      height: 10,
+                      height: 15,
                     ),
                     BlocBuilder<AppFunctionsCubit, AppFunctionsState>(
                       builder: (context, state) {
                         return InputField(
-                          
                             hintText: "Enter your password",
                             obScureText: state is PasswordInvisibile
                                 ? true
@@ -140,15 +123,35 @@ class RegisterPage extends StatelessWidget {
                                     : Container());
                       },
                     ),
-                    
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    InkWell(
+                      onTap: () {
+                        Navigator.pushNamed(context, '/forgot_password');
+                      },
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          AutoSizeText(
+                            "Forgot Password?",
+                            style: GoogleFonts.inter(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xff000000),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                     const SizedBox(
                       height: 30,
                     ),
                     BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
-                        if (state is RegisterSuccess) {
+                        if (state is LoginSuccess) {
                           Timer(
-                            const Duration(seconds: 1),
+                            const Duration(milliseconds: 200),
                             () => Navigator.pushReplacementNamed(
                               context,
                               "/home",
@@ -158,20 +161,31 @@ class RegisterPage extends StatelessWidget {
 
                         if (state is GoogleLoginSuccess) {
                           Timer(
-                            const Duration(seconds: 1),
-                            () =>  Navigator.pushReplacement(
-                        context,
-                        FadeInRoute(
-                          routeName: "/home",
-                          page: Home(),
-                        ),
-                      )
-                          );
+                              const Duration(milliseconds: 200),
+                              () => Navigator.pushReplacement(
+                                    context,
+                                    FadeInRoute(
+                                      routeName: "/home",
+                                      page: Home(),
+                                    ),
+                                  ));
+                        }
+
+                        if (state is LoginFailure) {
+                          Timer(
+                              const Duration(seconds: 1),
+                              () => ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      behavior: SnackBarBehavior.floating,
+                                      backgroundColor: const Color(0xffEB5757),
+                                      content: Text(state.message),
+                                    ),
+                                  ));
                         }
 
                         if (state is GoogleLoginFailure) {
                           Timer(
-                              const Duration(seconds: 1),
+                              const Duration(milliseconds: 200),
                               () => ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
                                       behavior: SnackBarBehavior.floating,
@@ -180,19 +194,7 @@ class RegisterPage extends StatelessWidget {
                                     ),
                                   ));
                         }
-
-                        if (state is RegisterFailure) {
-                          Timer(
-                              const Duration(seconds: 1),
-                              () => ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      behavior: SnackBarBehavior.floating,
-                                      backgroundColor: const Color(0xffEB5757),
-                                      content: Text(state.message),
-                                    ),
-                                  ));
-                        }
-                        return state is RegisterLoading
+                        return state is LoginLoading
                             ? const Center(
                                 child: SizedBox(
                                   height: 20,
@@ -208,9 +210,7 @@ class RegisterPage extends StatelessWidget {
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
-                                    if (
-                                      nameController.text.isEmpty||
-                                      emailController.text.isEmpty ||
+                                    if (emailController.text.isEmpty ||
                                         passwordController.text.isEmpty) {
                                       ScaffoldMessenger.of(context)
                                           .showSnackBar(
@@ -222,14 +222,13 @@ class RegisterPage extends StatelessWidget {
                                               "Please fill all the fields"),
                                         ),
                                       );
-                                    }else{
-                                    context.read<AuthBloc>().add(
-                                          Register(
-                                            name: nameController.text,
-                                            email: emailController.text,
-                                            password: passwordController.text,
-                                          ),
-                                        );
+                                    } else {
+                                      context.read<AuthBloc>().add(
+                                            Login(
+                                              email: emailController.text,
+                                              password: passwordController.text,
+                                            ),
+                                          );
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -239,7 +238,7 @@ class RegisterPage extends StatelessWidget {
                                     ),
                                   ),
                                   child: AutoSizeText(
-                                    "Register",
+                                    "Login",
                                     style: GoogleFonts.inter(
                                       fontSize: 15,
                                       fontWeight: FontWeight.w600,
@@ -257,7 +256,7 @@ class RegisterPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         AutoSizeText(
-                          "Have an account?",
+                          "Don't have an account?",
                           style: GoogleFonts.inter(
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
@@ -269,16 +268,16 @@ class RegisterPage extends StatelessWidget {
                         ),
                         GestureDetector(
                           onTap: () {
-                           Navigator.push(
-                        context,
-                        FadeInRoute(
-                          routeName: "/login",
-                          page: LoginPage(),
-                        ),
-                      );
+                            Navigator.push(
+                              context,
+                              FadeInRoute(
+                                routeName: "/register",
+                                page: RegisterPage(),
+                              ),
+                            );
                           },
                           child: AutoSizeText(
-                            "Sign in",
+                            "Sign Up",
                             style: GoogleFonts.inter(
                               fontSize: 14,
                               fontWeight: FontWeight.w600,
@@ -293,7 +292,7 @@ class RegisterPage extends StatelessWidget {
                     ),
                     const DividerOr(),
                     const SizedBox(
-                      height: 25,
+                      height: 20,
                     ),
                     BlocBuilder<AuthBloc, AuthState>(
                       builder: (context, state) {
@@ -309,7 +308,7 @@ class RegisterPage extends StatelessWidget {
                                 ),
                               )
                             : SizedBox(
-                                height: 50,
+                                height: 49,
                                 width: double.infinity,
                                 child: ElevatedButton(
                                   onPressed: () {
@@ -326,8 +325,13 @@ class RegisterPage extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      SvgPicture.asset(AppImages.google, height: 25,),
-                                      SizedBox(width: 8,),
+                                      SvgPicture.asset(
+                                        AppImages.google,
+                                        height: 25,
+                                      ),
+                                      SizedBox(
+                                        width: 8,
+                                      ),
                                       AutoSizeText(
                                         "Sign in with Google",
                                         style: GoogleFonts.inter(
@@ -346,9 +350,9 @@ class RegisterPage extends StatelessWidget {
                 ),
               ),
             ),
-          );
-        }),
-      ),
+          ),
+        );
+      }),
     );
   }
 }

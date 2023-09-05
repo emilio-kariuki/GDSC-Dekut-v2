@@ -10,18 +10,18 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gallery_saver/gallery_saver.dart';
-import 'package:gdsc_bloc/Data/Models/announcement_model.dart';
-import 'package:gdsc_bloc/Data/Models/developer_model.dart';
-import 'package:gdsc_bloc/Data/Models/event_model.dart';
-import 'package:gdsc_bloc/Data/Models/feedback_model.dart';
-import 'package:gdsc_bloc/Data/Models/groups_model.dart';
-import 'package:gdsc_bloc/Data/Models/leads_model.dart';
-import 'package:gdsc_bloc/Data/Models/message_model.dart';
-import 'package:gdsc_bloc/Data/Models/report_model.dart';
-import 'package:gdsc_bloc/Data/Models/resource_model.dart';
-import 'package:gdsc_bloc/Data/Models/twitter_model.dart';
-import 'package:gdsc_bloc/Data/Models/user_model.dart';
-import 'package:gdsc_bloc/Util/shared_preference_manager.dart';
+import 'package:gdsc_bloc/data/Models/announcement_model.dart';
+import 'package:gdsc_bloc/data/Models/developer_model.dart';
+import 'package:gdsc_bloc/data/Models/event_model.dart';
+import 'package:gdsc_bloc/data/Models/feedback_model.dart';
+import 'package:gdsc_bloc/data/Models/groups_model.dart';
+import 'package:gdsc_bloc/data/Models/leads_model.dart';
+import 'package:gdsc_bloc/data/Models/message_model.dart';
+import 'package:gdsc_bloc/data/Models/report_model.dart';
+import 'package:gdsc_bloc/data/Models/resource_model.dart';
+import 'package:gdsc_bloc/data/Models/twitter_model.dart';
+import 'package:gdsc_bloc/data/Models/user_model.dart';
+import 'package:gdsc_bloc/utilities/shared_preference_manager.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/calendar/v3.dart' as calendar;
 import 'package:googleapis_auth/auth.dart';
@@ -1223,6 +1223,11 @@ class Repository {
   }) async {
     try {
       final firebaseFirestore = FirebaseFirestore.instance;
+
+      //* check if user exists
+
+      
+      
       await firebaseFirestore.collection("users").doc(userId).update({
         "username": name,
         "email": email,
